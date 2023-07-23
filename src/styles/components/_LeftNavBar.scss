@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: 5px 0px 3px 0.5px $light-grey;
   .navbar_logo {
     margin: 30px;
     padding: 15px;

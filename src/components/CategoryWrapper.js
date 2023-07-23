@@ -1,6 +1,9 @@
+import '../styles/components/_CategoryWrapper.scss';
+
 const CategoryWrapper = () => {
   return (
     <div className='CategoryWrapper'>
+      <li id='clicked'>전체</li>
       <li>좋아요 목록</li>
       <li>카테고리 1</li>
       <li>카테고리 2</li>

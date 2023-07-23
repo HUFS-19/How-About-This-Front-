@@ -15,7 +15,7 @@ const LeftNavBar = () => {
           <span>!</span>추천
         </p>
       </div>
-      <UserWrapper />
+      <UserWrapper className='UserWrapper' />
       <CategoryWrapper />
     </div>
   );

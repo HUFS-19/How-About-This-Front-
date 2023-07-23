@@ -1,8 +1,13 @@
+import BlueBtn from './button/BlueBtn';
+import WhiteBtn from './button/WhiteBtn';
+
+import '../styles/components/_UserWrapper.scss';
+
 const UserWrapper = () => {
   return (
     <div className='UserWrapper'>
-      <button>로그인</button>
-      <button>로그아웃</button>
+      <BlueBtn className='BlueBtn' text={'로그인'} />
+      <WhiteBtn className='WhiteBtn' text={'회원가입'} />
     </div>
   );
 };
