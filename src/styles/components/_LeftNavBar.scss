@@ -2,6 +2,8 @@
 
 .LeftNavBar {
   position: fixed;
+  background-color: white;
+  z-index: 1;
   width: 270px;
   height: 100vh;
   display: flex;
