@@ -5,31 +5,47 @@
   z-index: 0;
   width: 100vw;
   padding: 10px;
+  padding-left: 145px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   box-shadow: 0px 5px 3px 0.5px $light-grey;
+  .category-selector,
+  .search-selector,
+  .search-bar {
+    margin: 0px 6px;
+    background-color: $light-grey;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: $noto;
+    color: rgba(0, 0, 0, 0.6);
+    &:focus {
+      outline: none;
+    }
+  }
+  .category-selector {
+    width: 150px;
+    padding-left: 15px;
+  }
+  .search-selector {
+    width: 110px;
+    padding-left: 15px;
+  }
   .search_wrapper {
     position: relative;
     .search-icon {
       position: absolute;
       top: 33%;
-      padding-left: 15px;
+      padding-left: 20px;
       color: rgba(0, 0, 0, 0.4);
     }
     .search-bar {
       height: 28px;
-      background-color: $light-grey;
-      border: none;
-      border-radius: 5px;
       width: 900px;
       padding-top: 7px;
       padding-bottom: 7px;
       padding-left: 40px;
-      font-size: 16px;
-      font-family: $noto;
-      &:focus {
-        outline: none;
-      }
+      color: rgba(0, 0, 0, 0.6);
     }
   }
 }
