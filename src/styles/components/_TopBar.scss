@@ -4,16 +4,18 @@
   position: fixed;
   z-index: 0;
   width: 100vw;
+  height: 62px;
   padding: 10px;
   padding-left: 145px;
   display: flex;
   justify-content: center;
   box-shadow: 0px 5px 3px 0.5px $light-grey;
+  background-color: white;
   .category-selector,
   .search-selector,
   .search-bar {
     margin: 0px 6px;
-    background-color: $light-grey;
+    background-color: $background-grey;
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -40,10 +42,9 @@
       color: rgba(0, 0, 0, 0.4);
     }
     .search-bar {
-      height: 28px;
       width: 900px;
-      padding-top: 7px;
-      padding-bottom: 7px;
+      padding-top: 9px;
+      padding-bottom: 10px;
       padding-left: 40px;
       color: rgba(0, 0, 0, 0.6);
     }
