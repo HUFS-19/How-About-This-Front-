@@ -1,0 +1,32 @@
+@import '../variables';
+
+.LeftNavBar {
+  position: fixed;
+  background-color: white;
+  z-index: 1;
+  width: 270px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 5px 0px 3px 0.5px $light-grey;
+  .navbar_logo {
+    margin: 30px;
+    padding: 15px;
+    font-family: $gowun;
+    font-size: 40px;
+    font-style: italic;
+    p {
+      padding: 0px 20px;
+      span {
+        padding: 0px 25px;
+      }
+    }
+    hr {
+      margin: 2px 0px;
+      height: 1.6px;
+      background-color: black;
+      border: none;
+    }
+  }
+}

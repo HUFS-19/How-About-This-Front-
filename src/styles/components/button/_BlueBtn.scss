@@ -1,0 +1,15 @@
+@import '../../variables';
+
+.BlueBtn {
+  background-color: $blue;
+  border: 2px solid $blue;
+  color: white;
+  padding: 7px 28px;
+  text-align: center;
+  font-family: $noto;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: none;
+}
