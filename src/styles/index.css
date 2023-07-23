@@ -5,3 +5,7 @@ button {
 li {
   list-style-type: none;
 }
+
+div {
+  box-sizing: border-box;
+}
