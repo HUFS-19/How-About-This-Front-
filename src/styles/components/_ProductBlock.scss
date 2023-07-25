@@ -1,6 +1,7 @@
 @import '../variables';
 
 .ProductBlock {
+  position: relative;
   margin: 12px 12px;
   display: flex;
   flex-direction: column;
@@ -13,6 +14,16 @@
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom: 2px solid $light-grey;
+  }
+  .heart-icon {
+    position: absolute;
+    bottom: 63px;
+    right: 10px;
+    font-size: 25px;
+    color: $light-grey;
+    &.clicked {
+      color: $blue;
+    }
   }
   .product-name {
     border-bottom-left-radius: 5px;
