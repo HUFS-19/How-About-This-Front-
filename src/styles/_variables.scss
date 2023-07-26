@@ -12,3 +12,9 @@ $background-grey: #f2f4f7;
 
 $gowun: 'Gowun Dodum', sans-serif;
 $noto: 'Noto Sans KR', sans-serif;
+
+@mixin set-product-content($num) {
+  padding: 35px 0px;
+  display: grid;
+  grid-template-columns: repeat($num, 1fr);
+}

@@ -30,9 +30,7 @@
       }
     }
     .ProductList_content {
-      padding: 35px 0px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      @include set-product-content(4);
     }
   }
 }

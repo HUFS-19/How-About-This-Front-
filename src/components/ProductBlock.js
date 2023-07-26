@@ -21,19 +21,19 @@ const ProductBlock = ({ data }) => {
   }
 
   return (
-    <div className='ProductBlock'>
+    <div className="ProductBlock">
       <img
-        className='product-img'
+        className="product-img"
         src={data.id % 2 === 0 ? fan : doll}
-        alt=''
+        alt=""
       />
       <FontAwesomeIcon
         ref={heartIcon}
         onClick={() => setClicked(!clicked)}
-        className='heart-icon'
+        className="heart-icon"
         icon={faHeart}
       />
-      <p className='product-name'>{data.name}</p>
+      <p className="product-name">{data.name}</p>
     </div>
   );
 };
