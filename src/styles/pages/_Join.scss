@@ -8,8 +8,8 @@
 	justify-content: center;
 	align-items: center;
 
-	.LoginContainer {
-		padding: 15vh 25vh;
+	.JoinContainer {
+		padding: 12vh 25vh;
 		width: 90vh;
 		min-width: 500px;
 		height: 50vh;
@@ -41,35 +41,48 @@
 			padding-left: 10px;
 		}
 
-		.Btns {
-			margin-top: 10px;
+		.IdCheck {
 			display: flex;
-			text-align: center;
 
-			.LoginBtn {
-				cursor: pointer;
-				width: 18vh;
+			.IdInputBox {
+				min-width: 65%;
 				height: 5vh;
+				border-radius: 10px;
+				background-color: $background-grey;
+				border: none;
+				font-size: medium;
+				padding-left: 10px;
+				margin-right: auto;
+			}
+
+			.IdCheckBtn {
+				cursor: pointer;
+				text-align: center;
+				width: 30%;
+				height: 100%;
 				background-color: black;
 				color: white;
 				border-radius: 10px;
-				margin-right: auto;
 				font-family: $noto;
 				font-size: medium;
 			}
-
-			.JoinBtn {
-				cursor: pointer;
-				width: 18vh;
-				height: 5vh;
-				border: 1px solid;
-				border-radius: 10px;
-				font-family: $noto;
-				font-size: medium;
-			}
-
-
 		}
+
+
+		.JoinBtn {
+			cursor: pointer;
+			margin-top: 10px;
+			align-self: center;
+			width: 18vh;
+			height: 5vh;
+			background-color: black;
+			color: white;
+			border-radius: 10px;
+			font-family: $noto;
+			font-size: medium;
+		}
+
+
 
 	}
 }

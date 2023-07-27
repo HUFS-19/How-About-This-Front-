@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Product from './pages/Product';
 import Login from './pages/Login';
+import Join from './pages/Join';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/product/:id' element={<Product />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/join' element={<Join />} />
         </Routes>
       </div>
     </BrowserRouter>

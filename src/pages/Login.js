@@ -1,4 +1,4 @@
-import '../styles/components/_Login.scss';
+import '../styles/pages/_Login.scss';
 
 const Login = () => {
   return (
@@ -10,7 +10,7 @@ const Login = () => {
         <h4>비밀번호</h4>
         <input className='InputBox' type='password'></input>
         <div className='Btns'>
-          <input className='LoginBtn' type='submit' value={'로그인'}></input>
+          <button className='LoginBtn'>로그인</button>
           <button className='JoinBtn'>회원가입</button>
         </div>
       </div>
