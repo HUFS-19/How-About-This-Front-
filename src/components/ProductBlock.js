@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import fan from '../assets/fan.png';
 import doll from '../assets/doll.jpeg';
@@ -8,6 +9,8 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import '../styles/components/_ProductBlock.scss';
 
 const ProductBlock = ({ data }) => {
+  const navigate = useNavigate();
+
   const [clicked, setClicked] = useState(false);
 
   const heartIcon = useRef();
@@ -21,19 +24,22 @@ const ProductBlock = ({ data }) => {
   }
 
   return (
-    <div className="ProductBlock">
+    <div
+      className='ProductBlock'
+      onClick={() => navigate(`/product/${data.id}`)}
+    >
       <img
-        className="product-img"
+        className='product-img'
         src={data.id % 2 === 0 ? fan : doll}
-        alt=""
+        alt=''
       />
       <FontAwesomeIcon
         ref={heartIcon}
         onClick={() => setClicked(!clicked)}
-        className="heart-icon"
+        className='heart-icon'
         icon={faHeart}
       />
-      <p className="product-name">{data.name}</p>
+      <p className='product-name'>{data.name}</p>
     </div>
   );
 };
