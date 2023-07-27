@@ -13,8 +13,9 @@
     cursor: pointer;
     font-weight: 400;
     &#clicked {
-      color: $blue;
-      font-weight: 700;
+      // color: $grey;
+      font-weight: 800;
+      font-size: 19px;
     }
   }
 }
