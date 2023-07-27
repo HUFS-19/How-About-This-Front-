@@ -24,14 +24,12 @@ const ProductBlock = ({ data }) => {
   }
 
   return (
-    <div
-      className='ProductBlock'
-      onClick={() => navigate(`/product/${data.id}`)}
-    >
+    <div className='ProductBlock'>
       <img
         className='product-img'
         src={data.id % 2 === 0 ? fan : doll}
         alt=''
+        onClick={() => navigate(`/product/${data.id}`)}
       />
       <FontAwesomeIcon
         ref={heartIcon}
@@ -39,7 +37,12 @@ const ProductBlock = ({ data }) => {
         className='heart-icon'
         icon={faHeart}
       />
-      <p className='product-name'>{data.name}</p>
+      <p
+        className='product-name'
+        onClick={() => navigate(`/product/${data.id}`)}
+      >
+        {data.name}
+      </p>
     </div>
   );
 };
