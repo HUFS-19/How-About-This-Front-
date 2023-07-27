@@ -6,6 +6,7 @@ import TopBar from './components/TopBar';
 
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import Product from './pages/Product';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path='/product/:id' element={<Product />} />
         </Routes>
       </div>
     </BrowserRouter>

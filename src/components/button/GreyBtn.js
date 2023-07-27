@@ -1,7 +1,11 @@
 import '../../styles/components/button/_GreyBtn.scss';
 
-const GreyBtn = ({ text }) => {
-  return <button className='GreyBtn'>{text}</button>;
+const GreyBtn = ({ id, text }) => {
+  return (
+    <button id={id} className='GreyBtn'>
+      {text}
+    </button>
+  );
 };
 
 export default GreyBtn;

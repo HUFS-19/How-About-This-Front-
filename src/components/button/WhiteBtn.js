@@ -1,7 +1,11 @@
 import '../../styles/components/button/_WhiteBtn.scss';
 
-const WhiteBtn = ({ text }) => {
-  return <button className='WhiteBtn'>{text}</button>;
+const WhiteBtn = ({ id, text }) => {
+  return (
+    <button id={id} className='WhiteBtn'>
+      {text}
+    </button>
+  );
 };
 
 export default WhiteBtn;
