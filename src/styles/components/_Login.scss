@@ -1,0 +1,75 @@
+@import '../variables';
+
+.Container {
+	padding: 62px 0px 0px 270px;
+	height: 100vh;
+	background-color: $background-grey;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.LoginContainer {
+		padding: 15vh 25vh;
+		width: 90vh;
+		min-width: 500px;
+		height: 50vh;
+		min-height: 600px;
+		background-color: white;
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+		box-shadow: 5px 5px 5px lightgray;
+
+		h2 {
+			font-family: $gowun;
+			font-size: 35px;
+			text-align: center;
+			padding-bottom: 10px;
+		}
+
+		h4 {
+			padding-left: 10px;
+			font-family: $noto;
+		}
+
+		.InputBox {
+			height: 5vh;
+			border-radius: 10px;
+			background-color: $background-grey;
+			border: none;
+			font-size: medium;
+			padding-left: 10px;
+		}
+
+		.Btns {
+			margin-top: 10px;
+			display: flex;
+			text-align: center;
+
+			.LoginBtn {
+				cursor: pointer;
+				width: 18vh;
+				height: 5vh;
+				background-color: black;
+				color: white;
+				border-radius: 10px;
+				margin-right: auto;
+				font-family: $noto;
+				font-size: medium;
+			}
+
+			.JoinBtn {
+				cursor: pointer;
+				width: 18vh;
+				height: 5vh;
+				border: 1px solid;
+				border-radius: 10px;
+				font-family: $noto;
+				font-size: medium;
+			}
+
+
+		}
+
+	}
+}
