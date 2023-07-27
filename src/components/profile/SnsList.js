@@ -17,11 +17,12 @@ const SnsList = ({ snsData }) => {
     email: email,
     blog: blog,
   };
+
   return (
-    <div className="SnsList">
+    <div className='SnsList'>
       {snsData.map((data) => (
         <li>
-          <img src={sns[data]} alt="" />
+          <img src={sns[data]} alt='' />
         </li>
       ))}
     </div>
