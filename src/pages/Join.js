@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/ai';
 import '../styles/pages/_Join.scss';
 
 const Join = () => {
@@ -9,6 +10,7 @@ const Join = () => {
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const [passwordConfirm, setPasswordConfirm] = useState(false);
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
@@ -43,6 +45,10 @@ const Join = () => {
     }
   };
 
+  const onShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const onChangePasswordConfirm = (e) => {
     if (e.target.value !== password) {
       console.log(e.target.value);
@@ -59,14 +65,19 @@ const Join = () => {
       <div className='JoinContainer'>
         <h2>회원가입</h2>
         <h4>아이디</h4>
-        <div className='IdCheck'>
+        <div className='IdWrapper'>
           <input className='IdInputBox' onChange={onChangeId}></input>
           <button className='IdCheckBtn' disabled={!(checkId)}>중복확인</button>
         </div>
         <p className='CheckMessage'>{idMessage}</p>
         
         <h4>비밀번호</h4>
-        <input className='InputBox' type='password' onChange={onChangePassword}></input>
+        <div className='PasswordWrapper'>
+          <input className='PasswordInputBox' type={showPassword ? "text" : "password"} onChange={onChangePassword}></input>
+          <button className='ShowPassword' onClick={onShowPassword}>
+            {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+          </button>
+        </div>
         <p className='CheckMessage'>{passwordMessage}</p>
         
         <h4>비밀번호 확인</h4>

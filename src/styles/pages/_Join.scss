@@ -9,7 +9,7 @@
 	align-items: center;
 
 	.JoinContainer {
-		padding: 12vh 25vh;
+		padding: 100px 25vh;
 		width: 90vh;
 		min-width: 500px;
 		height: 50vh;
@@ -33,26 +33,28 @@
 		}
 
 		.InputBox {
-			height: 5vh;
+			height: 6vh;
 			border-radius: 10px;
 			background-color: $background-grey;
 			border: none;
 			font-size: medium;
-			padding-left: 10px;
+			box-sizing: border-box;
+			padding: 0 10px 0 10px;
 		}
 
-		.IdCheck {
+		.IdWrapper {
 			display: flex;
 
 			.IdInputBox {
 				min-width: 65%;
-				height: 5vh;
+				height: 6vh;
 				border-radius: 10px;
 				background-color: $background-grey;
 				border: none;
 				font-size: medium;
-				padding-left: 10px;
 				margin-right: auto;
+				box-sizing: border-box;
+				padding: 0 10px 0 10px;
 			}
 
 			.IdCheckBtn {
@@ -79,6 +81,29 @@
 			}
 		}
 
+		.PasswordWrapper {
+			position: relative;
+		
+			.PasswordInputBox {
+				display: flex;
+				height: 6vh;
+				width: 100%;
+				border-radius: 10px;
+				background-color: $background-grey;
+				border: none;
+				font-size: medium;
+				box-sizing: border-box;
+				padding: 0 40px 0 10px;
+			}
+
+			.ShowPassword {
+				cursor: pointer;
+				position: absolute;
+				right: 15px;
+				top: 30%;
+				color: gray;
+			}	
+		}
 
 		.JoinBtn {
 			cursor: pointer;
