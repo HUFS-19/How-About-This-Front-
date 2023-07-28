@@ -58,31 +58,59 @@
 			.IdCheckBtn {
 				cursor: pointer;
 				text-align: center;
-				width: 30%;
+				width: 25%;
 				height: 100%;
 				background-color: black;
 				color: white;
 				border-radius: 10px;
 				font-family: $noto;
-				font-size: medium;
+				font-size: small;
+			}
+			.IdCheckBtn:disabled {
+				cursor: not-allowed;
+				text-align: center;
+				width: 25%;
+				height: 100%;
+				background-color: lightgray;
+				color: white;
+				border-radius: 10px;
+				font-family: $noto;
+				font-size: small;
 			}
 		}
 
 
 		.JoinBtn {
 			cursor: pointer;
-			margin-top: 10px;
 			align-self: center;
 			width: 18vh;
 			height: 5vh;
 			background-color: black;
 			color: white;
 			border-radius: 10px;
+			text-align: center;
+			font-family: $noto;
+			font-size: medium;
+		}
+		.JoinBtn:disabled {
+			cursor: not-allowed;
+			align-self: center;
+			width: 18vh;
+			height: 5vh;
+			background-color: lightgray;
+			color: white;
+			border-radius: 10px;
+			text-align: center;
 			font-family: $noto;
 			font-size: medium;
 		}
 
-
+		.CheckMessage {
+			padding: 0 0 10px 10px;
+			color: red;
+			font-family: $gowun;
+			font-size: small;
+		}
 
 	}
 }

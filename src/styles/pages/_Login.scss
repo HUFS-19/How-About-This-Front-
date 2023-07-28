@@ -9,7 +9,7 @@
 	align-items: center;
 
 	.LoginContainer {
-		padding: 15vh 25vh;
+		padding: 20vh 25vh;
 		width: 90vh;
 		min-width: 500px;
 		height: 50vh;
@@ -41,7 +41,7 @@
 			padding-left: 10px;
 		}
 
-		.Btns {
+		.LoginBtns {
 			margin-top: 10px;
 			display: flex;
 			text-align: center;
@@ -57,12 +57,22 @@
 				border-radius: 10px;
 				margin-right: auto;
 			}
+			.LoginBtn:disabled {
+				cursor: not-allowed;
+				width: 18vh;
+				height: 5vh;
+				background-color: lightgray;
+				color: white;
+				border-radius: 10px;
+				margin-right: auto;
+			}
 
 			.JoinBtn {
 				cursor: pointer;
 				width: 18vh;
 				height: 5vh;
-				border: 1px solid;
+				border: 1px solid black;
+				color: black;
 				border-radius: 10px;
 			}
 		}
