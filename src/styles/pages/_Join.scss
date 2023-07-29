@@ -33,7 +33,7 @@
 		}
 
 		.InputBox {
-			height: 6vh;
+			height: 50px;
 			border-radius: 10px;
 			background-color: $background-grey;
 			border: none;
@@ -46,8 +46,8 @@
 			display: flex;
 
 			.IdInputBox {
-				min-width: 65%;
-				height: 6vh;
+				min-width: 70%;
+					height: 50px;
 				border-radius: 10px;
 				background-color: $background-grey;
 				border: none;
@@ -86,7 +86,7 @@
 		
 			.PasswordInputBox {
 				display: flex;
-				height: 6vh;
+				height: 50px;
 				width: 100%;
 				border-radius: 10px;
 				background-color: $background-grey;
