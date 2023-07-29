@@ -2,11 +2,13 @@
 
 .ProfileArea {
   //   width: 100%;
-  padding: 62px 0px 50px 270px;
+  padding: 130px 0px 50px 270px;
   background-color: $background-grey;
 
   .Profile-wrapper {
-    margin: 100px 150px;
+    // min-width: 1000px;
+    width: 75%;
+    margin: auto;
     padding: 30px 11% 30px 11%;
     background-color: white;
     text-align: center;
@@ -14,7 +16,7 @@
 
     .addProductBtn {
       background-color: $light-grey;
-      border: 1px solid rgb(193, 193, 193);
+      border: 1px solid rgb(56, 33, 33);
       width: 100%;
 
       height: 35px;

@@ -8,7 +8,6 @@ import blog from '../../assets/icon/blog.png';
 import '../../styles/components/profile/_SnsList.scss';
 
 const SnsList = ({ snsData }) => {
-  console.log(snsData);
   const sns = {
     kakao: kakao,
     instagram: instagram,

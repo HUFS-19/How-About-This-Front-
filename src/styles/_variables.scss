@@ -19,3 +19,30 @@ $noto: 'Noto Sans KR', sans-serif;
   display: grid;
   grid-template-columns: repeat($num, 1fr);
 }
+
+@mixin set-basic-btn($width) {
+  background-color: $light-grey;
+  border: 1.5px solid darkgray;
+  border-radius: 5px;
+  width: $width;
+  height: 30px;
+  margin: auto;
+  font-family: $noto;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+@mixin set-input() {
+  border-radius: 7px;
+  border: 1.5px solid rgb(180, 179, 179);
+  margin-bottom: 20px;
+  font-size: 15px;
+  padding: 5px;
+  font-family: $noto;
+}
+
+@mixin set-user-ico($size) {
+  width: $size;
+  height: $size;
+  border-radius: 70%;
+}

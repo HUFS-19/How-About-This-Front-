@@ -1,0 +1,63 @@
+@import '../../variables';
+
+.img-btn {
+  @include set-basic-btn(90px);
+  margin-top: 15px;
+}
+.ProfileEdit-title {
+  text-align: left;
+  font-size: 30px;
+  margin: 20px 0px 40px 0px;
+  font-family: $gowun;
+}
+.ProfileEdit-body-container {
+  display: flex;
+}
+.userIco-container {
+  align-self: start;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.ProfileEdit-userIco {
+  @include set-user-ico(110px);
+  margin: auto;
+}
+// .img-btn {
+//   // margin: auto;
+// }
+
+.ProfileEdit-text-section {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  padding-left: 40px;
+}
+.editNick-input {
+  @include set-input();
+  width: 50%;
+  min-height: 25px;
+}
+.editIntro-text {
+  @include set-input();
+  width: 80%;
+  min-height: 200px;
+  resize: none;
+}
+
+.addSns {
+  display: inline-block;
+}
+.addicon {
+  width: 28px;
+  border-radius: 70%;
+}
+
+.Edit-btn-container {
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 39px;
+}
+.Edit-btn {
+  @include set-basic-btn(150px);
+}

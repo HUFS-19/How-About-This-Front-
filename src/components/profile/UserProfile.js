@@ -10,15 +10,15 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="Profile-top">
-      <img className="Profile-top-userIcon" src={userIcon} alt="" />
-      <div className="Profile-top-userText">
-        <p className="Profile-nickname">{user.nickname}</p>
-        <p className="Profile-inst">{user.introduce}</p>
+    <div className='Profile-top'>
+      <img className='Profile-top-userIcon' src={userIcon} alt='' />
+      <div className='Profile-top-userText'>
+        <p className='Profile-nickname'>{user.nickname}</p>
+        <p className='Profile-inst'>{user.introduce}</p>
       </div>
-      <div className="Profile-top-sns">
-        <button className="profile-edit-btn">수정</button>
-        <div className="Profile-sns">
+      <div className='Profile-top-sns'>
+        <button className='profile-edit-btn'>수정</button>
+        <div className='Profile-sns'>
           <SnsList snsData={snsData} />
         </div>
       </div>

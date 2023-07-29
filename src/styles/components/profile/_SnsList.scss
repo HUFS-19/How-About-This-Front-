@@ -2,8 +2,10 @@
 
 .SnsList {
   display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+
   li {
-    //   float: right;
     margin-right: 5px;
   }
 }
