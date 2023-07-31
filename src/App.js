@@ -10,6 +10,7 @@ import ProfileEdit from './pages/ProfileEdit';
 import Product from './pages/Product';
 import Login from './pages/Login';
 import Join from './pages/Join';
+import Logout from './pages/Logout';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path='/product/:id' element={<Product />} />
           <Route path='/login' element={<Login />} />
           <Route path='/join' element={<Join />} />
+          <Route path='/logout' element={<Logout />} />
         </Routes>
       </div>
     </BrowserRouter>

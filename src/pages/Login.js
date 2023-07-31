@@ -20,10 +20,22 @@ const Login = () => {
   };
 
   const tryLogin = () => {
-    axios.post('http://localhost:5000/login', {
-      id: id,
-      password: password,
-    });
+    axios
+      .post(
+        'http://localhost:5000/user/login',
+        {
+          id: id,
+          password: password,
+        },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        if (!res.data.login) {
+          console.log('로그인 실패');
+        } else {
+          console.log('로그인 성공');
+        }
+      });
   };
 
   return (
