@@ -8,7 +8,7 @@ import { faHeart, faMessage } from '@fortawesome/free-solid-svg-icons';
 import profile from '../assets/profile.jpg';
 import '../styles/pages/Product/_Product.scss';
 
-import GreyBtn from '../components/button/GreyBtn';
+import BlackBtn from '../components/button/BlackBtn';
 import WhiteBtn from '../components/button/WhiteBtn';
 
 const Product = () => {
@@ -87,7 +87,7 @@ const Product = () => {
                   </div>
                 </div>
                 <div id='btns'>
-                  <GreyBtn id={'buy-btn'} text={'구입하기'} />
+                  <BlackBtn id={'buy-btn'} text={'구입하기'} />
                   <FontAwesomeIcon
                     ref={heartIcon}
                     onClick={() => setClicked(!clicked)}
