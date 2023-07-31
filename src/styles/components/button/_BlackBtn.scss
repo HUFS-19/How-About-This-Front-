@@ -1,10 +1,11 @@
 @import '../../variables';
 
-.GreyBtn {
-  background-color: $grey;
-  border: 2px solid $grey;
+.BlackBtn {
+  background-color: black;
+  border: 2px solid black;
   color: white;
   padding: 7px 28px;
+  padding-bottom: 9px;
   text-align: center;
   font-family: $noto;
   font-weight: 600;
