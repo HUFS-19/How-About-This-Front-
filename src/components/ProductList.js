@@ -19,6 +19,8 @@ const ProductList = () => {
     productList();
   }, []);
 
+  console.log(productList);
+
   return (
     <div className='ProductList'>
       <div className='ProductList-wrapper'>

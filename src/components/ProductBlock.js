@@ -39,9 +39,9 @@ const ProductBlock = ({ data }) => {
       />
       <p
         className='product-name'
-        onClick={() => navigate(`/product/${data.id}`)}
+        onClick={() => navigate(`/product/${data.prodID}`)}
       >
-        {data.name}
+        {data.prodNAME}
       </p>
     </div>
   );
