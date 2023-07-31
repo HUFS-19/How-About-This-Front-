@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import fan from '../assets/fan.png';
-import doll from '../assets/doll.jpeg';
+// import fan from '../assets/fan.png';
+// import doll from '../assets/doll.jpeg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
@@ -27,9 +27,9 @@ const ProductBlock = ({ data }) => {
     <div className='ProductBlock'>
       <img
         className='product-img'
-        src={data.id % 2 === 0 ? fan : doll}
+        src={`http://localhost:5000/src/Mimg/${data.prodID}.jpg`}
         alt=''
-        onClick={() => navigate(`/product/${data.id}`)}
+        onClick={() => navigate(`/product/${data.prodID}`)}
       />
       <FontAwesomeIcon
         ref={heartIcon}
