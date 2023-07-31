@@ -36,58 +36,72 @@ const Product = () => {
 
           await axios
             .get(`http://localhost:5000/product/category/${res.data[0].cateID}`)
-            .then((res) => {
+            .then(async (res) => {
               if (res.data === undefined) {
                 return;
               }
-              setProduct({ cateNAME: res.data[0].cateNAME, ...productInfo });
+
+              let productCate = res.data[0].cateNAME;
+              await axios
+                .get(`http://localhost:5000/product/${id}/tags`)
+                .then((res) => {
+                  setProduct({
+                    ...productInfo,
+                    cateNAME: productCate,
+                    tags: res.data,
+                  });
+                });
             });
         });
     };
 
     getProduct();
-  }, []);
+  }, [id]);
 
-  return (
-    <div className='Product'>
-      <div className='Product-wrapper'>
-        <div className='Product-background'>
-          <section id='Product-detail'>
-            <div className='Product-slider'></div>
-            <div className='Product-info'>
-              <p id='category'>{product.cateNAME}</p>
-              <p id='name'>{product.prodNAME}</p>
-              <p id='tags'>
-                <span>#태그1</span>
-                <span>#태그2</span>
-                <span>#태그3</span>
-                <span>#태그4</span>
-              </p>
-              <div id='user-info'>
-                <div>
-                  <img className='profile' src={profile} alt='' />
-                  <span id='username'>{product.userID}</span>
+  if (product.tags) {
+    return (
+      <div className='Product'>
+        <div className='Product-wrapper'>
+          <div className='Product-background'>
+            <section id='Product-detail'>
+              <div className='Product-slider'></div>
+              <div className='Product-info'>
+                <p id='category'>{product.cateNAME}</p>
+                <p id='name'>{product.prodNAME}</p>
+                <p id='tags'>
+                  {product.tags.map((tag) => {
+                    return <span key={tag.tagID}>#{tag.tagNAME}</span>;
+                  })}
+                </p>
+                <div id='user-info'>
+                  <div>
+                    <img className='profile' src={profile} alt='' />
+                    <span id='username'>{product.userID}</span>
+                  </div>
+                  <div className='btn-wrapper'>
+                    <WhiteBtn id={'btn-dm'} text={'DM'} />
+                    <FontAwesomeIcon
+                      className='message-icon'
+                      icon={faMessage}
+                    />
+                  </div>
                 </div>
-                <div className='btn-wrapper'>
-                  <WhiteBtn id={'btn-dm'} text={'DM'} />
-                  <FontAwesomeIcon className='message-icon' icon={faMessage} />
+                <div id='btns'>
+                  <GreyBtn id={'buy-btn'} text={'구입하기'} />
+                  <FontAwesomeIcon
+                    ref={heartIcon}
+                    onClick={() => setClicked(!clicked)}
+                    className='heart-icon'
+                    icon={faHeart}
+                  />
                 </div>
               </div>
-              <div id='btns'>
-                <GreyBtn id={'buy-btn'} text={'구입하기'} />
-                <FontAwesomeIcon
-                  ref={heartIcon}
-                  onClick={() => setClicked(!clicked)}
-                  className='heart-icon'
-                  icon={faHeart}
-                />
-              </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Product;
