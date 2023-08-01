@@ -9,19 +9,21 @@ import '../../styles/components/profile/_SnsList.scss';
 
 const SnsList = ({ snsData }) => {
   const sns = {
-    kakao: kakao,
-    instagram: instagram,
-    youtube: youtube,
-    facebook: facebook,
-    email: email,
-    blog: blog,
+    카카오톡: kakao,
+    인스타그램: instagram,
+    유튜브: youtube,
+    페이스북: facebook,
+    이메일: email,
+    블로그: blog,
   };
 
   return (
     <div className='SnsList'>
       {snsData.map((data) => (
         <li>
-          <img src={sns[data]} alt='' />
+          <a href={data.snsLINK} target='_blank' rel='noopener noreferrer'>
+            <img src={sns[data.snsTYPE]} alt='' />
+          </a>
         </li>
       ))}
     </div>

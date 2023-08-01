@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+
 import '../../styles/components/profileEdit/_AddSnsInfo.scss';
 
 import kakao from '../../assets/icon/kakao.svg';
-import instagram from '../../assets/icon/instagram.svg';
+import { PiInstagramLogoFill as instagram } from 'react-icons/pi';
+
 import youtube from '../../assets/icon/youtube.svg';
 import facebook from '../../assets/icon/facebook.svg';
 import email from '../../assets/icon/email.svg';
@@ -13,12 +15,12 @@ const AddSnsInfo = ({ snsData }) => {
   const [selectedSns, selectSns] = useState(false);
 
   const sns = {
-    kakao: kakao,
-    instagram: instagram,
-    youtube: youtube,
-    facebook: facebook,
-    email: email,
-    blog: blog,
+    카카오톡: kakao,
+    인스타그램: instagram,
+    유튜브: youtube,
+    페이스북: facebook,
+    이메일: email,
+    블로그: blog,
   };
 
   return (
@@ -28,17 +30,17 @@ const AddSnsInfo = ({ snsData }) => {
           <li>
             {/* react-icon으로 변경 필요 */}
             <img
-              src={sns[data]}
+              src={sns[data.snsTYPE]}
               alt=''
               onClick={() => {
-                selectSns(data);
+                selectSns({ sns: data.snsTYPE, link: data.snsLINK });
               }}
             />
           </li>
         ))}
         <div className='slctNewSns-section'>
           <img
-            src={instagram}
+            src={youtube}
             alt=''
             className='snsListCntr'
             onClick={() => {
@@ -49,23 +51,23 @@ const AddSnsInfo = ({ snsData }) => {
 
           <ul className={snsOptionOpen ? 'snsList-open' : 'snsList-close'}>
             <li>
-              <img src={instagram} alt='' />
+              <img src={youtube} alt='' />
             </li>
             <li>
-              <img src={instagram} alt='' />
+              <img src={youtube} alt='' />
             </li>
             <li>
-              <img src={instagram} alt='' />
+              <img src={youtube} alt='' />
             </li>
             <li>
-              <img src={instagram} alt='' />
+              <img src={youtube} alt='' />
             </li>
           </ul>
         </div>
       </div>
       <div className={selectedSns ? 'snsEdit-open' : 'snsEdit-close'}>
-        <img src={sns[selectedSns]} alt='' />
-        <input type='text' />
+        <img src={sns[selectedSns.sns]} alt='' />
+        <input type='text' name='sns' value={selectedSns.link} />
         <button>확인</button>
       </div>
     </div>

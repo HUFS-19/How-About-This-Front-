@@ -1,10 +1,26 @@
+import { useState } from 'react';
+
 import '../../styles/components/profile/_ProfileArea.scss';
 import '../../styles/components/profileEdit/_ProfileEditArea.scss';
 import userIcon from '../../assets/profile.jpg';
 import AddSnsInfo from './AddSnsInfo';
 
-const ProfileEditArea = () => {
-  const snsData = ['instagram', 'youtube', 'facebook', 'email'];
+const ProfileEditArea = ({ profileData, snsData }) => {
+  const [inputs, setInputs] = useState({
+    nickname: profileData.nickname,
+    introduce: profileData.introduce,
+  });
+  // const [snsList, setSnsList] = useState({});
+
+  const { nickname, introduce } = inputs;
+
+  const onChange = (e) => {
+    const { value, name } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  };
 
   return (
     <div className='ProfileArea'>
@@ -16,11 +32,19 @@ const ProfileEditArea = () => {
             <button className='img-btn'>사진선택</button>
           </div>
           <div className='ProfileEdit-text-section'>
-            <input type='text' className='editNick-input' value={'유저명'} />
+            <input
+              type='text'
+              name='nickname'
+              className='editNick-input'
+              onChange={onChange}
+              value={nickname}
+            />
             <textarea
               type='text'
+              name='introduce'
               className='editIntro-text'
-              value={'유저 소개글'}
+              onChange={onChange}
+              value={introduce}
             />
             <AddSnsInfo snsData={snsData}></AddSnsInfo>
           </div>

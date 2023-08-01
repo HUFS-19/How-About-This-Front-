@@ -20,8 +20,8 @@ function App() {
         <TopBar />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/profile/edit' element={<ProfileEdit />} />
+          <Route path='/profile/:userId' element={<Profile />} />
+          <Route path='/profile/edit/:userId' element={<ProfileEdit />} />
           <Route path='/product/:id' element={<Product />} />
           <Route path='/login' element={<Login />} />
           <Route path='/join' element={<Join />} />
