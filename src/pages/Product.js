@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-solid-svg-icons';
 
 import profile from '../assets/profile.jpg';
-import '../styles/pages/Product/_Product.scss';
+import '../styles/pages/_Product.scss';
 
 import BlackBtn from '../components/button/BlackBtn';
 import WhiteBtn from '../components/button/WhiteBtn';
@@ -58,6 +58,8 @@ const Product = () => {
     getProduct();
   }, [id]);
 
+  console.log(product);
+
   if (product.tags) {
     return (
       <div className='Product'>
@@ -96,6 +98,9 @@ const Product = () => {
                   />
                 </div>
               </div>
+            </section>
+            <section id='Product-desc'>
+              <hr />
             </section>
           </div>
         </div>
