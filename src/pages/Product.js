@@ -58,10 +58,6 @@ const Product = () => {
     getProduct();
   }, [id]);
 
-  // console.log(product.detail.split('\\n'));
-
-  // console.log(product.detail.split('\n'));
-
   if (product.tags) {
     return (
       <div className='Product'>
@@ -91,7 +87,11 @@ const Product = () => {
                   </div>
                 </div>
                 <div id='btns'>
-                  <BlackBtn id={'buy-btn'} text={'구입하기'} />
+                  <BlackBtn
+                    onClick={product.link}
+                    id={'buy-btn'}
+                    text={'구입하기'}
+                  />
                   <FontAwesomeIcon
                     ref={heartIcon}
                     onClick={() => setClicked(!clicked)}
