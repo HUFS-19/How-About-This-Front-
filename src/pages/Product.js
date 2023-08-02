@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -74,10 +74,12 @@ const Product = () => {
                   })}
                 </p>
                 <div id='user-info'>
-                  <div>
-                    <img className='profile' src={profile} alt='' />
-                    <span id='username'>{product.userID}</span>
-                  </div>
+                  <Link to={`/profile/${product.userID}`}>
+                    <div>
+                      <img className='profile' src={profile} alt='' />
+                      <span id='username'>{product.userID}</span>
+                    </div>
+                  </Link>
                   <div className='btn-wrapper'>
                     <WhiteBtn id={'btn-dm'} text={'DM'} />
                     <FontAwesomeIcon
