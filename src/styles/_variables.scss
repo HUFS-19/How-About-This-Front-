@@ -46,3 +46,11 @@ $noto: 'Noto Sans KR', sans-serif;
   height: $size;
   border-radius: 70%;
 }
+
+@mixin arrow-btn() {
+  position: absolute;
+  top: 45%;
+  font-size: 65px;
+  color: $light-grey;
+  cursor: pointer;
+}

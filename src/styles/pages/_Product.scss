@@ -27,10 +27,56 @@ section#Product-detail {
   padding-bottom: 50px;
 }
 
-.Product-slider {
-  width: 100%;
+.Product-imgs {
+  position: relative;
+  width: 640px;
   height: 400px;
   background-color: $background-grey;
+  .Product-slider {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+.img-wrapper {
+  display: flex;
+  width: 1920px;
+  transition: 0.6s ease-in-out;
+  .Product-img {
+    width: 640px;
+    height: 400px;
+    object-fit: cover;
+  }
+}
+
+.img-circle-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  bottom: 15px;
+  .circle-btn {
+    font-size: 17px;
+    padding: 0px 8px;
+    color: $light-grey;
+    opacity: 0.8;
+    cursor: pointer;
+    .focus {
+      color: black;
+    }
+  }
+}
+
+.img-left-btn {
+  @include arrow-btn;
+  left: 10px;
+}
+
+.img-right-btn {
+  @include arrow-btn;
+  right: 10px;
 }
 
 .Product-info {
