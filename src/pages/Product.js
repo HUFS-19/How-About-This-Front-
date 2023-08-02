@@ -58,7 +58,9 @@ const Product = () => {
     getProduct();
   }, [id]);
 
-  console.log(product);
+  // console.log(product.detail.split('\\n'));
+
+  // console.log(product.detail.split('\n'));
 
   if (product.tags) {
     return (
@@ -101,6 +103,13 @@ const Product = () => {
             </section>
             <section id='Product-desc'>
               <hr />
+              {product.detail.split('\\n').map((s, i) => {
+                return (
+                  <p key={i} id='sentence'>
+                    {s}
+                  </p>
+                );
+              })}
             </section>
           </div>
         </div>

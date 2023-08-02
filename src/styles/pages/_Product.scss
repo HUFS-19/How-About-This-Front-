@@ -24,6 +24,7 @@ section#Product-detail {
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr;
+  padding-bottom: 50px;
 }
 
 .Product-slider {
@@ -107,5 +108,18 @@ div#btns {
     &.clicked {
       color: $blue;
     }
+  }
+}
+
+section#Product-desc {
+  hr {
+    margin-bottom: 50px;
+    color: $grey;
+  }
+  p#sentence {
+    text-align: center;
+    font-size: 20px;
+    font-family: $noto;
+    margin: 8px 0px;
   }
 }
