@@ -4,9 +4,10 @@ import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-solid-svg-icons';
+import { FaAngleLeft, FaAngleRight, FaCircle } from 'react-icons/fa';
 
 import profile from '../assets/profile.jpg';
-import '../styles/pages/Product/_Product.scss';
+import '../styles/pages/_Product.scss';
 
 import BlackBtn from '../components/button/BlackBtn';
 import WhiteBtn from '../components/button/WhiteBtn';
@@ -15,8 +16,11 @@ const Product = () => {
   const { id } = useParams();
 
   const [product, setProduct] = useState({});
+  const [imgArray, setImgArray] = useState([]);
   const [clicked, setClicked] = useState(false);
+  const [slidePx, setSlidePx] = useState(0);
 
+  const imgDiv = useRef();
   const heartIcon = useRef();
 
   if (heartIcon.current) {
@@ -55,8 +59,20 @@ const Product = () => {
         });
     };
 
+    const getImgs = async () => {
+      await axios
+        .get(`http://localhost:5000/product/${id}/imgs`)
+        .then((res) => {
+          setImgArray(res.data);
+        });
+    };
+
     getProduct();
+    getImgs();
   }, [id]);
+
+  console.log(product);
+  console.log(imgArray);
 
   if (product.tags) {
     return (
@@ -64,7 +80,53 @@ const Product = () => {
         <div className='Product-wrapper'>
           <div className='Product-background'>
             <section id='Product-detail'>
-              <div className='Product-slider'></div>
+              <div className='Product-imgs'>
+                <div className='Product-slider'>
+                  <div
+                    className='img-wrapper'
+                    ref={imgDiv}
+                    style={{
+                      transform: `translateX(${slidePx}px)`,
+                      transition: '0.5s ease',
+                    }}
+                  >
+                    {imgArray.map((img) => {
+                      return (
+                        <img
+                          className='Product-img'
+                          id={img.imgOrder}
+                          key={img.imgOrder}
+                          src={`http://localhost:5000/src/img/${img.imgID}.jpg`}
+                          alt=''
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className='img-circle-btn-wrapper'>
+                  {imgArray.map((img) => {
+                    return (
+                      <FaCircle
+                        className='circle-btn'
+                        key={img.imgOrder}
+                        id={img.imgOrder}
+                      />
+                    );
+                  })}
+                </div>
+                <FaAngleLeft
+                  onClick={() => {
+                    setSlidePx(slidePx + 640);
+                  }}
+                  className='img-left-btn'
+                />
+                <FaAngleRight
+                  onClick={() => {
+                    setSlidePx(slidePx - 640);
+                  }}
+                  className='img-right-btn'
+                />
+              </div>
               <div className='Product-info'>
                 <p id='category'>{product.cateNAME}</p>
                 <p id='name'>{product.prodNAME}</p>
@@ -89,7 +151,11 @@ const Product = () => {
                   </div>
                 </div>
                 <div id='btns'>
-                  <BlackBtn id={'buy-btn'} text={'구입하기'} />
+                  <BlackBtn
+                    onClick={product.link}
+                    id={'buy-btn'}
+                    text={'구입하기'}
+                  />
                   <FontAwesomeIcon
                     ref={heartIcon}
                     onClick={() => setClicked(!clicked)}
@@ -98,6 +164,16 @@ const Product = () => {
                   />
                 </div>
               </div>
+            </section>
+            <section id='Product-desc'>
+              <hr />
+              {product.detail.split('\\n').map((sentence, i) => {
+                return (
+                  <p key={i} id='sentence'>
+                    {sentence}
+                  </p>
+                );
+              })}
             </section>
           </div>
         </div>

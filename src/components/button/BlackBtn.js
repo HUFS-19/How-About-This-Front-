@@ -1,8 +1,8 @@
 import '../../styles/components/button/_BlackBtn.scss';
 
-const BlackBtn = ({ id, text }) => {
+const BlackBtn = ({ onClick, id, text }) => {
   return (
-    <button id={id} className='BlackBtn'>
+    <button onClick={() => window.open(onClick)} id={id} className='BlackBtn'>
       {text}
     </button>
   );
