@@ -12,7 +12,7 @@
     font-size: 17px;
     cursor: pointer;
     font-weight: 400;
-    &#clicked {
+    &.clicked {
       font-weight: 800;
       font-size: 19px;
     }

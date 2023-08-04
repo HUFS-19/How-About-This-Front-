@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { CategoryStateContext } from '../App';
 
 import ProductBlock from '../components/ProductBlock';
 
@@ -9,15 +9,26 @@ import '../styles/components/_ProductList.scss';
 const ProductList = () => {
   const [productList, setProductList] = useState([]);
 
+  const category = useContext(CategoryStateContext);
+  console.log(category);
+
   useEffect(() => {
     const productList = async () => {
-      await axios
-        .get('http://localhost:5000/product/all')
-        .then((res) => setProductList(res.data));
+      if (parseInt(category) === 0) {
+        await axios
+          .get('http://localhost:5000/product/all')
+          .then((res) => setProductList(res.data));
+      } else if (parseInt(category) === -1) {
+        return;
+      } else {
+        await axios
+          .get(`http://localhost:5000/product/category/${parseInt(category)}`)
+          .then((res) => setProductList(res.data));
+      }
     };
 
     productList();
-  }, []);
+  }, [category]);
 
   return (
     <div className='ProductList'>

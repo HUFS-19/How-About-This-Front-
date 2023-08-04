@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CategorySetStateContext } from '../App';
 
@@ -6,8 +7,15 @@ import '../styles/components/_CategoryWrapper.scss';
 
 const CategoryWrapper = () => {
   const [categories, setCategories] = useState([]);
+  const [clicked, setClicked] = useState('0');
 
   const setCategory = useContext(CategorySetStateContext);
+
+  const navigate = useNavigate();
+
+  const goHome = () => {
+    navigate('/');
+  };
 
   const clickCategory = (e) => {
     let clickedLi = e.target.closest('li');
@@ -29,17 +37,39 @@ const CategoryWrapper = () => {
     getCategories();
   }, []);
 
-  console.log(categories);
-
   return (
     <div className='CategoryWrapper' onClick={(e) => clickCategory(e)}>
-      <li id='0' className='clicked'>
+      <li
+        id='0'
+        onClick={() => {
+          setClicked('0');
+          goHome();
+        }}
+        className={clicked === '0' ? 'clicked' : ''}
+      >
         전체
       </li>
-      <li id='-1'>좋아요 목록</li>
+      <li
+        id='-1'
+        onClick={() => {
+          setClicked('-1');
+          goHome();
+        }}
+        className={clicked === '-1' ? 'clicked' : ''}
+      >
+        좋아요 목록
+      </li>
       {categories.map((category) => {
         return (
-          <li key={category.cateID} id={category.cateID}>
+          <li
+            key={category.cateID}
+            id={category.cateID}
+            onClick={() => {
+              setClicked(category.cateID);
+              goHome();
+            }}
+            className={clicked === category.cateID ? 'clicked' : ''}
+          >
             {category.cateNAME}
           </li>
         );
