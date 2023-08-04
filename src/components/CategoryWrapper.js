@@ -1,24 +1,30 @@
-import { useRef } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import '../styles/components/_CategoryWrapper.scss';
 
 const CategoryWrapper = () => {
-  const category = useRef();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      await axios
+        .get('http://localhost:5000/category/all')
+        .then((res) => setCategories(res.data));
+    };
+
+    getCategories();
+  }, []);
+
+  console.log(categories);
 
   return (
-    <div
-      className='CategoryWrapper'
-      ref={category}
-      onClick={(e) => console.log(e)}
-    >
-      <li id='clicked'>전체 목록</li>
+    <div className='CategoryWrapper' onClick={(e) => console.log(e)}>
+      <li id='clicked'>전체</li>
       <li>좋아요 목록</li>
-      <li>카테고리 1</li>
-      <li>카테고리 2</li>
-      <li>카테고리 3</li>
-      <li>카테고리 4</li>
-      <li>카테고리 5</li>
-      <li>카테고리 6</li>
+      {categories.map((category) => {
+        return <li key={category.cateID}>{category.cateNAME}</li>;
+      })}
     </div>
   );
 };

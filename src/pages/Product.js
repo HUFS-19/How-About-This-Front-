@@ -39,7 +39,7 @@ const Product = () => {
           let productInfo = res.data[0];
 
           await axios
-            .get(`http://localhost:5000/product/category/${res.data[0].cateID}`)
+            .get(`http://localhost:5000/category/${res.data[0].cateID}`)
             .then(async (res) => {
               if (res.data === undefined) {
                 return;
