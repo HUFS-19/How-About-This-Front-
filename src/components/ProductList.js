@@ -8,11 +8,12 @@ import '../styles/components/_ProductList.scss';
 
 const ProductList = () => {
   const [productList, setProductList] = useState([]);
+  const [categoryName, setCategoryName] = useState('');
 
   const category = useContext(CategoryStateContext);
 
   useEffect(() => {
-    const productList = async () => {
+    const getProductList = async () => {
       if (parseInt(category) === 0) {
         await axios
           .get('http://localhost:5000/product/all')
@@ -26,14 +27,29 @@ const ProductList = () => {
       }
     };
 
-    productList();
+    const getCategoryName = async () => {
+      if (parseInt(category) === 0) {
+        setCategoryName('전체');
+      } else if (parseInt(category) === -1) {
+        setCategoryName('좋아요 목록');
+      } else {
+        await axios
+          .get(`http://localhost:5000/category/${parseInt(category)}`)
+          .then((res) => {
+            setCategoryName(res.data[0].cateNAME);
+          });
+      }
+    };
+
+    getProductList();
+    getCategoryName();
   }, [category]);
 
   return (
     <div className='ProductList'>
       <div className='ProductList-wrapper'>
         <div className='ProductList_topbar'>
-          <h1>전체 목록</h1>
+          <h1>{categoryName}</h1>
           <select>
             <option>좋아요순</option>
             <option>최신순</option>
