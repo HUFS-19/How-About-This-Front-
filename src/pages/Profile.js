@@ -15,13 +15,14 @@ const Profile = () => {
 
   useEffect(() => {
     axios.get(`http://localhost:5000/profile/${userId}`).then((res) => {
+      console.log(res.data);
       setProfileData(res.data[0][0]);
       setSnsData(res.data[1]);
       setLoad(true);
     });
   }, [userId]);
 
-  if (loadState) {
+  if (profileData && snsData) {
     return (
       <div className='ProfileArea'>
         <div className='Profile-wrapper'>

@@ -14,7 +14,7 @@ import '../../styles/components/profileEdit/_AddSnsInfo.scss';
 
 const AddSnsInfo = ({ snsList, setSnsList }) => {
   const [snsOptionOpen, setSnsOption] = useState(false);
-  const [selectedSns, selectSns] = useState(false);
+  const [selectedSns, selectSns] = useState('');
   const [tempSnsList, setTempSnsList] = useState({ ...snsList });
 
   const sns = {
@@ -37,15 +37,15 @@ const AddSnsInfo = ({ snsList, setSnsList }) => {
   const onClickSns = (data) => {
     // 다른 sns 클릭하면 snsList에 반영되지 않은 수정사항을 초기화
     if (data !== selectedSns) {
-      setTempSnsList(snsList);
+      setTempSnsList({ ...snsList });
     }
     //새로운 sns 아이콘 클릭시 임시 데이터에 sns 추가
-    if (tempSnsList[data] === undefined) {
-      setTempSnsList({
-        ...tempSnsList,
-        [data]: '',
-      });
-    }
+    // if (tempSnsList[data] === undefined) {
+    //   setTempSnsList({
+    //     ...tempSnsList,
+    //     [data]: '',
+    //   });
+    // }
     //현재 선택중인 아이콘 저장
     selectSns(data);
   };
@@ -54,7 +54,12 @@ const AddSnsInfo = ({ snsList, setSnsList }) => {
     <div className='AddSnsInfo'>
       <div className='snsIco-container'>
         {Object.keys(snsList).map((data) => (
-          <li key={data} onClick={() => onClickSns(data)}>
+          <li
+            key={data}
+            onClick={() => {
+              onClickSns(data);
+            }}
+          >
             {sns[data]}
           </li>
         ))}
@@ -70,7 +75,12 @@ const AddSnsInfo = ({ snsList, setSnsList }) => {
           {/* 다른 sns 주소 추가  */}
           <ul className={snsOptionOpen ? 'snsList-open' : 'snsList-close'}>
             {Object.keys(sns).map((data) => (
-              <li key={data} onClick={() => onClickSns(data)}>
+              <li
+                key={data}
+                onClick={() => {
+                  onClickSns(data);
+                }}
+              >
                 {sns[data]}
               </li>
             ))}
@@ -88,12 +98,12 @@ const AddSnsInfo = ({ snsList, setSnsList }) => {
         <input
           type='text'
           name={selectedSns}
-          value={tempSnsList[selectedSns]}
+          value={tempSnsList[selectedSns] || ''}
           onChange={OnChange}
         />
         <button
           onClick={() => {
-            setSnsList(tempSnsList);
+            setSnsList({ ...tempSnsList });
           }}
         >
           확인
