@@ -116,12 +116,18 @@ const Product = () => {
                 </div>
                 <FaAngleLeft
                   onClick={() => {
+                    if (slidePx === 0) {
+                      return;
+                    }
                     setSlidePx(slidePx + 640);
                   }}
                   className='img-left-btn'
                 />
                 <FaAngleRight
                   onClick={() => {
+                    if (slidePx - 640 <= -640 * imgArray.length) {
+                      return;
+                    }
                     setSlidePx(slidePx - 640);
                   }}
                   className='img-right-btn'
