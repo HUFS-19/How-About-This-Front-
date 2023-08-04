@@ -10,7 +10,6 @@ const ProductList = () => {
   const [productList, setProductList] = useState([]);
 
   const category = useContext(CategoryStateContext);
-  console.log(category);
 
   useEffect(() => {
     const productList = async () => {
