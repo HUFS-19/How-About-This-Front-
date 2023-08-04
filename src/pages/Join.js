@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import '../styles/pages/_Join.scss';
 
@@ -98,8 +99,19 @@ const Join = () => {
       .then((res) => {
         if (!res.data.success) {
           console.log(res.data.msg);
+          Swal.fire({
+            icon: 'error',
+            title: 'ERROR',
+            confirmButtonColor: '#000000',
+          });
         } else {
-          console.log('회원가입 성공');
+          console.log('SUCCESS');
+          Swal.fire({
+            icon: 'success',
+            title: '회원가입 성공',
+            text: `환영합니다! '${id}'님!`,
+            confirmButtonColor: '#000000',
+          });
           navigate('/login');
         }
       });

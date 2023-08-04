@@ -1,3 +1,4 @@
+@import '../variables';
 .UserWrapper {
   display: flex;
   flex-direction: column;
@@ -8,4 +9,9 @@
   .WhiteBtn {
     width: 70px;
   }
+    .NavId {
+      margin: 10px 0 10px 0;
+      font-family: $gowun;
+      font-size: 20px;
+    }
 }

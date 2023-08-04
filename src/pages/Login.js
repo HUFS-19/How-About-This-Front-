@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import '../styles/pages/_Login.scss';
 
@@ -34,9 +35,14 @@ const Login = () => {
       .then((res) => {
         if (!res.data.success) {
           console.log(res.data.msg);
+          Swal.fire({
+            icon: 'error',
+            text: '일치하는 계정이 없습니다.',
+            confirmButtonColor: '#000000',
+          });
         } else {
-          console.log('로그인 성공');
           navigate('/');
+          window.location.reload();
         }
       });
   };
