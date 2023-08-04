@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import LeftNavBar from './components/LeftNavBar';
@@ -12,23 +12,32 @@ import Login from './pages/Login';
 import Join from './pages/Join';
 import Logout from './pages/Logout';
 
+export const CategoryStateContext = React.createContext();
+export const CategorySetStateContext = React.createContext();
+
 function App() {
+  const [category, setCategory] = useState(0);
+
   return (
-    <BrowserRouter>
-      <div className='App'>
-        <LeftNavBar />
-        <TopBar />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/profile/:userId' element={<Profile />} />
-          <Route path='/profile/edit/:userId' element={<ProfileEdit />} />
-          <Route path='/product/:id' element={<Product />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/join' element={<Join />} />
-          <Route path='/logout' element={<Logout />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <CategoryStateContext.Provider value={category}>
+      <CategorySetStateContext.Provider value={setCategory}>
+        <BrowserRouter>
+          <div className='App'>
+            <LeftNavBar />
+            <TopBar />
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/profile/:userId' element={<Profile />} />
+              <Route path='/profile/edit/:userId' element={<ProfileEdit />} />
+              <Route path='/product/:id' element={<Product />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/join' element={<Join />} />
+              <Route path='/logout' element={<Logout />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </CategorySetStateContext.Provider>
+    </CategoryStateContext.Provider>
   );
 }
 
