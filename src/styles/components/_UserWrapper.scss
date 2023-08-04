@@ -1,11 +1,11 @@
 .UserWrapper {
   display: flex;
   flex-direction: column;
-  padding: 20px 0px;
-  margin-top: 40px;
-  margin-bottom: 25px;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0px;
   .BlackBtn,
-    .WhiteBtn {
-      width: 70px;
+  .WhiteBtn {
+    width: 70px;
   }
 }
