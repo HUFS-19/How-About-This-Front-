@@ -72,7 +72,7 @@ const Product = () => {
   }, [id]);
 
   console.log(product);
-  console.log(imgArray);
+  console.log(imgArray.length);
 
   if (product.tags) {
     return (
@@ -103,38 +103,44 @@ const Product = () => {
                     })}
                   </div>
                 </div>
-                <div
-                  onClick={(e) => {
-                    setSlidePx(-640 * (e.target.closest('div').id - 1));
-                  }}
-                  className='img-circle-btn-wrapper'
-                >
-                  {imgArray.map((img) => {
-                    return (
-                      <div key={img.imgOrder} id={img.imgOrder}>
-                        <FaCircle className='circle-btn' />
-                      </div>
-                    );
-                  })}
-                </div>
-                <FaAngleLeft
-                  onClick={() => {
-                    if (slidePx === 0) {
-                      return;
-                    }
-                    setSlidePx(slidePx + 640);
-                  }}
-                  className='img-left-btn'
-                />
-                <FaAngleRight
-                  onClick={() => {
-                    if (slidePx - 640 <= -640 * imgArray.length) {
-                      return;
-                    }
-                    setSlidePx(slidePx - 640);
-                  }}
-                  className='img-right-btn'
-                />
+                {imgArray.length === 1 ? (
+                  <></>
+                ) : (
+                  <div>
+                    <div
+                      onClick={(e) => {
+                        setSlidePx(-640 * (e.target.closest('div').id - 1));
+                      }}
+                      className='img-circle-btn-wrapper'
+                    >
+                      {imgArray.map((img) => {
+                        return (
+                          <div key={img.imgOrder} id={img.imgOrder}>
+                            <FaCircle className='circle-btn' />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <FaAngleLeft
+                      onClick={() => {
+                        if (slidePx === 0) {
+                          return;
+                        }
+                        setSlidePx(slidePx + 640);
+                      }}
+                      className='img-left-btn'
+                    />
+                    <FaAngleRight
+                      onClick={() => {
+                        if (slidePx - 640 <= -640 * imgArray.length) {
+                          return;
+                        }
+                        setSlidePx(slidePx - 640);
+                      }}
+                      className='img-right-btn'
+                    />
+                  </div>
+                )}
               </div>
               <div className='Product-info'>
                 <p id='category'>{product.cateNAME}</p>
