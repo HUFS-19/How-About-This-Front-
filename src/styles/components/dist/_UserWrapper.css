@@ -4,8 +4,8 @@
   align-items: center;
   width: 100%;
   margin: 20px 0px;
-  .BlackBtn,
-  .WhiteBtn {
-    width: 70px;
-  }
+}
+.UserWrapper .BlackBtn,
+.UserWrapper .WhiteBtn {
+  width: 70px;
 }
