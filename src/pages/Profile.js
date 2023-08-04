@@ -7,22 +7,19 @@ import ProfileProdList from '../components/profile/ProfileProdList';
 import UserProfile from '../components/profile/UserProfile';
 
 const Profile = () => {
-  useEffect(() => {
-    axios.get(`http://localhost:5000/profile/${userId}`).then((res) => {
-      console.log(res.data);
-      console.log('dsfsf');
-
-      setProfileData(res.data[0][0]);
-      setSnsData(res.data[1]);
-      setLoad(true);
-    });
-  }, []);
-
   const { userId } = useParams();
 
   const [loadState, setLoad] = useState(false);
   const [profileData, setProfileData] = useState({});
   const [snsData, setSnsData] = useState({});
+
+  useEffect(() => {
+    axios.get(`http://localhost:5000/profile/${userId}`).then((res) => {
+      setProfileData(res.data[0][0]);
+      setSnsData(res.data[1]);
+      setLoad(true);
+    });
+  }, [userId]);
 
   if (loadState) {
     return (

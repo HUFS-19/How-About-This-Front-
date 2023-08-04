@@ -3,6 +3,7 @@
 .snsIco-container {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   img {
     background-color: white;
     cursor: pointer;
@@ -19,6 +20,8 @@
 
 .slctNewSns-section {
   display: flex;
+  align-items: center;
+
   border-radius: 1em;
   overflow: hidden;
 
@@ -34,6 +37,8 @@
 
 .snsList-open {
   display: flex;
+  align-items: center;
+
   transition: 0.9s;
   li {
     margin-right: 5px;
@@ -42,6 +47,8 @@
 
 .snsList-close {
   display: flex;
+  align-items: center;
+
   li {
     margin-left: -50%;
   }
@@ -53,6 +60,8 @@
 
 .snsEdit-open {
   display: flex;
+  align-items: center;
+
   padding-left: 30px;
   padding-top: 30px;
 

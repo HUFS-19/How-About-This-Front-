@@ -10,9 +10,8 @@ const ProfileEditArea = ({ profileData, snsData }) => {
     nickname: profileData.nickname,
     introduce: profileData.introduce,
   });
-  // const [snsList, setSnsList] = useState({});
-
-  const { nickname, introduce } = inputs;
+  const [snsList, setSnsList] = useState(snsData);
+  // sns 목록은 객체로 관리. 없는 항목은 아예 키에서 삭제해야 함. input이 ''라면 삭제, 새로운 input이 추가되면 새로운 키/값 객체에 추가되는 것으로..
 
   const onChange = (e) => {
     const { value, name } = e.target;
@@ -37,16 +36,16 @@ const ProfileEditArea = ({ profileData, snsData }) => {
               name='nickname'
               className='editNick-input'
               onChange={onChange}
-              value={nickname}
+              value={inputs.nickname}
             />
             <textarea
               type='text'
               name='introduce'
               className='editIntro-text'
               onChange={onChange}
-              value={introduce}
+              value={inputs.introduce}
             />
-            <AddSnsInfo snsData={snsData}></AddSnsInfo>
+            <AddSnsInfo snsList={snsList} setSnsList={setSnsList}></AddSnsInfo>
           </div>
         </div>
         <div className='Edit-btn-container'>
