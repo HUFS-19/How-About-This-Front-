@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import '../styles/pages/_Login.scss';
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -30,10 +32,11 @@ const Login = () => {
         { withCredentials: true },
       )
       .then((res) => {
-        if (!res.data.login) {
-          console.log('로그인 실패');
+        if (!res.data.success) {
+          console.log(res.data.msg);
         } else {
           console.log('로그인 성공');
+          navigate('/');
         }
       });
   };
