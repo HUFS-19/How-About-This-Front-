@@ -22,6 +22,7 @@ const Product = () => {
 
   const imgDiv = useRef();
   const heartIcon = useRef();
+  const IMG_WIDTH = 500;
 
   if (heartIcon.current) {
     if (clicked && !heartIcon.current.classList.contains('clicked')) {
@@ -109,7 +110,9 @@ const Product = () => {
                   <div>
                     <div
                       onClick={(e) => {
-                        setSlidePx(-640 * (e.target.closest('div').id - 1));
+                        setSlidePx(
+                          -IMG_WIDTH * (e.target.closest('div').id - 1),
+                        );
                       }}
                       className='img-circle-btn-wrapper'
                     >
@@ -126,16 +129,19 @@ const Product = () => {
                         if (slidePx === 0) {
                           return;
                         }
-                        setSlidePx(slidePx + 640);
+                        setSlidePx(slidePx + IMG_WIDTH);
                       }}
                       className='img-left-btn'
                     />
                     <FaAngleRight
                       onClick={() => {
-                        if (slidePx - 640 <= -640 * imgArray.length) {
+                        if (
+                          slidePx - IMG_WIDTH <=
+                          -IMG_WIDTH * imgArray.length
+                        ) {
                           return;
                         }
-                        setSlidePx(slidePx - 640);
+                        setSlidePx(slidePx - IMG_WIDTH);
                       }}
                       className='img-right-btn'
                     />
