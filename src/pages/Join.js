@@ -1,31 +1,37 @@
 import {useState} from 'react';
-import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import '../styles/pages/_Join.scss';
 
 const Join = () => {
+  const navigate = useNavigate();
+
   const [id, setId] = useState('');
   const [checkId, setCheckId] = useState(false);
-  const [idMessage, setIdMessage] = useState('');
-  
+  const [usableId, setUsableId] = useState(false);
+  const [idMsg, setIdMsg] = useState('');
+
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState(false);
-  const [passwordMessage, setPasswordMessage] = useState('');
+  const [passwordMsg, setPasswordMsg] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const [passwordConfirm, setPasswordConfirm] = useState(false);
-  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
+  const [passwordConfirmMsg, setPasswordConfirmMsg] = useState('');
 
   const onChangeId = (e) => {
     const idReg = /^[a-zA-Z0-9]*$/;
     setId(e.target.value);
+    setUsableId(false);
     if (!idReg.test(e.target.value)) {
-      setIdMessage('영문자와 숫자만 사용해주세요.')
+      setIdMsg('영문자와 숫자만 사용해주세요.');
       setCheckId(false);
     } else if (e.target.value.length < 5 || e.target.value.length >= 12) {
-      setIdMessage('5글자 이상 12글자 미만으로 입력해주세요.');
+      setIdMsg('5글자 이상 12글자 미만으로 입력해주세요.');
       setCheckId(false);
     } else {
-      setIdMessage('');
+      setIdMsg('중복 확인이 필요합니다.');
       setCheckId(true);
     }
   };
@@ -34,13 +40,13 @@ const Join = () => {
     const passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,}$/;
     setPassword(e.target.value);
     if (e.target.value.length < 10) {
-      setPasswordMessage('10글자 이상 입력해주세요.');
+      setPasswordMsg('10글자 이상 입력해주세요.');
       setCheckPassword(false);
     } else if (!passwordReg.test(e.target.value)) {
-      setPasswordMessage('최소 1개의 영문자, 숫자, 특수문자를 포함해주세요.')
+      setPasswordMsg('최소 1개의 영문자, 숫자, 특수문자를 포함해주세요.');
       setCheckPassword(false);
     } else {
-      setPasswordMessage('');
+      setPasswordMsg('');
       setCheckPassword(true);
     }
   };
@@ -51,13 +57,52 @@ const Join = () => {
 
   const onChangePasswordConfirm = (e) => {
     if (e.target.value !== password) {
-      console.log(e.target.value);
-      setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
+      setPasswordConfirmMsg('비밀번호가 일치하지 않습니다.');
       setPasswordConfirm(false);
     } else {
-      setPasswordConfirmMessage('');
+      setPasswordConfirmMsg('');
       setPasswordConfirm(true);
     }
+  };
+
+  const usableIdCheck = () => {
+    axios
+      .post(
+        'http://localhost:5000/user/join/idCheck',
+        {
+          id: id,
+        },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        if (!res.data.success) {
+          setUsableId(false);
+          setIdMsg(res.data.msg);
+        } else {
+          setUsableId(true);
+          setIdMsg('');
+        }
+      });
+  };
+
+  const tryJoin = () => {
+    axios
+      .post(
+        'http://localhost:5000/user/join',
+        {
+          id: id,
+          password: password,
+        },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        if (!res.data.success) {
+          console.log(res.data.msg);
+        } else {
+          console.log('회원가입 성공');
+          navigate('/login');
+        }
+      });
   };
 
   return (
@@ -67,24 +112,44 @@ const Join = () => {
         <h4>아이디</h4>
         <div className='IdWrapper'>
           <input className='IdInputBox' onChange={onChangeId}></input>
-          <button className='IdCheckBtn' disabled={!(checkId)}>중복확인</button>
+          <button
+            className='IdCheckBtn'
+            disabled={!checkId}
+            onClick={usableIdCheck}
+          >
+            중복확인
+          </button>
         </div>
-        <p className='CheckMessage'>{idMessage}</p>
-        
+        <p className='CheckMsg'>{idMsg}</p>
+
         <h4>비밀번호</h4>
         <div className='PasswordWrapper'>
-          <input className='PasswordInputBox' type={showPassword ? "text" : "password"} onChange={onChangePassword}></input>
+          <input
+            className='PasswordInputBox'
+            type={showPassword ? 'text' : 'password'}
+            onChange={onChangePassword}
+          ></input>
           <button className='ShowPassword' onClick={onShowPassword}>
             {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
           </button>
         </div>
-        <p className='CheckMessage'>{passwordMessage}</p>
-        
-        <h4>비밀번호 확인</h4>
-        <input className='InputBox' type='password' onChange={onChangePasswordConfirm}></input>
-        <p className='CheckMessage'>{passwordConfirmMessage}</p>
+        <p className='CheckMsg'>{passwordMsg}</p>
 
-        <button className='JoinBtn' disabled={!(checkId && checkPassword && passwordConfirm)}>가입하기</button>
+        <h4>비밀번호 확인</h4>
+        <input
+          className='InputBox'
+          type='password'
+          onChange={onChangePasswordConfirm}
+        ></input>
+        <p className='CheckMsg'>{passwordConfirmMsg}</p>
+
+        <button
+          className='JoinBtn'
+          disabled={!(checkId && usableId && checkPassword && passwordConfirm)}
+          onClick={tryJoin}
+        >
+          가입하기
+        </button>
       </div>
     </div>
   );
