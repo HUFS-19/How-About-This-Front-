@@ -19,7 +19,10 @@ const ProductList = () => {
           .get('http://localhost:5000/product/all')
           .then((res) => setProductList(res.data));
       } else if (parseInt(category) === -1) {
-        return;
+        // await axios
+        //   .get('http://localhost:5000/product/like')
+        //   .then((res) => setProductList(res.data));
+        setProductList([]);
       } else {
         await axios
           .get(`http://localhost:5000/product/category/${parseInt(category)}`)
