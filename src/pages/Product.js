@@ -72,9 +72,6 @@ const Product = () => {
     getImgs();
   }, [id]);
 
-  console.log(product);
-  console.log(imgArray.length);
-
   if (product.tags) {
     return (
       <div className='Product'>
@@ -173,7 +170,7 @@ const Product = () => {
                 </div>
                 <div id='btns'>
                   <BlackBtn
-                    onClick={product.link}
+                    goToLink={product.link}
                     id={'buy-btn'}
                     text={'구입하기'}
                   />

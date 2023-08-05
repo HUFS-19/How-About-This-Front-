@@ -1,10 +1,9 @@
 import '../../styles/components/button/_BlackBtn.scss';
 
-const BlackBtn = ({ onClick, id, text }) => {
+const BlackBtn = ({ onClick, goToLink, id, text }) => {
   return (
     <button
-      // onClick={onClick ? () => window.open(onClick) : () => {}}
-      onClick={onClick}
+      onClick={goToLink ? () => window.open(goToLink) : onClick}
       id={id}
       className='BlackBtn'
     >
