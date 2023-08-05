@@ -100,16 +100,13 @@ const Join = () => {
         if (!res.data.success) {
           console.log(res.data.msg);
           Swal.fire({
-            icon: 'error',
             title: 'ERROR',
             confirmButtonColor: '#000000',
           });
         } else {
           console.log('SUCCESS');
           Swal.fire({
-            icon: 'success',
-            title: '회원가입 성공',
-            text: `환영합니다! '${id}'님!`,
+            title: `환영합니다! '${id}'님!`,
             confirmButtonColor: '#000000',
           });
           navigate('/login');

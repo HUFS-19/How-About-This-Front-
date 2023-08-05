@@ -1,4 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 import { CategoryStateContext } from '../App';
 
@@ -7,6 +9,7 @@ import ProductBlock from '../components/ProductBlock';
 import '../styles/components/_ProductList.scss';
 
 const ProductList = () => {
+  const navigate = useNavigate();
   const [productList, setProductList] = useState([]);
   const [categoryName, setCategoryName] = useState('');
 
@@ -19,10 +22,21 @@ const ProductList = () => {
           .get('http://localhost:5000/product/all')
           .then((res) => setProductList(res.data));
       } else if (parseInt(category) === -1) {
-        // await axios
-        //   .get('http://localhost:5000/product/like')
-        //   .then((res) => setProductList(res.data));
-        setProductList([]);
+        await axios
+          .get('http://localhost:5000/product/like', { withCredentials: true })
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.alert) {
+              setProductList([]);
+              Swal.fire({
+                title: '로그인이 필요한 서비스입니다',
+                confirmButtonColor: '#000000',
+              });
+              navigate('/login');
+            } else {
+              setProductList(res.data);
+            }
+          });
       } else {
         await axios
           .get(`http://localhost:5000/product/category/${parseInt(category)}`)
