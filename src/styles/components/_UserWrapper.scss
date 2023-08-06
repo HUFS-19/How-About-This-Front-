@@ -9,9 +9,14 @@
   .WhiteBtn {
     width: 70px;
   }
-    .NavId {
-      margin: 10px 0 10px 0;
-      font-family: $gowun;
-      font-size: 20px;
-    }
+  .NavId {
+    margin: 10px 0 10px 0;
+    font-family: $gowun;
+    font-size: 20px;
+  }
+  .NavIcon {
+    width: 100px;
+    height: 100px;
+    border-radius: 70%;
+  }
 }
