@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import '../../styles/components/profile/_UserProfile.scss';
 // import userIcon from '../../assets/profile.jpg';
@@ -7,15 +7,7 @@ import SnsList from './SnsList';
 const UserProfile = ({ profileData, snsData }) => {
   return (
     <div className='Profile-top'>
-      <img
-        className='Profile-top-userIcon'
-        src={
-          profileData.userIcon === 'src/profile/default.jpg'
-            ? `http://localhost:5000/${profileData.userIcon}`
-            : `http://localhost:5000/${profileData.userIcon}/${profileData.userID}.jpg`
-        }
-        alt=''
-      />
+      <img className='Profile-top-userIcon' src={profileData.userIcon} alt='' />
       <div className='Profile-top-userText'>
         <p>{profileData.nickname}</p>
         <p>{profileData.introduce}</p>

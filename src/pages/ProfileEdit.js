@@ -1,19 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import userIcon from '../assets/profile.jpg';
 import AddSnsInfo from '../components/profileEdit/AddSnsInfo';
 
 import '../styles/components/profile/_ProfileArea.scss';
 import '../styles/components/profileEdit/_ProfileEditArea.scss';
 
 const ProfileEdit = () => {
-  const navigate = useNavigate();
   const { userId } = useParams();
 
   const [loadState, setLoad] = useState(false);
-  const [profileData, setProfileData] = useState({});
   const [snsList, setSnsList] = useState({});
   const [inputs, setInputs] = useState({});
   const [previewImage, setPreviewImage] = useState(null);
@@ -22,24 +19,17 @@ const ProfileEdit = () => {
 
   useEffect(() => {
     axios.get(`http://localhost:5000/profile/${userId}`).then((res) => {
-      setProfileData(res.data[0][0]);
       setSnsList(res.data[1]);
 
       setInputs({
-        nickname: res.data[0][0].nickname,
-        introduce: res.data[0][0].introduce,
+        nickname: res.data[0].nickname,
+        introduce: res.data[0].introduce,
       });
+      setPreviewImage(res.data[0].userIcon);
 
-      if (res.data[0][0].userIcon === 'src/profile/default.jpg') {
-        setPreviewImage(`http://localhost:5000/${res.data[0][0].userIcon}`);
-      } else {
-        setPreviewImage(
-          `http://localhost:5000/${res.data[0][0].userIcon}/${res.data[0][0].userID}.jpg`,
-        );
-      }
       setLoad(true);
     });
-  }, []);
+  }, [userId]);
 
   const onChange = (e) => {
     const { value, name } = e.target;

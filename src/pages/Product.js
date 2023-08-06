@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { FaAngleLeft, FaAngleRight, FaCircle } from 'react-icons/fa';
 
-import profile from '../assets/profile.jpg';
 import '../styles/pages/_Product.scss';
 
 import BlackBtn from '../components/button/BlackBtn';
@@ -19,6 +18,7 @@ const Product = () => {
   const [imgArray, setImgArray] = useState([]);
   const [clicked, setClicked] = useState(false);
   const [slidePx, setSlidePx] = useState(0);
+  const [userProfile, setUserProfile] = useState({});
 
   const imgDiv = useRef();
   const heartIcon = useRef();
@@ -38,6 +38,12 @@ const Product = () => {
         .get(`http://localhost:5000/product/${id}`)
         .then(async (res) => {
           let productInfo = res.data[0];
+          //유저정보 get
+          await axios
+            .get(`http://localhost:5000/profile/${res.data[0].userID}`)
+            .then((res) => {
+              setUserProfile(res.data[0]);
+            });
 
           await axios
             .get(`http://localhost:5000/category/${res.data[0].cateID}`)
@@ -156,8 +162,12 @@ const Product = () => {
                 <div id='user-info'>
                   <Link to={`/profile/${product.userID}`}>
                     <div>
-                      <img className='profile' src={profile} alt='' />
-                      <span id='username'>{product.userID}</span>
+                      <img
+                        className='profile'
+                        src={userProfile.userIcon}
+                        alt=''
+                      />
+                      <span id='username'>{userProfile.nickname}</span>
                     </div>
                   </Link>
                   <div className='btn-wrapper'>
