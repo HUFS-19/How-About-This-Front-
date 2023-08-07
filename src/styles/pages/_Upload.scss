@@ -1,0 +1,156 @@
+@import '../variables';
+
+.Upload {
+  width: 100%;
+  padding-left: 270px;
+  padding-top: 62px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .Upload-wrapper {
+    width: 85%;
+    margin: 80px;
+    background-color: white;
+    box-shadow: 3px 3px 3px $light-grey;
+  }
+}
+
+section.Upload-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  margin: 0 auto;
+  padding: 30px 0px;
+  font-family: $noto;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.Upload-title {
+  font-family: $gowun;
+  font-size: 30px;
+  font-weight: 500;
+  color: black;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.Upload-input-row1 {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  .category-selector {
+    width: 22%;
+    padding: 8px 12px;
+    border: 2px solid $light-grey;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: $noto;
+    color: rgba(0, 0, 0, 0.6);
+    &:focus {
+      outline: none;
+    }
+  }
+
+  input.input-title {
+    width: 75%;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 2px solid $light-grey;
+    border-radius: 5px;
+    font-family: $noto;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 400;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.Upload-input-row2 {
+  width: 100%;
+  margin: 3% 0px;
+  .input-contents {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid $light-grey;
+    border-radius: 5px;
+    font-family: $noto;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.6);
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.Upload-input-row3 {
+  width: 100%;
+  .input-tags {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid $light-grey;
+    border-radius: 5px;
+    font-family: $noto;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.6);
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.Upload-image {
+  margin: 3% 0px;
+  width: 100%;
+  height: 100px;
+  .img-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    div {
+      margin: 0px 8px;
+      width: 25%;
+      height: 100%;
+      background-color: $light-grey;
+      border-radius: 5px;
+      &:first-child {
+        margin-left: 0px;
+      }
+      &:last-child {
+        margin-right: 0px;
+      }
+    }
+  }
+  .img-btn-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin: 3% 0px;
+    #img-upload-btn {
+      padding: 12px 15px;
+      //border: 2px solid $light-grey;
+
+      border: none;
+      background-color: $background-grey;
+      font-size: 16px;
+
+      font-weight: 500;
+      // font-weight: 600;
+      font-family: $noto;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+}
+
+.Upload-btn {
+  margin-top: 80px;
+  margin-bottom: 30px;
+}

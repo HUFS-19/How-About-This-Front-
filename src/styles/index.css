@@ -18,3 +18,7 @@ a:link {
 html {
   background-color: #f2f4f7;
 }
+
+* {
+  box-sizing: border-box;
+}
