@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import Product from './pages/Product';
+import Upload from './pages/Upload';
 import Login from './pages/Login';
 import Join from './pages/Join';
 
@@ -29,6 +30,7 @@ function App() {
               <Route path='/profile/:userId' element={<Profile />} />
               <Route path='/profile/edit/:userId' element={<ProfileEdit />} />
               <Route path='/product/:id' element={<Product />} />
+              <Route path='/upload' element={<Upload />} />
               <Route path='/login' element={<Login />} />
               <Route path='/join' element={<Join />} />
             </Routes>
