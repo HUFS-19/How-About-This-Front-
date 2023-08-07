@@ -15,7 +15,7 @@
   }
 }
 
-section.Upload-content {
+.Upload-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -89,9 +89,11 @@ section.Upload-content {
   }
 }
 
-.Upload-input-row3 {
+.Upload-input-row3,
+.Upload-input-row4 {
   width: 100%;
-  .input-tags {
+  .input-tags,
+  .input-link {
     width: 100%;
     padding: 12px;
     border: 2px solid $light-grey;
@@ -103,6 +105,9 @@ section.Upload-content {
     &:focus {
       outline: none;
     }
+  }
+  .input-link {
+    margin-top: 3%;
   }
 }
 
@@ -136,14 +141,10 @@ section.Upload-content {
     margin: 3% 0px;
     #img-upload-btn {
       padding: 12px 15px;
-      //border: 2px solid $light-grey;
-
       border: none;
       background-color: $background-grey;
       font-size: 16px;
-
       font-weight: 500;
-      // font-weight: 600;
       font-family: $noto;
       color: rgba(0, 0, 0, 0.6);
     }
