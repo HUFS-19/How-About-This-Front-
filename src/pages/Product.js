@@ -42,7 +42,7 @@ const Product = () => {
           await axios
             .get(`http://localhost:5000/profile/${res.data[0].userID}`)
             .then((res) => {
-              setUserProfile(res.data[0]);
+              setUserProfile(res.data.profileData);
             });
 
           await axios
