@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import { CategoryStateContext } from '../App';
+import { CategoryStateContext, SearchStateContext } from '../App';
 
 import ProductBlock from '../components/ProductBlock';
 
@@ -14,6 +14,7 @@ const ProductList = () => {
   const [categoryName, setCategoryName] = useState('');
 
   const category = useContext(CategoryStateContext);
+  const search = useContext(SearchStateContext);
 
   useEffect(() => {
     const getProductList = async () => {
@@ -37,6 +38,17 @@ const ProductList = () => {
               setProductList(res.data);
             }
           });
+      } else if (parseInt(category) === -2) {
+        console.log(search);
+        await axios
+          .post('http://localhost:5000/product/search', {
+            category: search.category,
+            type: search.type,
+            search: search.search,
+          })
+          .then((res) => {
+            setProductList(res.data);
+          });
       } else {
         await axios
           .get(`http://localhost:5000/product/category/${parseInt(category)}`)
@@ -49,6 +61,8 @@ const ProductList = () => {
         setCategoryName('전체');
       } else if (parseInt(category) === -1) {
         setCategoryName('좋아요 목록');
+      } else if (parseInt(category) === -2) {
+        setCategoryName('검색 결과');
       } else {
         await axios
           .get(`http://localhost:5000/category/${parseInt(category)}`)
