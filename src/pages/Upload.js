@@ -56,6 +56,11 @@ const Upload = () => {
     }
   };
 
+  const deleteTag = (e) => {
+    let new_tags = tags.filter((tag, i) => i !== parseInt(e.target.id));
+    setTags(new_tags);
+  };
+
   useEffect(() => {
     const getCategories = async () => {
       await axios
@@ -108,7 +113,12 @@ const Upload = () => {
             <div className='tags'>
               {tags.map((tag, i) => {
                 return (
-                  <div className='tag' id={i} key={i}>
+                  <div
+                    className='tag'
+                    id={i}
+                    key={i}
+                    onClick={(e) => deleteTag(e)}
+                  >
                     {tag}
                   </div>
                 );
