@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import AddSnsInfo from '../components/profileEdit/AddSnsInfo';
 
@@ -8,9 +8,11 @@ import '../styles/components/profile/_ProfileArea.scss';
 import '../styles/components/profileEdit/_ProfileEditArea.scss';
 
 const ProfileEdit = () => {
+  const navigate = useNavigate();
   const { userId } = useParams();
 
   const [loadState, setLoad] = useState(false);
+  const [isLogin, setLogin] = useState(false);
   const [snsList, setSnsList] = useState({});
   const [inputs, setInputs] = useState({});
   const [previewImage, setPreviewImage] = useState(null);
@@ -18,17 +20,26 @@ const ProfileEdit = () => {
   const imageInput = useRef();
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/profile/${userId}`).then((res) => {
-      setSnsList(res.data[1]);
+    axios
+      .get(`http://localhost:5000/profile/${userId}`, { withCredentials: true })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.loginState.id !== userId) {
+          alert('잘못된 경로');
+          navigate(-1);
+        } else {
+          setLogin(true);
+        }
+        setSnsList(res.data.snsList);
 
-      setInputs({
-        nickname: res.data[0].nickname,
-        introduce: res.data[0].introduce,
+        setInputs({
+          nickname: res.data.profileData.nickname,
+          introduce: res.data.profileData.introduce,
+        });
+        setPreviewImage(res.data.profileData.userIcon);
+
+        setLoad(true);
       });
-      setPreviewImage(res.data[0].userIcon);
-
-      setLoad(true);
-    });
   }, [userId]);
 
   const onChange = (e) => {
@@ -40,24 +51,25 @@ const ProfileEdit = () => {
   };
 
   const clickEditBtn = (e) => {
-    const formData = new FormData();
+    if (imgData) {
+      const formData = new FormData();
+      formData.append('userIcon', imgData, `${userId}.jpg`);
 
-    formData.append('userIcon', imgData, `${userId}.jpg`);
-
+      axios
+        .put(
+          `http://localhost:5000/profile/update/userIcon/${userId}`,
+          formData,
+        )
+        .then((res) => {});
+    }
     axios
       .put(`http://localhost:5000/profile/update/${userId}`, {
         snsList,
         inputs,
       })
-      .then((res) => {});
-
-    axios
-      .put(`http://localhost:5000/profile/update/userIcon/${userId}`, formData)
       .then((res) => {
         if (res.data.success) {
           window.location.replace(`/profile/${userId}`);
-
-          // navigate(`/profile/${userId}`);
         }
       });
   };
@@ -73,7 +85,7 @@ const ProfileEdit = () => {
     setImgData(e.target.files[0]);
   };
 
-  if (loadState) {
+  if (isLogin && loadState) {
     return (
       <div className='ProfileArea'>
         <div className='Profile-wrapper'>

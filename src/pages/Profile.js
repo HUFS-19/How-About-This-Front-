@@ -11,13 +11,18 @@ const Profile = () => {
 
   const [profileData, setProfileData] = useState({});
   const [snsData, setSnsData] = useState({});
+  const [isLogin, setLogin] = useState(false);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/profile/${userId}`).then((res) => {
-      console.log(res.data);
-      setProfileData(res.data[0]);
-      setSnsData(res.data[1]);
-    });
+    axios
+      .get(`http://localhost:5000/profile/${userId}`, { withCredentials: true })
+      .then((res) => {
+        setProfileData(res.data.profileData);
+        setSnsData(res.data.snsList);
+        if (res.data.loginState.id === userId) {
+          setLogin(true);
+        }
+      });
   }, [userId]);
 
   if (profileData && snsData) {
@@ -27,8 +32,14 @@ const Profile = () => {
           <UserProfile
             profileData={profileData}
             snsData={snsData}
+            isLogin={isLogin}
           ></UserProfile>
-          <button className='addProductBtn'>신규 상품 추가</button>
+
+          {isLogin ? (
+            <button className='addProductBtn'>신규 상품 추가</button>
+          ) : (
+            <hr />
+          )}
           <ProfileProdList userId={userId}></ProfileProdList>
         </div>
       </div>

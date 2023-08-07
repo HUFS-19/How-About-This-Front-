@@ -4,7 +4,7 @@ import '../../styles/components/profile/_UserProfile.scss';
 // import userIcon from '../../assets/profile.jpg';
 import SnsList from './SnsList';
 
-const UserProfile = ({ profileData, snsData }) => {
+const UserProfile = ({ profileData, snsData, isLogin }) => {
   return (
     <div className='Profile-top'>
       <img className='Profile-top-userIcon' src={profileData.userIcon} alt='' />
@@ -17,7 +17,7 @@ const UserProfile = ({ profileData, snsData }) => {
           to={`/profile/edit/${profileData.userID}`}
           className='profileEdit-link'
         >
-          <button className='profileEdit-btn'>수정</button>
+          {isLogin ? <button className='profileEdit-btn'>수정</button> : null}
         </Link>
 
         <div className='Profile-sns'>
