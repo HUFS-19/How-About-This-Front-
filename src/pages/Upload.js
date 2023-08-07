@@ -12,7 +12,8 @@ const Upload = () => {
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [tags, setTags] = useState('');
+  let [tag, setTag] = useState('');
+  const [tags, setTags] = useState([]);
   const [link, setLink] = useState('');
   // const [images, setImages] = useState([]);
 
@@ -35,6 +36,26 @@ const Upload = () => {
       });
   };
 
+  const pushTag = (e) => {
+    if (e.key === 'Enter') {
+      if (tag === '') {
+        return;
+      }
+
+      if (tags.includes(tag) || tags.length >= 4) {
+        setTag('');
+        return;
+      }
+
+      if (tag[0] === '#') {
+        tag = [...tag].splice(1).join('');
+      }
+
+      setTags([...tags, tag]);
+      setTag('');
+    }
+  };
+
   useEffect(() => {
     const getCategories = async () => {
       await axios
@@ -44,6 +65,7 @@ const Upload = () => {
 
     getCategories();
   }, []);
+
   return (
     <div className='Upload'>
       <div className='Upload-wrapper'>
@@ -83,9 +105,19 @@ const Upload = () => {
             ></textarea>
           </div>
           <div className='Upload-input-row3'>
+            <div className='tags'>
+              {tags.map((tag, i) => {
+                return (
+                  <div className='tag' id={i} key={i}>
+                    {tag}
+                  </div>
+                );
+              })}
+            </div>
             <input
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
+              value={tag}
+              onChange={(e) => setTag(e.target.value)}
+              onKeyPress={(e) => pushTag(e)}
               className='input-tags'
               type='text'
               placeholder='제품과 관련된 태그를 입력해주세요 (최대 4개)'
@@ -108,7 +140,7 @@ const Upload = () => {
               <div></div>
             </div>
             <div className='img-btn-wrapper'>
-              <WhiteBtn id={'img-upload-btn'} text={'제품 사진 등록'} />
+              <WhiteBtn id={'img-upload-btn'} text={'+ 제품 사진 등록'} />
             </div>
           </div>
           <div className='Upload-btn'>

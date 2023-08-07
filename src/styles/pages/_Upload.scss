@@ -73,7 +73,8 @@
 
 .Upload-input-row2 {
   width: 100%;
-  margin: 3% 0px;
+  margin-top: 3%;
+  margin-bottom: 1.5%;
   .input-contents {
     width: 100%;
     padding: 12px;
@@ -108,6 +109,30 @@
   }
   .input-link {
     margin-top: 3%;
+  }
+}
+
+.Upload-input-row3 {
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    .tag {
+      width: auto;
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      margin: 6px;
+      background-color: $background-grey;
+      border: 2px solid $blue;
+      border-radius: 16px;
+      color: $blue;
+      cursor: pointer;
+    }
+  }
+  .input-tags {
+    margin-top: 1.5%;
   }
 }
 

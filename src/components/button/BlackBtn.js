@@ -1,3 +1,5 @@
+import React from 'react';
+
 import '../../styles/components/button/_BlackBtn.scss';
 
 const BlackBtn = ({ onClick, goToLink, id, text }) => {
@@ -12,4 +14,4 @@ const BlackBtn = ({ onClick, goToLink, id, text }) => {
   );
 };
 
-export default BlackBtn;
+export default React.memo(BlackBtn);

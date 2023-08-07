@@ -1,3 +1,5 @@
+import React from 'react';
+
 import '../../styles/components/button/_WhiteBtn.scss';
 
 const WhiteBtn = ({ id, text }) => {
@@ -8,4 +10,4 @@ const WhiteBtn = ({ id, text }) => {
   );
 };
 
-export default WhiteBtn;
+export default React.memo(WhiteBtn);
