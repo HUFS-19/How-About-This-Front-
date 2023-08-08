@@ -8,11 +8,11 @@ import '../styles/pages/_Upload.scss';
 const Upload = () => {
   const [categories, setCategories] = useState([]);
 
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(0);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   let [tag, setTag] = useState('');
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState([]); // 따로 insert 하는 post 만들어줘야 함
   const [link, setLink] = useState('');
   const [shownImages, setShownImages] = useState(['', '', '', '']);
   const [images, setImages] = useState([]);
@@ -22,16 +22,15 @@ const Upload = () => {
       .post(
         'http://localhost:5000/product/upload',
         {
-          category: category,
+          cateID: category,
           prodNAME: title,
           detail: description,
-          tags: tags,
           link: link,
-          //Mimg
         },
         { withCredentials: true },
       )
       .then(async (res) => {
+        // console.log(res.data);
         console.log(res.data);
 
         const formData = new FormData();
@@ -42,7 +41,7 @@ const Upload = () => {
 
         await axios
           .post(
-            'http://localhost:5000/product/upload/image',
+            `http://localhost:5000/product/${title}/upload/image`,
             formData,
             { withCredentials: true },
             {
@@ -52,7 +51,7 @@ const Upload = () => {
           .then((res) => {
             if (res.data) {
               // 작업 성공시 로직
-              console.log(res.data);
+              // console.log(res.data);
             } else {
               console.log('파일을 저장하는데 실패했습니다.');
             }
@@ -128,7 +127,7 @@ const Upload = () => {
               <option value=''>카테고리</option>
               {categories.map((category) => {
                 return (
-                  <option key={category.cateID} value={category.cateNAME}>
+                  <option key={category.cateID} value={category.cateID}>
                     {category.cateNAME}
                   </option>
                 );
