@@ -52,7 +52,7 @@ const UserWrapper = () => {
     return (
       <div className='UserWrapper'>
         <Link to={`/profile/${id}`}>
-          <img className='NavIcon' src={`http://localhost:5000/${icon}`}></img>
+          <img className='NavIcon' src={icon}></img>
         </Link>
         <Link to={`/profile/${id}`}>
           <p className='NavId'>{nickname}</p>
