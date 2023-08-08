@@ -18,39 +18,44 @@ const Upload = () => {
   const [images, setImages] = useState([]);
 
   const onUploadProduct = async () => {
-    const formData = new FormData();
-
-    images.forEach((image, i) => {
-      formData.append('image', image, i + 1);
-    });
-
     await axios
-      .post('http://localhost:5000/product/upload/image', formData, {
-        header: { 'content-type': 'multipart/form-data' },
-      })
+      .post(
+        'http://localhost:5000/product/upload',
+        {
+          category: category,
+          prodNAME: title,
+          detail: description,
+          tags: tags,
+          link: link,
+          //Mimg
+        },
+        { withCredentials: true },
+      )
       .then(async (res) => {
-        if (res.data) {
-          // 작업 성공시 로직
-          console.log(res.data);
-        } else {
-          alert('파일을 저장하는데 실패했습니다.');
-        }
+        console.log(res.data);
+
+        const formData = new FormData();
+
+        images.forEach((image, i) => {
+          formData.append('image', image, i + 1);
+        });
 
         await axios
           .post(
-            'http://localhost:5000/product/upload',
-            {
-              category: category,
-              prodNAME: title,
-              detail: description,
-              tags: tags,
-              link: link,
-              //Mimg
-            },
+            'http://localhost:5000/product/upload/image',
+            formData,
             { withCredentials: true },
+            {
+              header: { 'content-type': 'multipart/form-data' },
+            },
           )
           .then((res) => {
-            console.log(res.data);
+            if (res.data) {
+              // 작업 성공시 로직
+              console.log(res.data);
+            } else {
+              console.log('파일을 저장하는데 실패했습니다.');
+            }
           });
       });
   };
@@ -182,9 +187,9 @@ const Upload = () => {
           </div>
           <div className='Upload-image'>
             <div className='img-wrapper'>
-              {shownImages.map((image) => {
+              {shownImages.map((image, i) => {
                 return image === '' ? (
-                  <div></div>
+                  <div key={i}></div>
                 ) : (
                   <div>
                     <img src={image} alt='' />
