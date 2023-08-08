@@ -15,9 +15,9 @@ const Upload = () => {
   let [tag, setTag] = useState('');
   const [tags, setTags] = useState([]);
   const [link, setLink] = useState('');
-  // const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]);
 
-  const uploadProduct = async () => {
+  const onUploadProduct = async () => {
     await axios
       .post(
         'http://localhost:5000/product/upload',
@@ -36,7 +36,7 @@ const Upload = () => {
       });
   };
 
-  const pushTag = (e) => {
+  const onPushTag = (e) => {
     if (e.key === 'Enter') {
       if (tag === '') {
         return;
@@ -56,9 +56,21 @@ const Upload = () => {
     }
   };
 
-  const deleteTag = (e) => {
+  const onDeleteTag = (e) => {
     let new_tags = tags.filter((tag, i) => i !== parseInt(e.target.id));
     setTags(new_tags);
+  };
+
+  const onUploadImage = (e) => {
+    const fileArray = e.target.files;
+
+    let temp = [];
+    Object.values(fileArray).forEach((file) => {
+      const imageUrl = URL.createObjectURL(file);
+      temp.push(imageUrl);
+    });
+
+    setImages(temp);
   };
 
   useEffect(() => {
@@ -117,7 +129,7 @@ const Upload = () => {
                     className='tag'
                     id={i}
                     key={i}
-                    onClick={(e) => deleteTag(e)}
+                    onClick={(e) => onDeleteTag(e)}
                   >
                     {tag}
                   </div>
@@ -127,7 +139,7 @@ const Upload = () => {
             <input
               value={tag}
               onChange={(e) => setTag(e.target.value)}
-              onKeyPress={(e) => pushTag(e)}
+              onKeyPress={(e) => onPushTag(e)}
               className='input-tags'
               type='text'
               placeholder='제품과 관련된 태그를 입력해주세요 (최대 4개)'
@@ -142,20 +154,38 @@ const Upload = () => {
               placeholder='제품 구매 링크를 복사 붙여넣기 해주세요'
             />
           </div>
+          {/* <form
+            className='imgs-form'
+            method='POST'
+            enctype='multipart/form-data'
+          > */}
           <div className='Upload-image'>
             <div className='img-wrapper'>
+              {images.map((image) => {
+                return <img src={image} />;
+              })}
               <div></div>
               <div></div>
               <div></div>
               <div></div>
             </div>
-            <div className='img-btn-wrapper'>
-              <WhiteBtn id={'img-upload-btn'} text={'+ 제품 사진 등록'} />
-            </div>
+            <label className='img-upload-label' for='img-upload-btn'>
+              <p className='img-upload-btn'>+ 제품 사진 등록</p>
+            </label>
+            <input
+              type='file'
+              accept='image/*'
+              multiple='multiple'
+              // name='image'
+              id='img-upload-btn'
+              onChange={(e) => onUploadImage(e)}
+              style={{ display: 'none' }}
+            />
           </div>
           <div className='Upload-btn'>
-            <BlackBtn onClick={uploadProduct} text={'작성 완료'} />
+            <BlackBtn onClick={onUploadProduct} text={'작성 완료'} />
           </div>
+          {/* </form> */}
         </div>
       </div>
     </div>
