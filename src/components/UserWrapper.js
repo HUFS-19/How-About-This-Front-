@@ -18,10 +18,11 @@ const UserWrapper = () => {
         .get('http://localhost:5000/user/nav', { withCredentials: true })
         .then((res) => {
           if (res.data.login) {
+            console.log(res.data);
             setId(res.data.id);
             setNickname(res.data.nickname);
             setIcon(res.data.icon);
-            console.log(icon);
+            // console.log(icon);
           }
         });
     };
@@ -51,7 +52,7 @@ const UserWrapper = () => {
     return (
       <div className='UserWrapper'>
         <Link to={`/profile/${id}`}>
-          <img className='NavIcon' src={icon}></img>
+          <img className='NavIcon' src={`http://localhost:5000/${icon}`}></img>
         </Link>
         <Link to={`/profile/${id}`}>
           <p className='NavId'>{nickname}</p>

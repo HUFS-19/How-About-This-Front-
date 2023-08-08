@@ -111,17 +111,20 @@ const Product = () => {
                   <></>
                 ) : (
                   <div>
-                    <div
-                      onClick={(e) => {
-                        setSlidePx(
-                          -IMG_WIDTH * (e.target.closest('div').id - 1),
-                        );
-                      }}
-                      className='img-circle-btn-wrapper'
-                    >
+                    <div className='img-circle-btn-wrapper'>
                       {imgArray.map((img) => {
                         return (
-                          <div key={img.imgOrder} id={img.imgOrder}>
+                          <div
+                            key={img.imgOrder}
+                            id={img.imgOrder}
+                            className='icon-wrapper'
+                            onClick={(e) => {
+                              setSlidePx(
+                                -IMG_WIDTH *
+                                  (e.target.closest('div.icon-wrapper').id - 1),
+                              );
+                            }}
+                          >
                             <FaCircle className='circle-btn' />
                           </div>
                         );
