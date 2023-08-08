@@ -14,28 +14,38 @@ import Join from './pages/Join';
 
 export const CategoryStateContext = React.createContext();
 export const CategorySetStateContext = React.createContext();
+export const SearchStateContext = React.createContext();
+export const SearchSetStateContext = React.createContext();
 
 function App() {
   const [category, setCategory] = useState(0);
+  const [search, setSearch] = useState();
 
   return (
     <CategoryStateContext.Provider value={category}>
       <CategorySetStateContext.Provider value={setCategory}>
-        <BrowserRouter>
-          <div className='App'>
-            <LeftNavBar />
-            <TopBar />
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/profile/:userId' element={<Profile />} />
-              <Route path='/profile/edit/:userId' element={<ProfileEdit />} />
-              <Route path='/product/:id' element={<Product />} />
-              <Route path='/upload' element={<Upload />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/join' element={<Join />} />
-            </Routes>
-          </div>
-        </BrowserRouter>
+        <SearchStateContext.Provider value={search}>
+          <SearchSetStateContext.Provider value={setSearch}>
+            <BrowserRouter>
+              <div className='App'>
+                <LeftNavBar />
+                <TopBar />
+                <Routes>
+                  <Route path='/' element={<Home />} />
+                  <Route path='/profile/:userId' element={<Profile />} />
+                  <Route
+                    path='/profile/edit/:userId'
+                    element={<ProfileEdit />}
+                  />
+                  <Route path='/product/:id' element={<Product />} />
+                  <Route path='/upload' element={<Upload />} />
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/join' element={<Join />} />
+                </Routes>
+              </div>
+            </BrowserRouter>
+          </SearchSetStateContext.Provider>
+        </SearchStateContext.Provider>
       </CategorySetStateContext.Provider>
     </CategoryStateContext.Provider>
   );
