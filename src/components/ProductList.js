@@ -74,7 +74,7 @@ const ProductList = () => {
 
     getProductList();
     getCategoryName();
-  }, [category]);
+  }, [category, search]);
 
   return (
     <div className='ProductList'>
