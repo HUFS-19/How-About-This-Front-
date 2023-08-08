@@ -23,7 +23,7 @@ const ProfileEdit = () => {
     axios
       .get(`http://localhost:5000/profile/${userId}`, { withCredentials: true })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.loginState.id !== userId) {
           alert('잘못된 경로');
           navigate(-1);

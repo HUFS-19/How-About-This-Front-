@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import BlackBtn from '../components/button/BlackBtn';
-import WhiteBtn from '../components/button/WhiteBtn';
 
 import '../styles/pages/_Upload.scss';
 
@@ -15,24 +14,44 @@ const Upload = () => {
   let [tag, setTag] = useState('');
   const [tags, setTags] = useState([]);
   const [link, setLink] = useState('');
-  const [images, setImages] = useState(['', '', '', '']);
+  const [shownImages, setShownImages] = useState(['', '', '', '']);
+  const [images, setImages] = useState([]);
 
   const onUploadProduct = async () => {
+    const formData = new FormData();
+
+    images.forEach((image, i) => {
+      formData.append('image', image, i + 1);
+    });
+
     await axios
-      .post(
-        'http://localhost:5000/product/upload',
-        {
-          category: category,
-          prodNAME: title,
-          detail: description,
-          tags: tags,
-          link: link,
-          //Mimg
-        },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        console.log(res.data);
+      .post('http://localhost:5000/product/upload/image', formData, {
+        header: { 'content-type': 'multipart/form-data' },
+      })
+      .then(async (res) => {
+        if (res.data) {
+          // 작업 성공시 로직
+          console.log(res.data);
+        } else {
+          alert('파일을 저장하는데 실패했습니다.');
+        }
+
+        await axios
+          .post(
+            'http://localhost:5000/product/upload',
+            {
+              category: category,
+              prodNAME: title,
+              detail: description,
+              tags: tags,
+              link: link,
+              //Mimg
+            },
+            { withCredentials: true },
+          )
+          .then((res) => {
+            console.log(res.data);
+          });
       });
   };
 
@@ -65,15 +84,19 @@ const Upload = () => {
     const fileArray = e.target.files;
 
     let temp = ['', '', '', ''];
+    let temp2 = [];
     Object.values(fileArray).forEach((file, i) => {
       if (i >= 4) {
         return false;
       }
+
       const imageUrl = URL.createObjectURL(file);
       temp[i] = imageUrl;
+      temp2.push(file);
     });
 
-    setImages(temp);
+    setShownImages(temp);
+    setImages(temp2);
   };
 
   useEffect(() => {
@@ -157,19 +180,14 @@ const Upload = () => {
               placeholder='제품 구매 링크를 복사 붙여넣기 해주세요'
             />
           </div>
-          {/* <form
-            className='imgs-form'
-            method='POST'
-            enctype='multipart/form-data'
-          > */}
           <div className='Upload-image'>
             <div className='img-wrapper'>
-              {images.map((image) => {
+              {shownImages.map((image) => {
                 return image === '' ? (
                   <div></div>
                 ) : (
                   <div>
-                    <img src={image} />
+                    <img src={image} alt='' />
                   </div>
                 );
               })}
@@ -181,7 +199,6 @@ const Upload = () => {
               type='file'
               accept='image/*'
               multiple='multiple'
-              // name='image'
               id='img-upload-btn'
               onChange={(e) => onUploadImage(e)}
               style={{ display: 'none' }}
@@ -190,7 +207,6 @@ const Upload = () => {
           <div className='Upload-btn'>
             <BlackBtn onClick={onUploadProduct} text={'작성 완료'} />
           </div>
-          {/* </form> */}
         </div>
       </div>
     </div>
