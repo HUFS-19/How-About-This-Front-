@@ -15,7 +15,7 @@ const Upload = () => {
   let [tag, setTag] = useState('');
   const [tags, setTags] = useState([]);
   const [link, setLink] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(['', '', '', '']);
 
   const onUploadProduct = async () => {
     await axios
@@ -64,10 +64,13 @@ const Upload = () => {
   const onUploadImage = (e) => {
     const fileArray = e.target.files;
 
-    let temp = [];
-    Object.values(fileArray).forEach((file) => {
+    let temp = ['', '', '', ''];
+    Object.values(fileArray).forEach((file, i) => {
+      if (i >= 4) {
+        return false;
+      }
       const imageUrl = URL.createObjectURL(file);
-      temp.push(imageUrl);
+      temp[i] = imageUrl;
     });
 
     setImages(temp);
@@ -162,12 +165,14 @@ const Upload = () => {
           <div className='Upload-image'>
             <div className='img-wrapper'>
               {images.map((image) => {
-                return <img src={image} />;
+                return image === '' ? (
+                  <div></div>
+                ) : (
+                  <div>
+                    <img src={image} />
+                  </div>
+                );
               })}
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
             </div>
             <label className='img-upload-label' for='img-upload-btn'>
               <p className='img-upload-btn'>+ 제품 사진 등록</p>
