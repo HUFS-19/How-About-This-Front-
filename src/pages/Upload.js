@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import BlackBtn from '../components/button/BlackBtn';
@@ -6,51 +7,60 @@ import BlackBtn from '../components/button/BlackBtn';
 import '../styles/pages/_Upload.scss';
 
 const Upload = () => {
+  const navigate = useNavigate();
+
   const [categories, setCategories] = useState([]);
 
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(0);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   let [tag, setTag] = useState('');
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState([]); // 따로 insert 하는 post 만들어줘야 함
   const [link, setLink] = useState('');
   const [shownImages, setShownImages] = useState(['', '', '', '']);
   const [images, setImages] = useState([]);
 
   const onUploadProduct = async () => {
-    const formData = new FormData();
-
-    images.forEach((image, i) => {
-      formData.append('image', image, i + 1);
-    });
-
     await axios
-      .post('http://localhost:5000/product/upload/image', formData, {
-        header: { 'content-type': 'multipart/form-data' },
-      })
+      .post(
+        'http://localhost:5000/product/upload',
+        {
+          cateID: category,
+          prodNAME: title,
+          detail: description,
+          link: link,
+        },
+        { withCredentials: true },
+      )
       .then(async (res) => {
-        if (res.data) {
-          // 작업 성공시 로직
-          console.log(res.data);
-        } else {
-          alert('파일을 저장하는데 실패했습니다.');
-        }
+        // console.log(res.data);
+        console.log(res.data);
+
+        const formData = new FormData();
+
+        images.forEach((image, i) => {
+          formData.append('image', image, i + 1);
+        });
 
         await axios
           .post(
-            'http://localhost:5000/product/upload',
-            {
-              category: category,
-              prodNAME: title,
-              detail: description,
-              tags: tags,
-              link: link,
-              //Mimg
-            },
+            `http://localhost:5000/product/${encodeURIComponent(
+              title,
+            )}/upload/image`,
+            formData,
             { withCredentials: true },
+            {
+              header: { 'content-type': 'multipart/form-data' },
+            },
           )
           .then((res) => {
-            console.log(res.data);
+            if (res.data) {
+              // 작업 성공시 로직
+              console.log(res.data);
+              navigate('/');
+            } else {
+              console.log('파일을 저장하는데 실패했습니다.');
+            }
           });
       });
   };
@@ -123,7 +133,7 @@ const Upload = () => {
               <option value=''>카테고리</option>
               {categories.map((category) => {
                 return (
-                  <option key={category.cateID} value={category.cateNAME}>
+                  <option key={category.cateID} value={category.cateID}>
                     {category.cateNAME}
                   </option>
                 );
@@ -182,9 +192,9 @@ const Upload = () => {
           </div>
           <div className='Upload-image'>
             <div className='img-wrapper'>
-              {shownImages.map((image) => {
+              {shownImages.map((image, i) => {
                 return image === '' ? (
-                  <div></div>
+                  <div key={i}></div>
                 ) : (
                   <div>
                     <img src={image} alt='' />
