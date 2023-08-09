@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import BlackBtn from '../components/button/BlackBtn';
@@ -6,6 +7,8 @@ import BlackBtn from '../components/button/BlackBtn';
 import '../styles/pages/_Upload.scss';
 
 const Upload = () => {
+  const navigate = useNavigate();
+
   const [categories, setCategories] = useState([]);
 
   const [category, setCategory] = useState(0);
@@ -53,7 +56,8 @@ const Upload = () => {
           .then((res) => {
             if (res.data) {
               // 작업 성공시 로직
-              // console.log(res.data);
+              console.log(res.data);
+              navigate('/');
             } else {
               console.log('파일을 저장하는데 실패했습니다.');
             }
