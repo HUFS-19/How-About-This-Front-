@@ -41,7 +41,9 @@ const Upload = () => {
 
         await axios
           .post(
-            `http://localhost:5000/product/${title}/upload/image`,
+            `http://localhost:5000/product/${encodeURIComponent(
+              title,
+            )}/upload/image`,
             formData,
             { withCredentials: true },
             {
