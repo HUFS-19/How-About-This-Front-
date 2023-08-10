@@ -1,6 +1,4 @@
-import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CategorySetStateContext } from '../App';
 
 import UserWrapper from './UserWrapper';
 import CategoryWrapper from './CategoryWrapper';
@@ -10,11 +8,9 @@ import '../styles/components/_LeftNavBar.scss';
 const LeftNavBar = () => {
   const navigate = useNavigate();
 
-  const setCateMain = useContext(CategorySetStateContext);
-
   const main = () => {
-    setCateMain(0);
     navigate('/');
+    window.location.reload();
   };
 
   return (
