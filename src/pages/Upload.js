@@ -33,33 +33,45 @@ const Upload = () => {
         { withCredentials: true },
       )
       .then(async (res) => {
-        // console.log(res.data);
-        console.log(res.data);
-
         const formData = new FormData();
 
         images.forEach((image, i) => {
           formData.append('image', image, i + 1);
         });
 
-        await axios
-          .post(
-            `http://localhost:5000/product/${encodeURIComponent(title)}/imgs`,
-            formData,
-            { withCredentials: true },
-            {
-              header: { 'content-type': 'multipart/form-data' },
-            },
-          )
-          .then((res) => {
-            if (res.data) {
-              // 작업 성공시 로직
+        try {
+          await axios
+            .post(
+              `http://localhost:5000/product/${encodeURIComponent(title)}/imgs`,
+              formData,
+              { withCredentials: true },
+              {
+                header: { 'content-type': 'multipart/form-data' },
+              },
+            )
+            .then((res) => {
+              if (res.data) {
+                // 작업 성공시 로직
+                console.log(res.data);
+              } else {
+                console.log('파일을 저장하는데 실패했습니다.');
+              }
+            });
+
+          await axios
+            .post(
+              `http://localhost:5000/product/${encodeURIComponent(title)}/tags`,
+              { tags: tags },
+              { withCredentials: true },
+            )
+            .then((res) => {
               console.log(res.data);
-              navigate('/');
-            } else {
-              console.log('파일을 저장하는데 실패했습니다.');
-            }
-          });
+            });
+        } catch (error) {
+          console.log(error);
+        } finally {
+          navigate('/');
+        }
       });
   };
 
