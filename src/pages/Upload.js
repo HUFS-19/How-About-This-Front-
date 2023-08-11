@@ -23,7 +23,7 @@ const Upload = () => {
   const onUploadProduct = async () => {
     await axios
       .post(
-        'http://localhost:5000/product/upload',
+        'http://localhost:5000/product/new',
         {
           cateID: category,
           prodNAME: title,
@@ -44,9 +44,7 @@ const Upload = () => {
 
         await axios
           .post(
-            `http://localhost:5000/product/${encodeURIComponent(
-              title,
-            )}/upload/image`,
+            `http://localhost:5000/product/${encodeURIComponent(title)}/imgs`,
             formData,
             { withCredentials: true },
             {
