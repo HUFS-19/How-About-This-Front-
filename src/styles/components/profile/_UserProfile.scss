@@ -34,8 +34,12 @@
     .profileEdit-link {
       text-decoration: none;
     }
+    .profileEdit-btn-wrapper {
+      text-align: right;
+    }
     .profileEdit-btn {
       @include set-basic-btn(50px);
+      text-align: center;
       margin-left: auto;
       text-decoration: none;
     }

@@ -18,11 +18,9 @@ const UserWrapper = () => {
         .get('http://localhost:5000/user/nav', { withCredentials: true })
         .then((res) => {
           if (res.data.login) {
-            console.log(res.data);
             setId(res.data.id);
             setNickname(res.data.nickname);
             setIcon(res.data.icon);
-            // console.log(icon);
           }
         });
     };

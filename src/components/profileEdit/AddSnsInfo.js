@@ -28,10 +28,15 @@ const AddSnsInfo = ({ snsList, setSnsList }) => {
 
   const OnChange = (e) => {
     const { value, name } = e.target;
-    setTempSnsList({
-      ...tempSnsList,
-      [name]: value,
-    });
+    if (value === '') {
+      let { [name]: value, ...newList } = tempSnsList;
+      setTempSnsList(newList);
+    } else {
+      setTempSnsList({
+        ...tempSnsList,
+        [name]: value,
+      });
+    }
   };
 
   const onClickSns = (data) => {

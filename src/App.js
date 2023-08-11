@@ -11,6 +11,7 @@ import Product from './pages/Product';
 import Upload from './pages/Upload';
 import Login from './pages/Login';
 import Join from './pages/Join';
+import ChangePassword from './pages/ChangePassword';
 
 export const CategoryStateContext = React.createContext();
 export const CategorySetStateContext = React.createContext();
@@ -36,6 +37,10 @@ function App() {
                   <Route
                     path='/profile/edit/:userId'
                     element={<ProfileEdit />}
+                  />
+                  <Route
+                    path='/profile/changePassword/:userId'
+                    element={<ChangePassword />}
                   />
                   <Route path='/product/:id' element={<Product />} />
                   <Route path='/upload' element={<Upload />} />

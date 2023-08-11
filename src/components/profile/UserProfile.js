@@ -13,12 +13,14 @@ const UserProfile = ({ profileData, snsData, isLogin }) => {
         <p>{profileData.introduce}</p>
       </div>
       <div className='Profile-top-sns'>
-        <Link
-          to={`/profile/edit/${profileData.userID}`}
-          className='profileEdit-link'
-        >
-          {isLogin ? <button className='profileEdit-btn'>수정</button> : null}
-        </Link>
+        <div className='profileEdit-btn-wrapper'>
+          <Link
+            to={`/profile/edit/${profileData.userID}`}
+            className='profileEdit-link'
+          >
+            {isLogin ? <button className='profileEdit-btn'>수정</button> : null}
+          </Link>
+        </div>
 
         <div className='Profile-sns'>
           <SnsList snsData={snsData}></SnsList>

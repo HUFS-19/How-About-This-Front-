@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
-
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import AddSnsInfo from '../components/profileEdit/AddSnsInfo';
-
+import BlackBtn from '../components/button/BlackBtn';
+import WhiteBtn from '../components/button/WhiteBtn';
 import '../styles/components/profile/_ProfileArea.scss';
 import '../styles/components/profileEdit/_ProfileEditArea.scss';
 
@@ -14,6 +14,7 @@ const ProfileEdit = () => {
   const [loadState, setLoad] = useState(false);
   const [isLogin, setLogin] = useState(false);
   const [snsList, setSnsList] = useState({});
+  const [snsListOrigin, setSnsListOrigin] = useState({});
   const [inputs, setInputs] = useState({});
   const [previewImage, setPreviewImage] = useState(null);
   const [imgData, setImgData] = useState('');
@@ -23,7 +24,6 @@ const ProfileEdit = () => {
     axios
       .get(`http://localhost:5000/profile/${userId}`, { withCredentials: true })
       .then((res) => {
-        // console.log(res.data);
         if (res.data.loginState.id !== userId) {
           alert('잘못된 경로');
           navigate(-1);
@@ -31,6 +31,7 @@ const ProfileEdit = () => {
           setLogin(true);
         }
         setSnsList(res.data.snsList);
+        setSnsListOrigin(res.data.snsList);
 
         setInputs({
           nickname: res.data.profileData.nickname,
@@ -51,6 +52,7 @@ const ProfileEdit = () => {
   };
 
   const clickEditBtn = (e) => {
+    //유저 아이콘 변경
     if (imgData) {
       const formData = new FormData();
       formData.append('userIcon', imgData, `${userId}.jpg`);
@@ -62,6 +64,23 @@ const ProfileEdit = () => {
         )
         .then((res) => {});
     }
+
+    //sns 삭제
+    const deletedSns = [];
+    Object.keys(snsListOrigin).forEach((data) => {
+      if (snsList[data] === undefined) {
+        deletedSns.push(snsListOrigin[data]);
+      }
+    });
+    if (deletedSns.length !== 0) {
+      axios
+        .delete(`http://localhost:5000/profile/deleteSns/${userId}`, {
+          data: deletedSns,
+        })
+        .then((res) => {});
+    }
+
+    // sns 삽입 및 업데이트
     axios
       .put(`http://localhost:5000/profile/update/${userId}`, {
         snsList,
@@ -90,6 +109,11 @@ const ProfileEdit = () => {
       <div className='ProfileArea'>
         <div className='Profile-wrapper'>
           <p className='ProfileEdit-title'>프로필 수정</p>
+          <div className='changePwBtn'>
+            <Link to={`/profile/changePassword/${userId}`}>
+              <BlackBtn text={'비밀번호 변경'}></BlackBtn>
+            </Link>
+          </div>
           <div className='ProfileEdit-body-container'>
             <div className='userIco-container'>
               <img className='ProfileEdit-userIco' src={previewImage} alt='' />
