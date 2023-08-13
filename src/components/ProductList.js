@@ -12,17 +12,14 @@ const ProductList = () => {
   const navigate = useNavigate();
   const [productList, setProductList] = useState([]);
   const [categoryName, setCategoryName] = useState('');
+  const [sort, setSort] = useState('like');
 
   const category = useContext(CategoryStateContext);
   const search = useContext(SearchStateContext);
 
   useEffect(() => {
     const getProductList = async () => {
-      if (parseInt(category) === 0) {
-        await axios
-          .get('http://localhost:5000/product/all')
-          .then((res) => setProductList(res.data));
-      } else if (parseInt(category) === -1) {
+      if (parseInt(category) === -1) {
         await axios
           .get('http://localhost:5000/product/like', { withCredentials: true })
           .then((res) => {
@@ -51,7 +48,10 @@ const ProductList = () => {
           });
       } else {
         await axios
-          .get(`http://localhost:5000/product/category/${parseInt(category)}`)
+          .post(`http://localhost:5000/product/list`, {
+            category: parseInt(category),
+            sort: sort,
+          })
           .then((res) => setProductList(res.data));
       }
     };
@@ -74,17 +74,21 @@ const ProductList = () => {
 
     getProductList();
     getCategoryName();
-  }, [category, search]);
+  }, [category, search, sort]);
+
+  const onChangeSort = (e) => {
+    setSort(e.target.value);
+  };
 
   return (
     <div className='ProductList'>
       <div className='ProductList-wrapper'>
         <div className='ProductList_topbar'>
           <h1>{categoryName}</h1>
-          <select>
-            <option>좋아요순</option>
-            <option>최신순</option>
-            <option>오래된순</option>
+          <select onChange={onChangeSort}>
+            <option value='like'>좋아요순</option>
+            <option value='new'>최신순</option>
+            <option value='old'>오래된순</option>
           </select>
         </div>
         <section className='ProductList_content'>
