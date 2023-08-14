@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+import { FaInfoCircle } from 'react-icons/fa';
 
 import BlackBtn from '../components/button/BlackBtn';
 
@@ -15,12 +17,63 @@ const Upload = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   let [tag, setTag] = useState('');
-  const [tags, setTags] = useState([]); // 따로 insert 하는 post 만들어줘야 함
+  const [tags, setTags] = useState([]);
   const [link, setLink] = useState('');
   const [shownImages, setShownImages] = useState(['', '', '', '']);
   const [images, setImages] = useState([]);
 
+  const isFirstCateUpdate = useRef(true);
+  const isFirstTitleUpdate = useRef(true);
+  const isFirstDescUpdate = useRef(true);
+  const isFirstLinkUpdate = useRef(true);
+
+  const [isValidCate, setValidCate] = useState(true);
+  const [isValidTitle, setValidTitle] = useState(true);
+  const [isValidDesc, setValidDesc] = useState(true);
+  const [isValidLink, setValidLink] = useState(true);
+
+  useEffect(() => {
+    if (isFirstCateUpdate.current) {
+      isFirstCateUpdate.current = false;
+      return;
+    }
+
+    setValidCate(category ? true : false);
+  }, [category]);
+
+  useEffect(() => {
+    if (isFirstTitleUpdate.current) {
+      isFirstTitleUpdate.current = false;
+      return;
+    }
+
+    setValidTitle(title ? true : false);
+  }, [title]);
+
+  useEffect(() => {
+    if (isFirstDescUpdate.current) {
+      isFirstDescUpdate.current = false;
+      return;
+    }
+
+    setValidDesc(description ? true : false);
+  }, [description]);
+
+  useEffect(() => {
+    if (isFirstLinkUpdate.current) {
+      isFirstLinkUpdate.current = false;
+      return;
+    }
+
+    setValidLink(link ? true : false);
+  }, [link]);
+
   const onUploadProduct = async () => {
+    // 빈칸 예외처리
+    if (!category) {
+      return;
+    }
+
     await axios
       .post(
         'http://localhost:5000/product/new',
@@ -135,6 +188,14 @@ const Upload = () => {
         <div className='Upload-content'>
           <div className='Upload-title'>추천 제품 등록</div>
           <div className='Upload-input-row1'>
+            {isValidCate ? (
+              <></>
+            ) : (
+              <p className='caution' id='cate-caution'>
+                <FaInfoCircle className='icon' />
+                카테고리를 설정해주세요
+              </p>
+            )}
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -149,6 +210,14 @@ const Upload = () => {
                 );
               })}
             </select>
+            {isValidTitle ? (
+              <></>
+            ) : (
+              <p className='caution' id='title-caution'>
+                <FaInfoCircle className='icon' />
+                상품명(제목)을 작성해주세요
+              </p>
+            )}
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -158,6 +227,14 @@ const Upload = () => {
             />
           </div>
           <div className='Upload-input-row2'>
+            {isValidDesc ? (
+              <></>
+            ) : (
+              <p className='caution' id='desc-caution'>
+                <FaInfoCircle className='icon' />
+                제품 소개를 위한 내용을 작성해주세요
+              </p>
+            )}
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -192,6 +269,14 @@ const Upload = () => {
             />
           </div>
           <div className='Upload-input-row4'>
+            {isValidLink ? (
+              <></>
+            ) : (
+              <p className='caution' id='link-caution'>
+                <FaInfoCircle className='icon' />
+                제품 소개를 위한 내용을 작성해주세요
+              </p>
+            )}
             <input
               value={link}
               onChange={(e) => setLink(e.target.value)}
