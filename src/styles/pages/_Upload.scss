@@ -144,6 +144,7 @@ form.imgs-form {
 }
 
 .Upload-image {
+  position: relative;
   margin: 3% 0px;
   width: 100%;
   height: 100px;
@@ -220,5 +221,8 @@ p.caution {
   }
   &#link-caution {
     top: 5px;
+  }
+  &#img-caution {
+    top: -19px;
   }
 }

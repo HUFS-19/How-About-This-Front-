@@ -26,8 +26,8 @@ const Upload = () => {
   const isFirstTitleUpdate = useRef(true);
   const isFirstDescUpdate = useRef(true);
   const isFirstLinkUpdate = useRef(true);
+  const isFirstImgUpdate = useRef(true);
 
-  const categorySelect = useRef();
   const titleInput = useRef();
   const descInput = useRef();
   const linkInput = useRef();
@@ -36,6 +36,7 @@ const Upload = () => {
   const [isValidTitle, setValidTitle] = useState(true);
   const [isValidDesc, setValidDesc] = useState(true);
   const [isValidLink, setValidLink] = useState(true);
+  const [isValidImg, setValidImg] = useState(true);
 
   useEffect(() => {
     if (isFirstCateUpdate.current) {
@@ -73,10 +74,17 @@ const Upload = () => {
     setValidLink(link ? true : false);
   }, [link]);
 
+  useEffect(() => {
+    if (isFirstImgUpdate.current) {
+      isFirstImgUpdate.current = false;
+      return;
+    }
+
+    setValidImg(images.length !== 0 ? true : false);
+  }, [images]);
+
   const onUploadProduct = async () => {
-    // 빈칸 예외처리
     if (!category) {
-      categorySelect.current.focus();
       setValidCate(false);
       return;
     }
@@ -96,6 +104,11 @@ const Upload = () => {
     if (!link) {
       linkInput.current.focus();
       setValidLink(false);
+      return;
+    }
+
+    if (images.length === 0) {
+      setValidImg(false);
       return;
     }
 
@@ -129,7 +142,6 @@ const Upload = () => {
             )
             .then((res) => {
               if (res.data) {
-                // 작업 성공시 로직
                 console.log(res.data);
               } else {
                 console.log('파일을 저장하는데 실패했습니다.');
@@ -222,7 +234,6 @@ const Upload = () => {
               </p>
             )}
             <select
-              ref={categorySelect}
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className='category-selector'
@@ -315,6 +326,14 @@ const Upload = () => {
             />
           </div>
           <div className='Upload-image'>
+            {isValidImg ? (
+              <></>
+            ) : (
+              <p className='caution' id='img-caution'>
+                <FaInfoCircle className='icon' />
+                제품 이미지를 추가해주세요
+              </p>
+            )}
             <div className='img-wrapper'>
               {shownImages.map((image, i) => {
                 return image === '' ? (
