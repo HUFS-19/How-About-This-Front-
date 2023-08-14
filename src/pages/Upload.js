@@ -27,6 +27,11 @@ const Upload = () => {
   const isFirstDescUpdate = useRef(true);
   const isFirstLinkUpdate = useRef(true);
 
+  const categorySelect = useRef();
+  const titleInput = useRef();
+  const descInput = useRef();
+  const linkInput = useRef();
+
   const [isValidCate, setValidCate] = useState(true);
   const [isValidTitle, setValidTitle] = useState(true);
   const [isValidDesc, setValidDesc] = useState(true);
@@ -71,6 +76,26 @@ const Upload = () => {
   const onUploadProduct = async () => {
     // 빈칸 예외처리
     if (!category) {
+      categorySelect.current.focus();
+      setValidCate(false);
+      return;
+    }
+
+    if (!title) {
+      titleInput.current.focus();
+      setValidTitle(false);
+      return;
+    }
+
+    if (!description) {
+      descInput.current.focus();
+      setValidDesc(false);
+      return;
+    }
+
+    if (!link) {
+      linkInput.current.focus();
+      setValidLink(false);
       return;
     }
 
@@ -197,6 +222,7 @@ const Upload = () => {
               </p>
             )}
             <select
+              ref={categorySelect}
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className='category-selector'
@@ -219,6 +245,7 @@ const Upload = () => {
               </p>
             )}
             <input
+              ref={titleInput}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className='input-title'
@@ -236,6 +263,7 @@ const Upload = () => {
               </p>
             )}
             <textarea
+              ref={descInput}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className='input-contents'
@@ -278,6 +306,7 @@ const Upload = () => {
               </p>
             )}
             <input
+              ref={linkInput}
               value={link}
               onChange={(e) => setLink(e.target.value)}
               className='input-link'
