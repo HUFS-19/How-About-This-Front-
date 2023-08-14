@@ -39,6 +39,7 @@
 }
 
 .Upload-input-row1 {
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -72,6 +73,7 @@
 }
 
 .Upload-input-row2 {
+  position: relative;
   width: 100%;
   margin-top: 3%;
   margin-bottom: 1.5%;
@@ -92,6 +94,7 @@
 
 .Upload-input-row3,
 .Upload-input-row4 {
+  position: relative;
   width: 100%;
   .input-tags,
   .input-link {
@@ -141,6 +144,7 @@ form.imgs-form {
 }
 
 .Upload-image {
+  position: relative;
   margin: 3% 0px;
   width: 100%;
   height: 100px;
@@ -193,4 +197,32 @@ form.imgs-form {
   text-align: center;
   margin-top: 100px;
   margin-bottom: 30px;
+}
+
+p.caution {
+  position: absolute;
+  font-size: 14px;
+  color: $red;
+  display: flex;
+  align-items: center;
+  .icon {
+    margin-right: 3px;
+  }
+  &#cate-caution {
+    top: -19px;
+  }
+  &#title-caution {
+    top: -19px;
+    left: 23%;
+    padding-left: 17px;
+  }
+  &#desc-caution {
+    top: -19px;
+  }
+  &#link-caution {
+    top: 5px;
+  }
+  &#img-caution {
+    top: -19px;
+  }
 }
