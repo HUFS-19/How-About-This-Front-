@@ -1,10 +1,12 @@
 @import '../../variables';
 
 .SnsList {
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  align-items: center;
+  ul {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+  }
 
   li {
     margin-left: 5px;

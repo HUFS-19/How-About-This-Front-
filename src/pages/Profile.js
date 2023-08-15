@@ -5,6 +5,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/components/profile/_ProfileArea.scss';
 import ProfileProdList from '../components/profile/ProfileProdList';
 import UserProfile from '../components/profile/UserProfile';
+import BlackBtn from '../components/button/BlackBtn';
+import WhiteBtn from '../components/button/WhiteBtn';
 
 const Profile = () => {
   const { userId } = useParams();
@@ -38,12 +40,11 @@ const Profile = () => {
           ></UserProfile>
 
           {isLogin ? (
-            <button
-              className='addProductBtn'
-              onClick={() => navigate('/upload')}
-            >
-              신규 상품 추가
-            </button>
+            <WhiteBtn
+              id='addProductBtn'
+              goToLink='/upload'
+              text='신규 상품 추가'
+            />
           ) : (
             <hr />
           )}

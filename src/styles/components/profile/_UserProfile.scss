@@ -31,17 +31,20 @@
     flex-direction: column;
     justify-content: flex-end;
 
-    .profileEdit-link {
-      text-decoration: none;
-    }
+    // .profileEdit-link {
+    //   text-decoration: none;
+    // }
     .profileEdit-btn-wrapper {
       text-align: right;
     }
-    .profileEdit-btn {
-      @include set-basic-btn(50px);
-      text-align: center;
-      margin-left: auto;
-      text-decoration: none;
+    #profileEdit-btn {
+      // @include set-basic-btn(50px);
+      // text-align: center;
+      // margin-left: auto;
+      // text-decoration: none;
+      padding-left: 15px;
+      padding-right: 15px;
+      // width: 30px;
     }
   }
 }

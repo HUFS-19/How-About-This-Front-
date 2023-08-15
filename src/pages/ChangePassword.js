@@ -9,10 +9,11 @@ const ChangePassword = () => {
   const { userId } = useParams();
 
   const [isLogin, setLogin] = useState(false);
+  const [pwMsg, setPwMsg] = useState('');
   const [inputs, setInputs] = useState({
-    curPW: '',
-    newPW: '',
-    newPWCheck: '',
+    curPw: '',
+    newPw: '',
+    newPwCheck: '',
   });
 
   useEffect(() => {
@@ -30,12 +31,28 @@ const ChangePassword = () => {
       });
   }, [userId]);
 
-  const onChangePW = (e) => {
+  const onChangePw = (e) => {
     const { value, name } = e.target;
+    const passwordReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,}$/;
+
     setInputs({
       ...inputs,
       [name]: value,
     });
+    console.log(pwMsg);
+    console.log(name, typeof name);
+
+    if (name === 'newPw') {
+      console.log(pwMsg);
+
+      if (value.length < 10) {
+        setPwMsg('10글자 이상 입력해주세요.');
+      } else if (!passwordReg.test(value)) {
+        setPwMsg('최소 1개의 영문자, 숫자, 특수문자를 포함해주세요.');
+      } else {
+        setPwMsg('');
+      }
+    }
   };
 
   const tryChangePassword = (e) => {
@@ -67,28 +84,34 @@ const ChangePassword = () => {
           <h4>현재 비밀번호</h4>
           <input
             className='InputBox'
-            name='curPW'
-            onChange={onChangePW}
+            name='curPw'
+            onChange={onChangePw}
             type='password'
           ></input>
           <h4>새 비밀번호</h4>
-          <input
-            className='InputBox'
-            name='newPW'
-            type='password'
-            onChange={onChangePW}
-          ></input>
+
+          <div>
+            <input
+              className='InputBox'
+              name='newPw'
+              type='password'
+              onChange={onChangePw}
+            ></input>
+            <p className='errMsg'>{pwMsg}</p>
+          </div>
+
           <h4>새 비밀번호 확인</h4>
           <input
             className='InputBox'
-            name='newPWCheck'
+            name='newPwCheck'
             type='password'
-            onChange={onChangePW}
+            onChange={onChangePw}
           ></input>
 
           <button
-            className='PWChangeBtn'
+            className='PwChangeBtn'
             type='submit'
+            disabled={pwMsg}
             onClick={tryChangePassword}
           >
             비밀번호 변경

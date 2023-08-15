@@ -93,6 +93,10 @@ const ProfileEdit = () => {
       });
   };
 
+  const clickEditCancleBtn = (e) => {
+    navigate(-1);
+  };
+
   const setUserIcon = (e) => {
     var reader = new FileReader();
 
@@ -109,22 +113,23 @@ const ProfileEdit = () => {
       <div className='ProfileArea'>
         <div className='Profile-wrapper'>
           <p className='ProfileEdit-title'>프로필 수정</p>
-          <div className='changePwBtn'>
-            <Link to={`/profile/changePassword/${userId}`}>
-              <BlackBtn text={'비밀번호 변경'}></BlackBtn>
-            </Link>
+          <div className='changePwBtn-wrapper'>
+            <WhiteBtn
+              id='changePwBtn'
+              text={'비밀번호 변경'}
+              goToLink={`/profile/changePassword/${userId}`}
+            ></WhiteBtn>
           </div>
           <div className='ProfileEdit-body-container'>
             <div className='userIco-container'>
               <img className='ProfileEdit-userIco' src={previewImage} alt='' />
-              <button
-                className='img-btn'
+              <WhiteBtn
+                id='img-btn'
                 onClick={() => {
                   imageInput.current.click();
                 }}
-              >
-                사진 선택
-              </button>
+                text='사진 선택'
+              ></WhiteBtn>
               <input
                 className='img-input'
                 type='file'
@@ -156,10 +161,8 @@ const ProfileEdit = () => {
             </div>
           </div>
           <div className='Edit-btn-container'>
-            <button className='Edit-btn'>수정 취소</button>
-            <button className='Edit-btn' onClick={clickEditBtn}>
-              수정 완료
-            </button>
+            <WhiteBtn id='EditCancle-btn' goToLink={-1} text='수정 취소' />
+            <BlackBtn id='Edit-btn' onClick={clickEditBtn} text='수정 완료' />
           </div>
         </div>
       </div>

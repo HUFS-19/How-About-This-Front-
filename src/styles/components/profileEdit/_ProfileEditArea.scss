@@ -1,9 +1,5 @@
 @import '../../variables';
 
-.img-btn {
-  @include set-basic-btn(90px);
-  margin-top: 15px;
-}
 .ProfileEdit-title {
   text-align: left;
   font-size: 30px;
@@ -13,21 +9,34 @@
 .ProfileEdit-body-container {
   display: flex;
 }
-.changePwBtn {
+.changePwBtn-wrapper {
   text-align: right;
   padding-bottom: 35px;
-  padding-right: 15%;
+  padding-right: 14%;
+}
+#changePwBtn {
+  border: 1.5px solid black;
 }
 .userIco-container {
   align-self: start;
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
+
+  .ProfileEdit-userIco {
+    @include set-user-ico(110px);
+    margin: auto;
+  }
+
+  #img-btn {
+    border: 1.5px solid black;
+    margin-top: 10px;
+    padding: 7px 7px;
+    width: 90px;
+  }
 }
-.ProfileEdit-userIco {
-  @include set-user-ico(110px);
-  margin: auto;
-}
+
 // .img-btn {
 //   // margin: auto;
 // }
@@ -60,9 +69,19 @@
 
 .Edit-btn-container {
   display: flex;
+  justify-content: space-around;
   margin-top: 50px;
   margin-bottom: 39px;
-}
-.Edit-btn {
-  @include set-basic-btn(150px);
+
+  #EditCancle-btn {
+    border: 1.5px solid black;
+    width: 120px;
+    margin: 0px;
+  }
+
+  #Edit-btn {
+    border: 1.5px solid black;
+    width: 120px;
+    // @include set-basic-btn(150px);
+  }
 }

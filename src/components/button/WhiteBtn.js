@@ -1,10 +1,15 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import '../../styles/components/button/_WhiteBtn.scss';
 
-const WhiteBtn = ({ id, text }) => {
+const WhiteBtn = ({ onClick, goToLink, id, text }) => {
+  const navigate = useNavigate();
   return (
-    <button id={id} className='WhiteBtn'>
+    <button
+      onClick={goToLink ? () => navigate(goToLink) : onClick}
+      id={id}
+      className='WhiteBtn'
+    >
       {text}
     </button>
   );
