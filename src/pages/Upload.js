@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import axios from 'axios';
 
 import { FaInfoCircle } from 'react-icons/fa';
@@ -37,6 +38,8 @@ const Upload = () => {
   const [isValidDesc, setValidDesc] = useState(true);
   const [isValidLink, setValidLink] = useState(true);
   const [isValidImg, setValidImg] = useState(true);
+
+  const [showTagMethod, setTagMethod] = useState(false);
 
   useEffect(() => {
     if (isFirstCateUpdate.current) {
@@ -287,25 +290,51 @@ const Upload = () => {
             <div className='tags'>
               {tags.map((tag, i) => {
                 return (
-                  <div
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                      duration: 0.2,
+                      delay: 0,
+                      ease: [0, 0.71, 0.2, 1.01],
+                    }}
                     className='tag'
                     id={i}
                     key={i}
                     onClick={(e) => onDeleteTag(e)}
                   >
                     {tag}
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
             <input
               value={tag}
               onChange={(e) => setTag(e.target.value)}
+              onFocus={() => setTagMethod(true)}
+              onBlur={() => setTagMethod(false)}
               onKeyPress={(e) => onPushTag(e)}
               className='input-tags'
               type='text'
               placeholder='제품과 관련된 태그를 입력해주세요 (최대 4개)'
             />
+            {showTagMethod ? (
+              <motion.div
+                initial={{ opacity: 0, transform: 'translateY(-5px)' }}
+                animate={{ opacity: 1, transform: 'translateY(0px)' }}
+                transition={{
+                  duration: 0.4,
+                  delay: 0,
+                  ease: [0, 0.71, 0.2, 1.01],
+                }}
+                className='tag-method'
+              >
+                <p>엔터를 입력하여 태그를 등록할 수 있습니다.</p>
+                <p>등록된 태그를 클릭하면 삭제됩니다.</p>
+              </motion.div>
+            ) : (
+              <></>
+            )}
           </div>
           <div className='Upload-input-row4'>
             {isValidLink ? (
@@ -339,7 +368,7 @@ const Upload = () => {
                 return image === '' ? (
                   <div key={i}></div>
                 ) : (
-                  <div>
+                  <div key={i}>
                     <img src={image} alt='' />
                   </div>
                 );
