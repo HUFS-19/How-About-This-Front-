@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import axios from 'axios';
+import { motion } from 'framer-motion';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { FaInfoCircle } from 'react-icons/fa';
 
@@ -133,38 +134,36 @@ const Upload = () => {
           formData.append('image', image, i + 1);
         });
 
-        try {
-          await axios
-            .post(
-              `http://localhost:5000/product/${encodeURIComponent(title)}/imgs`,
-              formData,
-              { withCredentials: true },
-              {
-                header: { 'content-type': 'multipart/form-data' },
-              },
-            )
-            .then((res) => {
-              if (res.data) {
-                console.log(res.data);
-              } else {
-                console.log('파일을 저장하는데 실패했습니다.');
-              }
-            });
-
-          await axios
-            .post(
-              `http://localhost:5000/product/${encodeURIComponent(title)}/tags`,
-              { tags: tags },
-              { withCredentials: true },
-            )
-            .then((res) => {
+        await axios
+          .post(
+            `http://localhost:5000/product/${encodeURIComponent(title)}/imgs`,
+            formData,
+            { withCredentials: true },
+            {
+              header: { 'content-type': 'multipart/form-data' },
+            },
+          )
+          .then(async (res) => {
+            if (res.data) {
               console.log(res.data);
-            });
-        } catch (error) {
-          console.log(error);
-        } finally {
-          navigate('/');
-        }
+              await axios
+                .post(
+                  `http://localhost:5000/product/${encodeURIComponent(
+                    title,
+                  )}/tags`,
+                  { tags: tags },
+                  { withCredentials: true },
+                )
+                .then((res) => {
+                  console.log(res.data);
+                  if (res.data) {
+                    navigate('/');
+                  }
+                });
+            } else {
+              console.log('파일을 저장하는데 실패했습니다.');
+            }
+          });
       });
   };
 
@@ -198,6 +197,7 @@ const Upload = () => {
 
     let temp = ['', '', '', ''];
     let temp2 = [];
+
     Object.values(fileArray).forEach((file, i) => {
       if (i >= 4) {
         return false;
@@ -221,6 +221,27 @@ const Upload = () => {
 
     getCategories();
   }, []);
+
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const currentShownImgs = [...shownImages];
+    const currentImgs = [...images];
+
+    const draggingItemIndex = result.source.index;
+    const afterDragItemIndex = result.destination.index;
+
+    const removeShownImgs = currentShownImgs.splice(draggingItemIndex, 1);
+    const removeImgs = currentImgs.splice(draggingItemIndex, 1);
+
+    currentShownImgs.splice(afterDragItemIndex, 0, removeShownImgs[0]);
+    currentImgs.splice(afterDragItemIndex, 0, removeImgs[0]);
+
+    setShownImages(currentShownImgs);
+    setImages(currentImgs);
+  };
 
   return (
     <div className='Upload'>
@@ -320,7 +341,7 @@ const Upload = () => {
             />
             {showTagMethod ? (
               <motion.div
-                initial={{ opacity: 0, transform: 'translateY(-5px)' }}
+                initial={{ opacity: 0, transform: 'translateY(-10px)' }}
                 animate={{ opacity: 1, transform: 'translateY(0px)' }}
                 transition={{
                   duration: 0.4,
@@ -363,20 +384,55 @@ const Upload = () => {
                 제품 이미지를 추가해주세요
               </p>
             )}
-            <div className='img-wrapper'>
-              {shownImages.map((image, i) => {
-                return image === '' ? (
-                  <div key={i}></div>
-                ) : (
-                  <div key={i}>
-                    <img src={image} alt='' />
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId='img-wrapper' direction='horizontal'>
+                {(provided) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className='img-wrapper'
+                  >
+                    {shownImages.map((image, i) => {
+                      return (
+                        <Draggable
+                          draggableId={`${i}`}
+                          isDragDisabled={image === ''}
+                          key={i}
+                          index={i}
+                        >
+                          {(provided) =>
+                            image === '' ? (
+                              <div
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                ref={provided.innerRef}
+                                key={i}
+                              ></div>
+                            ) : (
+                              <div
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                ref={provided.innerRef}
+                                key={i}
+                              >
+                                <img src={image} alt='' />
+                              </div>
+                            )
+                          }
+                        </Draggable>
+                      );
+                    })}
+                    {provided.placeholder}
                   </div>
-                );
-              })}
+                )}
+              </Droppable>
+            </DragDropContext>
+            <div className='img-upload-wrapper'>
+              <label for='img-upload-btn'>
+                <p className='img-upload-btn'>+ 제품 사진 등록</p>
+              </label>
             </div>
-            <label className='img-upload-label' for='img-upload-btn'>
-              <p className='img-upload-btn'>+ 제품 사진 등록</p>
-            </label>
+
             <input
               type='file'
               accept='image/*'
