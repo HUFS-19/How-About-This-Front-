@@ -1,13 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import axios from 'axios';
+import { motion } from 'framer-motion';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { FaInfoCircle } from 'react-icons/fa';
 
 import BlackBtn from '../components/button/BlackBtn';
 
 import '../styles/pages/_Upload.scss';
+
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
 
 const Upload = () => {
   const navigate = useNavigate();
@@ -222,6 +231,32 @@ const Upload = () => {
     getCategories();
   }, []);
 
+  const onDragEnd = (result) => {
+    console.log(result);
+    // dropped outside the list(리스트 밖으로 드랍한 경우)
+    if (!result.destination) {
+      return;
+    }
+
+    const currentImages = [...shownImages];
+    const draggingItemIndex = result.source.index;
+    const afterDragItemIndex = result.destination.index;
+    const removeImages = currentImages.splice(draggingItemIndex, 1);
+
+    currentImages.splice(afterDragItemIndex, 0, removeImages[0]);
+
+    setShownImages(currentImages);
+    // const items = reorder(
+    //   this.state.items,
+    //   result.source.index,
+    //   result.destination.index
+    // );
+
+    // this.setState({
+    //   items
+    // });
+  };
+
   return (
     <div className='Upload'>
       <div className='Upload-wrapper'>
@@ -320,7 +355,7 @@ const Upload = () => {
             />
             {showTagMethod ? (
               <motion.div
-                initial={{ opacity: 0, transform: 'translateY(-5px)' }}
+                initial={{ opacity: 0, transform: 'translateY(-10px)' }}
                 animate={{ opacity: 1, transform: 'translateY(0px)' }}
                 transition={{
                   duration: 0.4,
@@ -363,20 +398,54 @@ const Upload = () => {
                 제품 이미지를 추가해주세요
               </p>
             )}
-            <div className='img-wrapper'>
-              {shownImages.map((image, i) => {
-                return image === '' ? (
-                  <div key={i}></div>
-                ) : (
-                  <div key={i}>
-                    <img src={image} alt='' />
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId='img-wrapper' direction='horizontal'>
+                {(provided) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className='img-wrapper'
+                  >
+                    {shownImages.map((image, i) => {
+                      return (
+                        <Draggable
+                          draggableId={`${i}`}
+                          isDragDisabled={image === ''}
+                          key={i}
+                          index={i}
+                        >
+                          {(provided) =>
+                            image === '' ? (
+                              <div
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                ref={provided.innerRef}
+                                key={i}
+                              ></div>
+                            ) : (
+                              <div
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                ref={provided.innerRef}
+                                key={i}
+                              >
+                                <img src={image} alt='' />
+                              </div>
+                            )
+                          }
+                        </Draggable>
+                      );
+                    })}
                   </div>
-                );
-              })}
+                )}
+              </Droppable>
+            </DragDropContext>
+            <div className='img-upload-wrapper'>
+              <label for='img-upload-btn'>
+                <p className='img-upload-btn'>+ 제품 사진 등록</p>
+              </label>
             </div>
-            <label className='img-upload-label' for='img-upload-btn'>
-              <p className='img-upload-btn'>+ 제품 사진 등록</p>
-            </label>
+
             <input
               type='file'
               accept='image/*'
