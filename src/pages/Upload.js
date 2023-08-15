@@ -232,8 +232,6 @@ const Upload = () => {
   }, []);
 
   const onDragEnd = (result) => {
-    console.log(result);
-    // dropped outside the list(리스트 밖으로 드랍한 경우)
     if (!result.destination) {
       return;
     }
@@ -246,15 +244,6 @@ const Upload = () => {
     currentImages.splice(afterDragItemIndex, 0, removeImages[0]);
 
     setShownImages(currentImages);
-    // const items = reorder(
-    //   this.state.items,
-    //   result.source.index,
-    //   result.destination.index
-    // );
-
-    // this.setState({
-    //   items
-    // });
   };
 
   return (
