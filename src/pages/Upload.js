@@ -10,14 +10,6 @@ import BlackBtn from '../components/button/BlackBtn';
 
 import '../styles/pages/_Upload.scss';
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
 const Upload = () => {
   const navigate = useNavigate();
 
@@ -142,38 +134,36 @@ const Upload = () => {
           formData.append('image', image, i + 1);
         });
 
-        try {
-          await axios
-            .post(
-              `http://localhost:5000/product/${encodeURIComponent(title)}/imgs`,
-              formData,
-              { withCredentials: true },
-              {
-                header: { 'content-type': 'multipart/form-data' },
-              },
-            )
-            .then((res) => {
-              if (res.data) {
-                console.log(res.data);
-              } else {
-                console.log('파일을 저장하는데 실패했습니다.');
-              }
-            });
-
-          await axios
-            .post(
-              `http://localhost:5000/product/${encodeURIComponent(title)}/tags`,
-              { tags: tags },
-              { withCredentials: true },
-            )
-            .then((res) => {
+        await axios
+          .post(
+            `http://localhost:5000/product/${encodeURIComponent(title)}/imgs`,
+            formData,
+            { withCredentials: true },
+            {
+              header: { 'content-type': 'multipart/form-data' },
+            },
+          )
+          .then(async (res) => {
+            if (res.data) {
               console.log(res.data);
-            });
-        } catch (error) {
-          console.log(error);
-        } finally {
-          navigate('/');
-        }
+              await axios
+                .post(
+                  `http://localhost:5000/product/${encodeURIComponent(
+                    title,
+                  )}/tags`,
+                  { tags: tags },
+                  { withCredentials: true },
+                )
+                .then((res) => {
+                  console.log(res.data);
+                  if (res.data) {
+                    navigate('/');
+                  }
+                });
+            } else {
+              console.log('파일을 저장하는데 실패했습니다.');
+            }
+          });
       });
   };
 
@@ -207,6 +197,7 @@ const Upload = () => {
 
     let temp = ['', '', '', ''];
     let temp2 = [];
+
     Object.values(fileArray).forEach((file, i) => {
       if (i >= 4) {
         return false;
@@ -236,14 +227,20 @@ const Upload = () => {
       return;
     }
 
-    const currentImages = [...shownImages];
+    const currentShownImgs = [...shownImages];
+    const currentImgs = [...images];
+
     const draggingItemIndex = result.source.index;
     const afterDragItemIndex = result.destination.index;
-    const removeImages = currentImages.splice(draggingItemIndex, 1);
 
-    currentImages.splice(afterDragItemIndex, 0, removeImages[0]);
+    const removeShownImgs = currentShownImgs.splice(draggingItemIndex, 1);
+    const removeImgs = currentImgs.splice(draggingItemIndex, 1);
 
-    setShownImages(currentImages);
+    currentShownImgs.splice(afterDragItemIndex, 0, removeShownImgs[0]);
+    currentImgs.splice(afterDragItemIndex, 0, removeImgs[0]);
+
+    setShownImages(currentShownImgs);
+    setImages(currentImgs);
   };
 
   return (
@@ -425,6 +422,7 @@ const Upload = () => {
                         </Draggable>
                       );
                     })}
+                    {provided.placeholder}
                   </div>
                 )}
               </Droppable>
