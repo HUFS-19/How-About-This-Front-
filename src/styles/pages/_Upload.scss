@@ -116,6 +116,7 @@
 }
 
 .Upload-input-row3 {
+  position: relative;
   .tags {
     display: flex;
     flex-wrap: wrap;
@@ -136,6 +137,17 @@
   }
   .input-tags {
     margin-top: 1.5%;
+  }
+  .tag-method {
+    position: absolute;
+    background-color: grey;
+    color: white;
+    z-index: 1;
+    font-size: 14px;
+    padding: 13px 10px;
+    p {
+      margin: 5px 0px;
+    }
   }
 }
 
