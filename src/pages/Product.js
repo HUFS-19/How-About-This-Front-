@@ -19,6 +19,7 @@ const Product = () => {
   const [clicked, setClicked] = useState(false);
   const [slidePx, setSlidePx] = useState(0);
   const [userProfile, setUserProfile] = useState({});
+  const [isUploader, setIsUploader] = useState(false);
 
   const imgDiv = useRef();
   const heartIcon = useRef();
@@ -35,10 +36,11 @@ const Product = () => {
   useEffect(() => {
     const getProduct = async () => {
       await axios
-        .get(`http://localhost:5000/product/${id}`)
+        .get(`http://localhost:5000/product/${id}`, { withCredentials: true })
         .then(async (res) => {
           let productInfo = res.data[0];
-          //유저정보 get
+          setIsUploader(res.data[1].isUploader);
+
           await axios
             .get(`http://localhost:5000/profile/${res.data[0].userID}`)
             .then((res) => {
@@ -162,37 +164,51 @@ const Product = () => {
                     return <span key={tag.tagID}>#{tag.tagNAME}</span>;
                   })}
                 </p>
-                <div id='user-info'>
-                  <Link to={`/profile/${product.userID}`}>
-                    <div>
-                      <img
-                        className='profile'
-                        src={userProfile.userIcon}
-                        alt=''
+                <div id='buttons'>
+                  <div id='user-info'>
+                    <Link to={`/profile/${product.userID}`}>
+                      <div>
+                        <img
+                          className='profile'
+                          src={userProfile.userIcon}
+                          alt=''
+                        />
+                        <span id='username'>{userProfile.nickname}</span>
+                      </div>
+                    </Link>
+                    <div className='btn-wrapper'>
+                      <WhiteBtn id={'btn-dm'} text={'DM'} />
+                      <FontAwesomeIcon
+                        className='message-icon'
+                        icon={faMessage}
                       />
-                      <span id='username'>{userProfile.nickname}</span>
                     </div>
-                  </Link>
-                  <div className='btn-wrapper'>
-                    <WhiteBtn id={'btn-dm'} text={'DM'} />
+                  </div>
+                  <div id='btns'>
+                    <div className='btns-col1'>
+                      {isUploader ? (
+                        <div>
+                          <WhiteBtn id={'btn-revise'} text={'수정'} />
+                          <BlackBtn id={'btn-delete'} text={'삭제'} />
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
                     <FontAwesomeIcon
-                      className='message-icon'
-                      icon={faMessage}
+                      ref={heartIcon}
+                      onClick={() => setClicked(!clicked)}
+                      className='heart-icon'
+                      icon={faHeart}
                     />
                   </div>
-                </div>
-                <div id='btns'>
-                  <BlackBtn
-                    goToLink={product.link}
-                    id={'buy-btn'}
-                    text={'구입하기'}
-                  />
-                  <FontAwesomeIcon
-                    ref={heartIcon}
-                    onClick={() => setClicked(!clicked)}
-                    className='heart-icon'
-                    icon={faHeart}
-                  />
+                  <div id='buy-btn-wrapper'>
+                    <BlackBtn
+                      goToLink={product.link}
+                      id={'buy-btn'}
+                      text={'구입하기'}
+                    />
+                  </div>
                 </div>
               </div>
             </section>
