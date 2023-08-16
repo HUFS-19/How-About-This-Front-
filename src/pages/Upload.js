@@ -128,6 +128,7 @@ const Upload = () => {
         { withCredentials: true },
       )
       .then(async (res) => {
+        const productId = res.data[0];
         const formData = new FormData();
 
         images.forEach((image, i) => {
@@ -136,7 +137,7 @@ const Upload = () => {
 
         await axios
           .post(
-            `http://localhost:5000/product/${encodeURIComponent(title)}/imgs`,
+            `http://localhost:5000/product/${productId}/imgs`,
             formData,
             { withCredentials: true },
             {
@@ -148,9 +149,7 @@ const Upload = () => {
               console.log(res.data);
               await axios
                 .post(
-                  `http://localhost:5000/product/${encodeURIComponent(
-                    title,
-                  )}/tags`,
+                  `http://localhost:5000/product/${productId}/tags`,
                   { tags: tags },
                   { withCredentials: true },
                 )
