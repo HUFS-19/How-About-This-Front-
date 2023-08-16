@@ -128,6 +128,7 @@ const Upload = () => {
         { withCredentials: true },
       )
       .then(async (res) => {
+        const productId = res.data[0];
         const formData = new FormData();
 
         images.forEach((image, i) => {
@@ -136,7 +137,7 @@ const Upload = () => {
 
         await axios
           .post(
-            `http://localhost:5000/product/${encodeURIComponent(title)}/imgs`,
+            `http://localhost:5000/product/${productId}/imgs`,
             formData,
             { withCredentials: true },
             {
@@ -148,9 +149,7 @@ const Upload = () => {
               console.log(res.data);
               await axios
                 .post(
-                  `http://localhost:5000/product/${encodeURIComponent(
-                    title,
-                  )}/tags`,
+                  `http://localhost:5000/product/${productId}/tags`,
                   { tags: tags },
                   { withCredentials: true },
                 )
@@ -160,8 +159,6 @@ const Upload = () => {
                     navigate('/');
                   }
                 });
-            } else {
-              console.log('파일을 저장하는데 실패했습니다.');
             }
           });
       });
@@ -212,16 +209,6 @@ const Upload = () => {
     setImages(temp2);
   };
 
-  useEffect(() => {
-    const getCategories = async () => {
-      await axios
-        .get('http://localhost:5000/category/all')
-        .then((res) => setCategories(res.data));
-    };
-
-    getCategories();
-  }, []);
-
   const onDragEnd = (result) => {
     if (!result.destination) {
       return;
@@ -242,6 +229,16 @@ const Upload = () => {
     setShownImages(currentShownImgs);
     setImages(currentImgs);
   };
+
+  useEffect(() => {
+    const getCategories = async () => {
+      await axios
+        .get('http://localhost:5000/category/all')
+        .then((res) => setCategories(res.data));
+    };
+
+    getCategories();
+  }, []);
 
   return (
     <div className='Upload'>

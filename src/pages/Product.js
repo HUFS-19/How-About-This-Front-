@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,6 +13,8 @@ import WhiteBtn from '../components/button/WhiteBtn';
 
 const Product = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState({});
   const [imgArray, setImgArray] = useState([]);
@@ -32,6 +34,15 @@ const Product = () => {
       heartIcon.current.classList.remove('clicked');
     }
   }
+
+  const deleteProduct = async () => {
+    await axios
+      .delete(`http://localhost:5000/product/${id}`, { withCredentials: true })
+      .then((res) => {
+        console.log(res.data);
+        navigate('/');
+      });
+  };
 
   useEffect(() => {
     const getProduct = async () => {
@@ -189,7 +200,11 @@ const Product = () => {
                       {isUploader ? (
                         <div>
                           <WhiteBtn id={'btn-revise'} text={'수정'} />
-                          <BlackBtn id={'btn-delete'} text={'삭제'} />
+                          <BlackBtn
+                            id={'btn-delete'}
+                            text={'삭제'}
+                            onClick={deleteProduct}
+                          />
                         </div>
                       ) : (
                         <div></div>
