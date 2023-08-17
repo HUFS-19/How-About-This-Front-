@@ -113,7 +113,7 @@ const Product = () => {
                           className='Product-img'
                           id={img.imgOrder}
                           key={img.imgOrder}
-                          src={`http://localhost:5000/src/img/${img.imgID}.jpg`}
+                          src={`http://localhost:5000/${img.img}`}
                           alt=''
                         />
                       );

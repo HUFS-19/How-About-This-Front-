@@ -44,7 +44,7 @@ const Upload = ({ isEdit, product, productId }) => {
   const [showTagMethod, setTagMethod] = useState(false);
 
   const convertUrlToFile = async (img) => {
-    const url = `http://localhost:5000/src/img/${img}.jpg`;
+    const url = `http://localhost:5000/${img}`;
     const response = await fetch(url);
     const data = await response.blob();
     const filename = url.split('/').pop();
@@ -61,9 +61,7 @@ const Upload = ({ isEdit, product, productId }) => {
       setLink(link);
       setCategory(category);
       setTags(tags);
-      setShownImages(
-        images.map((img) => `http://localhost:5000/src/img/${img}.jpg`),
-      );
+      setShownImages(images.map((img) => `http://localhost:5000/${img}`));
 
       let imgArray = [];
       images.forEach((img) => {
@@ -168,8 +166,8 @@ const Upload = ({ isEdit, product, productId }) => {
 
       const formData = new FormData();
 
-      images.forEach((image, i) => {
-        formData.append('image', image, i + 1);
+      images.forEach((image) => {
+        formData.append('image', image, `${productId}_${image.name}`);
       });
 
       await axios
@@ -214,8 +212,8 @@ const Upload = ({ isEdit, product, productId }) => {
         const newProductId = res.data[0];
         const formData = new FormData();
 
-        images.forEach((image, i) => {
-          formData.append('image', image, i + 1);
+        images.forEach((image) => {
+          formData.append('image', image, `${newProductId}_${image.name}`);
         });
 
         await axios
