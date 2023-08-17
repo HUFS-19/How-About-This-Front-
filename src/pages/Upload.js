@@ -166,8 +166,12 @@ const Upload = ({ isEdit, product, productId }) => {
 
       const formData = new FormData();
 
-      images.forEach((image) => {
-        formData.append('image', image, `${productId}_${image.name}`);
+      images.forEach((image, i) => {
+        formData.append(
+          'image',
+          image,
+          `${productId}_${image.name.slice(0, 1)}_${i}.jpg`,
+        );
       });
 
       await axios
@@ -212,8 +216,12 @@ const Upload = ({ isEdit, product, productId }) => {
         const newProductId = res.data[0];
         const formData = new FormData();
 
-        images.forEach((image) => {
-          formData.append('image', image, `${newProductId}_${image.name}`);
+        images.forEach((image, i) => {
+          formData.append(
+            'image',
+            image,
+            `${newProductId}_${image.name.slice(0, 1)}_${i}.jpg`,
+          );
         });
 
         await axios
