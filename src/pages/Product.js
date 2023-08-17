@@ -199,7 +199,11 @@ const Product = () => {
                     <div className='btns-col1'>
                       {isUploader ? (
                         <div>
-                          <WhiteBtn id={'btn-revise'} text={'수정'} />
+                          <WhiteBtn
+                            id={'btn-revise'}
+                            text={'수정'}
+                            onClick={() => navigate(`/edit/${id}`)}
+                          />
                           <BlackBtn
                             id={'btn-delete'}
                             text={'삭제'}
