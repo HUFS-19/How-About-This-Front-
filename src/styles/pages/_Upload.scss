@@ -204,9 +204,10 @@ form.imgs-form {
 
 .Upload-btn {
   width: 100%;
-  text-align: center;
   margin-top: 100px;
   margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
 }
 
 p.caution {

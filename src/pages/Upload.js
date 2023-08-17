@@ -7,10 +7,11 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { FaInfoCircle } from 'react-icons/fa';
 
 import BlackBtn from '../components/button/BlackBtn';
+import WhiteBtn from '../components/button/WhiteBtn';
 
 import '../styles/pages/_Upload.scss';
 
-const Upload = () => {
+const Upload = ({ isEdit, product, productId }) => {
   const navigate = useNavigate();
 
   const [categories, setCategories] = useState([]);
@@ -41,6 +42,37 @@ const Upload = () => {
   const [isValidImg, setValidImg] = useState(true);
 
   const [showTagMethod, setTagMethod] = useState(false);
+
+  const convertUrlToFile = async (img) => {
+    const url = `http://localhost:5000/src/img/${img}.jpg`;
+    const response = await fetch(url);
+    const data = await response.blob();
+    const filename = url.split('/').pop();
+    const file = new File([data], filename, { type: data.type });
+
+    return file;
+  };
+
+  useEffect(() => {
+    if (isEdit) {
+      const { title, description, link, category, tags, images } = product;
+      setTitle(title);
+      setDescription(description);
+      setLink(link);
+      setCategory(category);
+      setTags(tags);
+      setShownImages(
+        images.map((img) => `http://localhost:5000/src/img/${img}.jpg`),
+      );
+
+      let imgArray = [];
+      images.forEach((img) => {
+        convertUrlToFile(img).then((file) => imgArray.push(file));
+      });
+
+      setImages(imgArray);
+    }
+  }, [isEdit, product]);
 
   useEffect(() => {
     if (isFirstCateUpdate.current) {
@@ -79,13 +111,17 @@ const Upload = () => {
   }, [link]);
 
   useEffect(() => {
+    if (isEdit) {
+      return;
+    }
+
     if (isFirstImgUpdate.current) {
       isFirstImgUpdate.current = false;
       return;
     }
 
-    setValidImg(images.length !== 0 ? true : false);
-  }, [images]);
+    setValidImg(images.length > 0 ? true : false);
+  }, [images, isEdit]);
 
   const onUploadProduct = async () => {
     if (!category) {
@@ -116,6 +152,53 @@ const Upload = () => {
       return;
     }
 
+    if (isEdit) {
+      await axios
+        .put(
+          `http://localhost:5000/product/${productId}`,
+          {
+            cateID: category,
+            prodNAME: title,
+            detail: description,
+            link: link,
+          },
+          { withCredentials: true },
+        )
+        .then((res) => console.log(res.data));
+
+      const formData = new FormData();
+
+      images.forEach((image, i) => {
+        formData.append('image', image, i + 1);
+      });
+
+      await axios
+        .put(
+          `http://localhost:5000/product/${productId}/imgs`,
+          formData,
+          { withCredentials: true },
+          {
+            header: { 'content-type': 'multipart/form-data' },
+          },
+        )
+        .then((res) => console.log(res.data));
+
+      await axios
+        .put(
+          `http://localhost:5000/product/${productId}/tags`,
+          { tags: tags },
+          { withCredentials: true },
+        )
+        .then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            navigate('/');
+          }
+        });
+
+      return;
+    }
+
     await axios
       .post(
         'http://localhost:5000/product/new',
@@ -128,6 +211,7 @@ const Upload = () => {
         { withCredentials: true },
       )
       .then(async (res) => {
+        const newProductId = res.data[0];
         const formData = new FormData();
 
         images.forEach((image, i) => {
@@ -136,7 +220,7 @@ const Upload = () => {
 
         await axios
           .post(
-            `http://localhost:5000/product/${encodeURIComponent(title)}/imgs`,
+            `http://localhost:5000/product/${newProductId}/imgs`,
             formData,
             { withCredentials: true },
             {
@@ -148,9 +232,7 @@ const Upload = () => {
               console.log(res.data);
               await axios
                 .post(
-                  `http://localhost:5000/product/${encodeURIComponent(
-                    title,
-                  )}/tags`,
+                  `http://localhost:5000/product/${newProductId}/tags`,
                   { tags: tags },
                   { withCredentials: true },
                 )
@@ -160,8 +242,6 @@ const Upload = () => {
                     navigate('/');
                   }
                 });
-            } else {
-              console.log('파일을 저장하는데 실패했습니다.');
             }
           });
       });
@@ -212,16 +292,6 @@ const Upload = () => {
     setImages(temp2);
   };
 
-  useEffect(() => {
-    const getCategories = async () => {
-      await axios
-        .get('http://localhost:5000/category/all')
-        .then((res) => setCategories(res.data));
-    };
-
-    getCategories();
-  }, []);
-
   const onDragEnd = (result) => {
     if (!result.destination) {
       return;
@@ -243,11 +313,23 @@ const Upload = () => {
     setImages(currentImgs);
   };
 
+  useEffect(() => {
+    const getCategories = async () => {
+      await axios
+        .get('http://localhost:5000/category/all')
+        .then((res) => setCategories(res.data));
+    };
+
+    getCategories();
+  }, []);
+
   return (
     <div className='Upload'>
       <div className='Upload-wrapper'>
         <div className='Upload-content'>
-          <div className='Upload-title'>추천 제품 등록</div>
+          <div className='Upload-title'>
+            {isEdit ? '추천 제품 수정' : '추천 제품 등록'}
+          </div>
           <div className='Upload-input-row1'>
             {isValidCate ? (
               <></>
@@ -443,7 +525,14 @@ const Upload = () => {
             />
           </div>
           <div className='Upload-btn'>
-            <BlackBtn onClick={onUploadProduct} text={'작성 완료'} />
+            <WhiteBtn
+              onClick={() => navigate(-1)}
+              text={isEdit ? '수정 취소' : '작성 취소'}
+            />
+            <BlackBtn
+              onClick={onUploadProduct}
+              text={isEdit ? '수정 완료' : '작성 완료'}
+            />
           </div>
         </div>
       </div>
@@ -451,4 +540,4 @@ const Upload = () => {
   );
 };
 
-export default Upload;
+export default React.memo(Upload);

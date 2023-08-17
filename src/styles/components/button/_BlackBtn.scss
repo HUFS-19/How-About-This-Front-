@@ -13,4 +13,11 @@
   border-radius: 5px;
   cursor: pointer;
   box-shadow: none;
+  &#btn-delete {
+    padding: 7px 14px;
+  }
+  &#buy-btn {
+    width: 100%;
+    padding: 10px 0px;
+  }
 }

@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import Product from './pages/Product';
 import Upload from './pages/Upload';
+import Edit from './pages/Edit';
 import Login from './pages/Login';
 import Join from './pages/Join';
 import ChangePassword from './pages/ChangePassword';
@@ -44,6 +45,7 @@ function App() {
                   />
                   <Route path='/product/:id' element={<Product />} />
                   <Route path='/upload' element={<Upload />} />
+                  <Route path='/edit/:id' element={<Edit />} />
                   <Route path='/login' element={<Login />} />
                   <Route path='/join' element={<Join />} />
                 </Routes>
