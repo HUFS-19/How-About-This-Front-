@@ -41,7 +41,7 @@ const ProductBlock = ({ data }) => {
       <div className='ProductBlock'>
         <img
           className='product-img'
-          src={`http://localhost:5000/src/img/${mainImg.imgID}.jpg`}
+          src={`http://localhost:5000/${mainImg.img}`}
           alt=''
           onClick={() => navigate(`/product/${data.prodID}`)}
         />

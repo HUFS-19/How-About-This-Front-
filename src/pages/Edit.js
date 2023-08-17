@@ -28,7 +28,7 @@ const Edit = () => {
       });
 
       axios.get(`http://localhost:5000/product/${id}/imgs`).then((res) => {
-        setImages(res.data.map((img) => img.imgID));
+        setImages(res.data.map((img) => img.img));
       });
     };
 
