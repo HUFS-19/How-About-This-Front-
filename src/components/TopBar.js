@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +8,7 @@ import { CategorySetStateContext, SearchSetStateContext } from '../App';
 import '../styles/components/_TopBar.scss';
 
 const TopBar = () => {
+  const navigate = useNavigate();
   const [category, setCategory] = useState([]);
   const [selectedCate, setSelectedCate] = useState('all');
   const [type, setType] = useState('product');
@@ -30,6 +32,7 @@ const TopBar = () => {
       setText('');
       setCate(0);
       setCate(-2);
+      navigate('/');
     }
   };
 
