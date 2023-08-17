@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/components/profile/_UserProfile.scss';
 import SnsList from './SnsList';
-import SnsModal from './SnsModal';
-import WhiteBtn from '../button/WhiteBtn';
 import BlackBtn from '../button/BlackBtn';
 
 const UserProfile = ({ profileData, snsData, isLogin }) => {
+  const navigate = useNavigate();
   // const [modalState, setModalState] = 'false';
   return (
     <div className='Profile-top'>
@@ -21,7 +20,7 @@ const UserProfile = ({ profileData, snsData, isLogin }) => {
             <BlackBtn
               id='profileEdit-btn'
               text='수정'
-              goToLink={`/profile/edit/${profileData.userID}`}
+              onClick={() => navigate(`/profile/edit/${profileData.userID}`)}
             />
           ) : null}
         </div>
