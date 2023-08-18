@@ -194,7 +194,7 @@ const Upload = ({ isEdit, product, productId }) => {
         .then((res) => {
           console.log(res.data);
           if (res.data) {
-            navigate('/');
+            navigate(`/product/${productId}`);
           }
         });
 
