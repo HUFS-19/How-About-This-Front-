@@ -19,8 +19,15 @@ const ProductBlock = ({ data }) => {
   if (heartIcon.current) {
     if (clicked && !heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.add('clicked');
+      axios.get(`http://localhost:5000/product/${data.prodID}/like`, {
+        withCredentials: true,
+      });
+      console.log('test');
     } else if (!clicked && heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.remove('clicked');
+      axios.delete(`http://localhost:5000/product/${data.prodID}/like`, {
+        withCredentials: true,
+      });
     }
   }
 
@@ -33,7 +40,21 @@ const ProductBlock = ({ data }) => {
           setMainImg(mainImg[0]);
         });
     };
+
+    const getLikeState = async () => {
+      await axios
+        .get(`http://localhost:5000/product/${data.prodID}/likeCheck`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.data) {
+            setClicked(true);
+          }
+        });
+    };
+
     getMainImg();
+    getLikeState();
   }, [data]);
 
   if (mainImg) {
