@@ -48,6 +48,7 @@ section#Product-detail {
     width: 500px;
     height: 400px;
     object-fit: cover;
+    cursor: pointer;
   }
 }
 
@@ -157,12 +158,27 @@ div#btns {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
-  .heart-icon {
-    font-size: 30px;
-    color: $light-grey;
-    cursor: pointer;
-    &.clicked {
-      color: $blue;
+  div.btns-col2 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    .share-icon,
+    .heart-icon {
+      box-sizing: content-box;
+      cursor: pointer;
+      border: 2px solid black;
+      border-radius: 4px;
+      font-size: 18px;
+      padding: 8px;
+    }
+    .share-icon {
+      margin-right: 8px;
+    }
+    .heart-icon {
+      color: $light-grey;
+      &.clicked {
+        color: $blue;
+      }
     }
   }
 }
