@@ -85,11 +85,13 @@ const ProductList = () => {
       <div className='ProductList-wrapper'>
         <div className='ProductList_topbar'>
           <h1>{categoryName}</h1>
-          <select onChange={onChangeSort}>
-            <option value='like'>좋아요순</option>
-            <option value='new'>최신순</option>
-            <option value='old'>오래된순</option>
-          </select>
+          {parseInt(category) !== -1 && (
+            <select onChange={onChangeSort}>
+              <option value='like'>좋아요순</option>
+              <option value='new'>최신순</option>
+              <option value='old'>오래된순</option>
+            </select>
+          )}
         </div>
         <section className='ProductList_content'>
           {productList.map((data) => (
