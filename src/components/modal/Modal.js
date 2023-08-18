@@ -3,10 +3,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FaTrashAlt } from 'react-icons/fa';
 
-import WhiteBtn from '../components/button/WhiteBtn';
-import BlackBtn from '../components/button/BlackBtn';
+import WhiteBtn from '../button/WhiteBtn';
+import BlackBtn from '../button/BlackBtn';
 
-import '../styles/components/_Modal.scss';
+import '../../styles/components/_Modal.scss';
 
 const modal = {
   hidden: { opacity: 1, scale: 0 },

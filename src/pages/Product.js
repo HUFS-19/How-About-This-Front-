@@ -10,7 +10,8 @@ import '../styles/pages/_Product.scss';
 
 import BlackBtn from '../components/button/BlackBtn';
 import WhiteBtn from '../components/button/WhiteBtn';
-import Modal from '../components/Modal';
+import Modal from '../components/modal/Modal';
+import ImgSlideModal from '../components/modal/ImgSlideModal';
 
 const Product = () => {
   const { id } = useParams();
@@ -24,6 +25,8 @@ const Product = () => {
   const [userProfile, setUserProfile] = useState({});
   const [isUploader, setIsUploader] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openImgModal, setOpenImgModal] = useState(false);
+  const [startId, setStartId] = useState(0);
 
   const imgDiv = useRef();
   const heartIcon = useRef();
@@ -108,6 +111,10 @@ const Product = () => {
                       transform: `translateX(${slidePx}px)`,
                       transition: '0.5s ease',
                     }}
+                    onClick={(e) => {
+                      setStartId(parseInt(e.target.id));
+                      setOpenImgModal(true);
+                    }}
                   >
                     {imgArray.map((img) => {
                       return (
@@ -121,6 +128,13 @@ const Product = () => {
                       );
                     })}
                   </div>
+                  {openImgModal && (
+                    <ImgSlideModal
+                      imgs={imgArray}
+                      startId={startId}
+                      setOpenImgModal={setOpenImgModal}
+                    />
+                  )}
                 </div>
                 {imgArray.length === 1 ? (
                   <></>
