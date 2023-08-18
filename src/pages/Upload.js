@@ -245,7 +245,7 @@ const Upload = ({ isEdit, product, productId }) => {
                 .then((res) => {
                   console.log(res.data);
                   if (res.data) {
-                    navigate('/');
+                    navigate(`/product/${newProductId}`);
                   }
                 });
             }
@@ -281,7 +281,7 @@ const Upload = ({ isEdit, product, productId }) => {
   const onUploadImage = (e) => {
     const fileArray = e.target.files;
 
-    let temp = ['', '', '', ''];
+    let temp = [];
     let temp2 = [];
 
     Object.values(fileArray).forEach((file, i) => {
@@ -290,7 +290,7 @@ const Upload = ({ isEdit, product, productId }) => {
       }
 
       const imageUrl = URL.createObjectURL(file);
-      temp[i] = imageUrl;
+      temp.push(imageUrl);
       temp2.push(file);
     });
 
