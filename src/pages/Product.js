@@ -4,7 +4,12 @@ import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-solid-svg-icons';
-import { FaAngleLeft, FaAngleRight, FaCircle } from 'react-icons/fa';
+import {
+  FaAngleLeft,
+  FaAngleRight,
+  FaCircle,
+  FaShareAlt,
+} from 'react-icons/fa';
 
 import '../styles/pages/_Product.scss';
 
@@ -24,9 +29,10 @@ const Product = () => {
   const [slidePx, setSlidePx] = useState(0);
   const [userProfile, setUserProfile] = useState({});
   const [isUploader, setIsUploader] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openImgModal, setOpenImgModal] = useState(false);
   const [startId, setStartId] = useState(0);
+  const [openShareModal, setOpenShareModal] = useState(false);
 
   const imgDiv = useRef();
   const heartIcon = useRef();
@@ -223,12 +229,12 @@ const Product = () => {
                           <BlackBtn
                             id={'btn-delete'}
                             text={'삭제'}
-                            onClick={() => setOpenModal(true)}
+                            onClick={() => setOpenDeleteModal(true)}
                           />
-                          {openModal && (
+                          {openDeleteModal && (
                             <Modal
                               className={'delete-modal'}
-                              btnFunc1={setOpenModal}
+                              btnFunc1={setOpenDeleteModal}
                               btnFunc2={deleteProduct}
                             />
                           )}
@@ -237,12 +243,24 @@ const Product = () => {
                         <div></div>
                       )}
                     </div>
-                    <FontAwesomeIcon
-                      ref={heartIcon}
-                      onClick={() => setClicked(!clicked)}
-                      className='heart-icon'
-                      icon={faHeart}
-                    />
+                    <div className='btns-col2'>
+                      <FaShareAlt
+                        onClick={() => setOpenShareModal(true)}
+                        className='share-icon'
+                      />
+                      {openShareModal && (
+                        <Modal
+                          className={'share-modal'}
+                          btnFunc1={setOpenShareModal}
+                        />
+                      )}
+                      <FontAwesomeIcon
+                        ref={heartIcon}
+                        onClick={() => setClicked(!clicked)}
+                        className='heart-icon'
+                        icon={faHeart}
+                      />
+                    </div>
                   </div>
                   <div id='buy-btn-wrapper'>
                     <BlackBtn
