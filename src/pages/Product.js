@@ -10,6 +10,7 @@ import '../styles/pages/_Product.scss';
 
 import BlackBtn from '../components/button/BlackBtn';
 import WhiteBtn from '../components/button/WhiteBtn';
+import Modal from '../components/Modal';
 
 const Product = () => {
   const { id } = useParams();
@@ -22,6 +23,7 @@ const Product = () => {
   const [slidePx, setSlidePx] = useState(0);
   const [userProfile, setUserProfile] = useState({});
   const [isUploader, setIsUploader] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const imgDiv = useRef();
   const heartIcon = useRef();
@@ -207,8 +209,15 @@ const Product = () => {
                           <BlackBtn
                             id={'btn-delete'}
                             text={'삭제'}
-                            onClick={deleteProduct}
+                            onClick={() => setOpenModal(true)}
                           />
+                          {openModal && (
+                            <Modal
+                              className={'delete-modal'}
+                              btnFunc1={setOpenModal}
+                              btnFunc2={deleteProduct}
+                            />
+                          )}
                         </div>
                       ) : (
                         <div></div>
