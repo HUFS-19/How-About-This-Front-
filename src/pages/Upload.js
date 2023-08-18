@@ -245,7 +245,7 @@ const Upload = ({ isEdit, product, productId }) => {
                 .then((res) => {
                   console.log(res.data);
                   if (res.data) {
-                    navigate('/');
+                    navigate(`/product/${newProductId}`);
                   }
                 });
             }
@@ -281,7 +281,7 @@ const Upload = ({ isEdit, product, productId }) => {
   const onUploadImage = (e) => {
     const fileArray = e.target.files;
 
-    let temp = ['', '', '', ''];
+    let temp = [];
     let temp2 = [];
 
     Object.values(fileArray).forEach((file, i) => {
@@ -290,7 +290,7 @@ const Upload = ({ isEdit, product, productId }) => {
       }
 
       const imageUrl = URL.createObjectURL(file);
-      temp[i] = imageUrl;
+      temp.push(imageUrl);
       temp2.push(file);
     });
 
@@ -371,6 +371,7 @@ const Upload = ({ isEdit, product, productId }) => {
               ref={titleInput}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              maxlength={20}
               className='input-title'
               type='text'
               placeholder='제품명을 입력해주세요'
@@ -389,6 +390,7 @@ const Upload = ({ isEdit, product, productId }) => {
               ref={descInput}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              maxlength={1000}
               className='input-contents'
               cols='30'
               rows='10'

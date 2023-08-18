@@ -10,6 +10,8 @@ import '../styles/pages/_Product.scss';
 
 import BlackBtn from '../components/button/BlackBtn';
 import WhiteBtn from '../components/button/WhiteBtn';
+import Modal from '../components/modal/Modal';
+import ImgSlideModal from '../components/modal/ImgSlideModal';
 
 const Product = () => {
   const { id } = useParams();
@@ -22,6 +24,9 @@ const Product = () => {
   const [slidePx, setSlidePx] = useState(0);
   const [userProfile, setUserProfile] = useState({});
   const [isUploader, setIsUploader] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [openImgModal, setOpenImgModal] = useState(false);
+  const [startId, setStartId] = useState(0);
 
   const imgDiv = useRef();
   const heartIcon = useRef();
@@ -106,6 +111,10 @@ const Product = () => {
                       transform: `translateX(${slidePx}px)`,
                       transition: '0.5s ease',
                     }}
+                    onClick={(e) => {
+                      setStartId(parseInt(e.target.id));
+                      setOpenImgModal(true);
+                    }}
                   >
                     {imgArray.map((img) => {
                       return (
@@ -119,6 +128,13 @@ const Product = () => {
                       );
                     })}
                   </div>
+                  {openImgModal && (
+                    <ImgSlideModal
+                      imgs={imgArray}
+                      startId={startId}
+                      setOpenImgModal={setOpenImgModal}
+                    />
+                  )}
                 </div>
                 {imgArray.length === 1 ? (
                   <></>
@@ -207,8 +223,15 @@ const Product = () => {
                           <BlackBtn
                             id={'btn-delete'}
                             text={'삭제'}
-                            onClick={deleteProduct}
+                            onClick={() => setOpenModal(true)}
                           />
+                          {openModal && (
+                            <Modal
+                              className={'delete-modal'}
+                              btnFunc1={setOpenModal}
+                              btnFunc2={deleteProduct}
+                            />
+                          )}
                         </div>
                       ) : (
                         <div></div>
