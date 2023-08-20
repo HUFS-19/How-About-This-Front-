@@ -41,8 +41,9 @@ const Modal = ({ className, btnFunc1, btnFunc2 }) => {
   };
 
   return (
-    <div className='Modal-wrapper'>
+    <div className='Modal-wrapper' onClick={() => btnFunc1(false)}>
       <motion.ul
+        onClick={(e) => e.stopPropagation()}
         className={['modal', `${className}`].join(' ')}
         variants={modal}
         initial='hidden'
