@@ -428,6 +428,7 @@ const Upload = ({ isEdit, product, productId }) => {
               className='input-tags'
               type='text'
               placeholder='제품과 관련된 태그를 입력해주세요 (최대 4개)'
+              maxlength='10'
             />
             {showTagMethod ? (
               <motion.div
