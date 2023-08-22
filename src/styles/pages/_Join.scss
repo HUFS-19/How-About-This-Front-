@@ -21,9 +21,11 @@
 		box-shadow: 5px 5px 5px lightgray;
 
 		h2 {
+			width: 200px;
 			font-family: $gowun;
 			font-size: 35px;
 			text-align: center;
+			align-self: center;
 			padding-bottom: 10px;
 		}
 
@@ -34,6 +36,7 @@
 
 		.InputBox {
 			height: 50px;
+			min-width: 200px;
 			border-radius: 10px;
 			background-color: $background-grey;
 			border: none;
@@ -46,8 +49,9 @@
 			display: flex;
 
 			.IdInputBox {
-				min-width: 70%;
-					height: 50px;
+				height: 50px;
+				width: 70%;
+					min-width: 170px;
 				border-radius: 10px;
 				background-color: $background-grey;
 				border: none;
@@ -61,6 +65,7 @@
 				cursor: pointer;
 				text-align: center;
 				width: 25%;
+				min-width: 30px;
 				height: 100%;
 				background-color: black;
 				color: white;
@@ -83,10 +88,13 @@
 
 		.PasswordWrapper {
 			position: relative;
+			min-width: 200px;
+				width: 100%;
 		
 			.PasswordInputBox {
 				display: flex;
 				height: 50px;
+				min-width: 200px;
 				width: 100%;
 				border-radius: 10px;
 				background-color: $background-grey;

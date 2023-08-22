@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
@@ -20,6 +20,10 @@ const Login = () => {
   };
   const onShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const onClickJoin = () => {
+    navigate('/join');
   };
 
   const tryLogin = () => {
@@ -72,9 +76,9 @@ const Login = () => {
           >
             로그인
           </button>
-          <Link to='/join'>
-            <button className='JoinBtn'>회원가입</button>
-          </Link>
+          <button className='JoinBtn' onClick={onClickJoin}>
+            회원가입
+          </button>
         </div>
       </div>
     </div>
