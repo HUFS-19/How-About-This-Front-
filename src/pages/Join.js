@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -21,6 +21,19 @@ const Join = () => {
   const [passwordConfirm, setPasswordConfirm] = useState(false);
   const [passwordConfirmMsg, setPasswordConfirmMsg] = useState('');
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/user/checkLogin', { withCredentials: true })
+      .then((res) => {
+        if (res.data.login === true) {
+          Swal.fire({
+            title: '로그아웃 후 이용해 주세요.',
+            confirmButtonColor: '#000000',
+          });
+          navigate('/');
+        }
+      });
+  });
   const onChangeId = (e) => {
     const idReg = /^[a-zA-Z0-9]*$/;
     setId(e.target.value);

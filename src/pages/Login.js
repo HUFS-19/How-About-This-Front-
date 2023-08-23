@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -11,6 +11,20 @@ const Login = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/user/checkLogin', { withCredentials: true })
+      .then((res) => {
+        if (res.data.login === true) {
+          Swal.fire({
+            title: '이미 로그인된 상태입니다.',
+            confirmButtonColor: '#000000',
+          });
+          navigate('/');
+        }
+      });
+  }, []);
 
   const onIdHandler = (e) => {
     setId(e.target.value);
