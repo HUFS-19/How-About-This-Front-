@@ -4,13 +4,13 @@
   //   width: 100%;
   padding: 130px 0px 50px 270px;
   background-color: $background-grey;
-  height: 100vh;
+  min-height: 100vh;
 
   .Profile-wrapper {
-    // min-width: 1000px;
+    min-width: 550px;
     width: 75%;
     margin: auto;
-    padding: 30px 11% 30px 11%;
+    padding: 30px max(11%, 72px);
     background-color: white;
     text-align: center;
     box-shadow: 0 0 6px 0 rgba(152, 152, 152, 0.5);

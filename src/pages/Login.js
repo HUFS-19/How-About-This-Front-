@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
@@ -12,6 +12,20 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/user/checkLogin', { withCredentials: true })
+      .then((res) => {
+        if (res.data.login === true) {
+          Swal.fire({
+            title: '이미 로그인된 상태입니다.',
+            confirmButtonColor: '#000000',
+          });
+          navigate('/');
+        }
+      });
+  }, []);
+
   const onIdHandler = (e) => {
     setId(e.target.value);
   };
@@ -20,6 +34,10 @@ const Login = () => {
   };
   const onShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const onClickJoin = () => {
+    navigate('/join');
   };
 
   const tryLogin = () => {
@@ -72,9 +90,9 @@ const Login = () => {
           >
             로그인
           </button>
-          <Link to='/join'>
-            <button className='JoinBtn'>회원가입</button>
-          </Link>
+          <button className='JoinBtn' onClick={onClickJoin}>
+            회원가입
+          </button>
         </div>
       </div>
     </div>
