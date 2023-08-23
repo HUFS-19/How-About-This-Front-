@@ -10,8 +10,10 @@
   align-items: center;
 
   .LoginContainer {
-    padding: 150px 25vh;
-    width: 90vh;
+    padding: 150px max(15%, 160px);
+    width: min(90vh, 75vw);
+    // padding: 150px 25vh;
+    // width: 90vh;
     min-width: 500px;
     height: 50vh;
     min-height: 600px;
@@ -19,7 +21,7 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    box-shadow: 5px 5px 5px lightgray;
+    box-shadow: 0 0 6px 0 rgba(152, 152, 152, 0.5);
 
     h2 {
       font-family: $gowun;
@@ -78,8 +80,10 @@
 
       .LoginBtn {
         cursor: pointer;
-        width: 18vh;
-        height: 5vh;
+        width: 47%;
+        // width: 18vh;
+        height: 50px;
+        // height: 5vh;
         background-color: black;
         color: white;
         border-radius: 10px;
@@ -87,8 +91,10 @@
       }
       .LoginBtn:disabled {
         cursor: not-allowed;
-        width: 18vh;
-        height: 5vh;
+        width: 47%;
+        // width: 18vh;
+        height: 50px;
+        // height: 5vh;
         background-color: lightgray;
         color: white;
         border-radius: 10px;
@@ -97,8 +103,10 @@
 
       .JoinBtn {
         cursor: pointer;
-        width: 18vh;
-        height: 5vh;
+        width: 47%;
+        // width: 18vh;
+        height: 50px;
+        // height: 5vh;
         border: 1px solid black;
         color: black;
         border-radius: 10px;
