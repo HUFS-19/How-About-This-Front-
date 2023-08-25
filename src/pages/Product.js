@@ -210,15 +210,6 @@ const Product = () => {
                       </div>
                     </Link>
                     <div className='btn-wrapper'>
-                      <WhiteBtn id={'btn-dm'} text={'DM'} />
-                      <FontAwesomeIcon
-                        className='message-icon'
-                        icon={faMessage}
-                      />
-                    </div>
-                  </div>
-                  <div id='btns'>
-                    <div className='btns-col1'>
                       {isUploader ? (
                         <div>
                           <WhiteBtn
@@ -240,9 +231,22 @@ const Product = () => {
                           )}
                         </div>
                       ) : (
-                        <div></div>
+                        <div>
+                          <WhiteBtn id={'btn-dm'} text={'DM'} />
+                          <FontAwesomeIcon
+                            className='message-icon'
+                            icon={faMessage}
+                          />
+                        </div>
                       )}
                     </div>
+                  </div>
+                  <div id='btns-wrapper'>
+                    <BlackBtn
+                      goToLink={product.link}
+                      id={'buy-btn'}
+                      text={'구입하기'}
+                    />
                     <div className='btns-col2'>
                       <FaShareAlt
                         onClick={() => setOpenShareModal(true)}
@@ -261,13 +265,6 @@ const Product = () => {
                         icon={faHeart}
                       />
                     </div>
-                  </div>
-                  <div id='buy-btn-wrapper'>
-                    <BlackBtn
-                      goToLink={product.link}
-                      id={'buy-btn'}
-                      text={'구입하기'}
-                    />
                   </div>
                 </div>
               </div>
