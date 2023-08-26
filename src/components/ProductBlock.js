@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 import axios from 'axios';
 
@@ -56,6 +57,23 @@ const ProductBlock = ({ data }) => {
     getLikeState();
   }, [data]);
 
+  const onClickLike = () => {
+    axios
+      .get(`http://localhost:5000/user/checkLogin`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (!res.data.login) {
+          Swal.fire({
+            title: '로그인이 필요한 서비스입니다.',
+            confirmButtonColor: '#000000',
+          });
+        } else {
+          setClicked(!clicked);
+        }
+      });
+  };
+
   if (mainImg) {
     return (
       <div className='ProductBlock'>
@@ -67,7 +85,7 @@ const ProductBlock = ({ data }) => {
         />
         <FontAwesomeIcon
           ref={heartIcon}
-          onClick={() => setClicked(!clicked)}
+          onClick={onClickLike}
           className='heart-icon'
           icon={faHeart}
         />

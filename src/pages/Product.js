@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -122,7 +123,22 @@ const Product = () => {
     getLikeState();
   }, [id]);
 
-  useEffect(() => {});
+  const onClickLike = () => {
+    axios
+      .get(`http://localhost:5000/user/checkLogin`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (!res.data.login) {
+          Swal.fire({
+            title: '로그인이 필요한 서비스입니다.',
+            confirmButtonColor: '#000000',
+          });
+        } else {
+          setClicked(!clicked);
+        }
+      });
+  };
 
   if (product.tags) {
     return (
@@ -278,7 +294,7 @@ const Product = () => {
                       )}
                       <FontAwesomeIcon
                         ref={heartIcon}
-                        onClick={() => setClicked(!clicked)}
+                        onClick={onClickLike}
                         className={`heart-icon ${clicked ? 'clicked' : ''}`}
                         icon={faHeart}
                       />
