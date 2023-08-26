@@ -42,8 +42,14 @@ const Product = () => {
   if (heartIcon.current) {
     if (clicked && !heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.add('clicked');
+      axios.get(`http://localhost:5000/product/${id}/like`, {
+        withCredentials: true,
+      });
     } else if (!clicked && heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.remove('clicked');
+      axios.delete(`http://localhost:5000/product/${id}/like`, {
+        withCredentials: true,
+      });
     }
   }
 
@@ -99,9 +105,24 @@ const Product = () => {
         });
     };
 
+    const getLikeState = async () => {
+      await axios
+        .get(`http://localhost:5000/product/${id}/likeCheck`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.data) {
+            setClicked(true);
+          }
+        });
+    };
+
     getProduct();
     getImgs();
+    getLikeState();
   }, [id]);
+
+  useEffect(() => {});
 
   if (product.tags) {
     return (
@@ -258,7 +279,7 @@ const Product = () => {
                       <FontAwesomeIcon
                         ref={heartIcon}
                         onClick={() => setClicked(!clicked)}
-                        className='heart-icon'
+                        className={`heart-icon ${clicked ? 'clicked' : ''}`}
                         icon={faHeart}
                       />
                     </div>

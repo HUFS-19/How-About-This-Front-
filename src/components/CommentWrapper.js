@@ -16,7 +16,6 @@ const CommentWrapper = () => {
         .get(`http://localhost:5000/comment/${id}`, { withCredentials: true })
         .then((res) => {
           setCommentData(res.data.comments);
-          console.log(res.data);
           if (res.data.user) {
             setUserCheck(res.data.user.id);
           }

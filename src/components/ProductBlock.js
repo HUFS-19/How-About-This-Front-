@@ -22,7 +22,6 @@ const ProductBlock = ({ data }) => {
       axios.get(`http://localhost:5000/product/${data.prodID}/like`, {
         withCredentials: true,
       });
-      console.log('test');
     } else if (!clicked && heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.remove('clicked');
       axios.delete(`http://localhost:5000/product/${data.prodID}/like`, {
