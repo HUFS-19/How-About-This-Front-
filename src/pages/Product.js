@@ -13,6 +13,7 @@ import {
 
 import '../styles/pages/_Product.scss';
 
+import CommentWrapper from '../components/CommentWrapper';
 import BlackBtn from '../components/button/BlackBtn';
 import WhiteBtn from '../components/button/WhiteBtn';
 import Modal from '../components/modal/Modal';
@@ -284,6 +285,7 @@ const Product = () => {
             </section>
           </div>
         </div>
+        <CommentWrapper />
       </div>
     );
   }
