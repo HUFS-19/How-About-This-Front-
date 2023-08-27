@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,6 +14,7 @@ import {
 
 import '../styles/pages/_Product.scss';
 
+import CommentWrapper from '../components/CommentWrapper';
 import BlackBtn from '../components/button/BlackBtn';
 import WhiteBtn from '../components/button/WhiteBtn';
 import Modal from '../components/modal/Modal';
@@ -41,8 +43,14 @@ const Product = () => {
   if (heartIcon.current) {
     if (clicked && !heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.add('clicked');
+      axios.get(`http://localhost:5000/product/${id}/like`, {
+        withCredentials: true,
+      });
     } else if (!clicked && heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.remove('clicked');
+      axios.delete(`http://localhost:5000/product/${id}/like`, {
+        withCredentials: true,
+      });
     }
   }
 
@@ -98,9 +106,39 @@ const Product = () => {
         });
     };
 
+    const getLikeState = async () => {
+      await axios
+        .get(`http://localhost:5000/product/${id}/likeCheck`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.data) {
+            setClicked(true);
+          }
+        });
+    };
+
     getProduct();
     getImgs();
+    getLikeState();
   }, [id]);
+
+  const onClickLike = () => {
+    axios
+      .get(`http://localhost:5000/user/checkLogin`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (!res.data.login) {
+          Swal.fire({
+            title: '로그인이 필요한 서비스입니다.',
+            confirmButtonColor: '#000000',
+          });
+        } else {
+          setClicked(!clicked);
+        }
+      });
+  };
 
   if (product.tags) {
     return (
@@ -260,8 +298,8 @@ const Product = () => {
                       )}
                       <FontAwesomeIcon
                         ref={heartIcon}
-                        onClick={() => setClicked(!clicked)}
-                        className='heart-icon'
+                        onClick={onClickLike}
+                        className={`heart-icon ${clicked ? 'clicked' : ''}`}
                         icon={faHeart}
                       />
                     </div>
@@ -281,6 +319,7 @@ const Product = () => {
             </section>
           </div>
         </div>
+        <CommentWrapper />
       </div>
     );
   }
