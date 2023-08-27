@@ -140,6 +140,28 @@ const Product = () => {
       });
   };
 
+  const onClickDm = async () => {
+    try {
+      await axios
+        .get('http://localhost:5000/user/checkLogin', {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (!res.data.login) {
+            Swal.fire({
+              title: '로그인이 필요한 서비스입니다.',
+              confirmButtonColor: '#000000',
+            });
+            return;
+          }
+
+          navigate(`/product/${id}/chat?inquirer=${res.data.userId}`);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (product.tags) {
     return (
       <div className='Product'>
@@ -273,7 +295,7 @@ const Product = () => {
                           <WhiteBtn
                             id={'btn-dm'}
                             text={'DM'}
-                            onClick={() => navigate(`/product/${id}/chat`)}
+                            onClick={onClickDm}
                           />
                           <FontAwesomeIcon
                             className='message-icon'
