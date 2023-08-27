@@ -1,18 +1,21 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 
 import { GoChevronLeft } from 'react-icons/go';
 import { LiaPaperPlane } from 'react-icons/lia';
+import Swal from 'sweetalert2';
 
 import Messages from '../components/Messages';
 
 import '../styles/pages/_ChatRoom.scss';
 
 const ChatRoom = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const inquirerId = searchParams.get('inquirer');
 
   const [product, setProduct] = useState({});
   const [input, setInput] = useState('');
@@ -23,7 +26,7 @@ const ChatRoom = () => {
   });
   socket.connect();
 
-  const sendMsg = (e) => {
+  const sendMsg = async (e) => {
     if (!input) {
       return;
     }
@@ -41,14 +44,56 @@ const ChatRoom = () => {
   });
 
   useEffect(() => {
+    const checkLoggedIn = async () => {
+      try {
+        await axios
+          .get('http://localhost:5000/user/checkLogin', {
+            withCredentials: true,
+          })
+          .then((res) => {
+            if (!res.data.login) {
+              Swal.fire({
+                title: '로그인이 필요한 서비스입니다.',
+                confirmButtonColor: '#000000',
+              });
+              navigate(-1);
+              return;
+            }
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const getProductInfo = async () => {
       await axios.get(`http://localhost:5000/product/${id}`).then((res) => {
         setProduct(res.data[0]);
       });
     };
 
+    const getChatRoom = async () => {
+      await axios
+        .get(`http://localhost:5000/product/${id}/chat/${inquirerId}`)
+        .then(async (res) => {
+          console.log('res', res.data);
+          if (res.data.length === 0) {
+            // 새로운 채팅창 만들기
+            await axios
+              .post(`http://localhost:5000/product/${id}/chat/${inquirerId}`)
+              .then((res) => {
+                console.log(res);
+              });
+            return;
+          }
+
+          // 기존 채팅창에서 예전 메시지 가져오기
+        });
+    };
+
+    checkLoggedIn();
     getProductInfo();
-  }, [id]);
+    getChatRoom();
+  }, [id, inquirerId, navigate]);
 
   return (
     <div className='Chatroom'>

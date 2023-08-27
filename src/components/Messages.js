@@ -4,8 +4,8 @@ const Messages = ({ msgArray }) => {
   return (
     <div className='Messages'>
       <ul>
-        {msgArray.map((msg) => {
-          return <li>{msg}</li>;
+        {msgArray.map((msg, i) => {
+          return <li key={i}>{msg}</li>;
         })}
       </ul>
     </div>
