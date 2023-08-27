@@ -270,7 +270,11 @@ const Product = () => {
                         </div>
                       ) : (
                         <div>
-                          <WhiteBtn id={'btn-dm'} text={'DM'} />
+                          <WhiteBtn
+                            id={'btn-dm'}
+                            text={'DM'}
+                            onClick={() => navigate(`/product/${id}/chat`)}
+                          />
                           <FontAwesomeIcon
                             className='message-icon'
                             icon={faMessage}
