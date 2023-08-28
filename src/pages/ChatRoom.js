@@ -119,7 +119,6 @@ const ChatRoom = () => {
         .get(`http://localhost:5000/product/${id}/chat/${inquirerId}`)
         .then(async (res) => {
           if (res.data.length === 0) {
-            // 새로운 채팅창 만들기
             await axios
               .post(`http://localhost:5000/product/${id}/chat/${inquirerId}`)
               .then((res) => {
@@ -131,7 +130,8 @@ const ChatRoom = () => {
 
           setChatRoomId(res.data[0].chatroomID);
           joinChatRoom(res.data[0].chatroomID);
-          // 기존 채팅창에서 예전 메시지 가져오기
+
+          // 기존 채팅창에서 예전 메시지 가져오기 (구현 예정)
           // res.data = [{cateID: 4, chatroomID: 10, inquirerID: "testID", prodID: 2userID: "lucky777"}]
         });
     };

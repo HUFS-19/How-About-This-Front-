@@ -7,8 +7,6 @@ const Messages = ({ msgArray, chatRoomId, loggedInUser }) => {
   const navigate = useNavigate();
   const msgEndRef = useRef();
 
-  console.log(msgArray);
-
   useEffect(() => {
     msgEndRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [msgArray]);
