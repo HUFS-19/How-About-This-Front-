@@ -17,9 +17,11 @@ const ChatRoom = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const inquirerId = searchParams.get('inquirer');
 
+  const [loggedInUser, setLoggedInUser] = useState('');
   const [product, setProduct] = useState({});
   const [input, setInput] = useState('');
   const [msgArray, setMsgArray] = useState([]);
+  const [chatRoomId, setChatRoomId] = useState('');
 
   let socket = io('http://localhost:5000', {
     transports: ['websocket'],
@@ -35,13 +37,41 @@ const ChatRoom = () => {
       return;
     }
 
-    socket.emit('sendMsg', input);
+    // 보내는 사람도 emit 같이 보내기
+    setMsgArray((msgArray) => [
+      ...msgArray,
+      { text: input, senderId: loggedInUser },
+    ]);
+
+    socket.emit('sendMsg', chatRoomId, input, loggedInUser);
     setInput('');
   };
 
-  socket.on('sendMsg', (msg) => {
-    setMsgArray([...msgArray, msg]);
-  });
+  const joinChatRoom = (chatRoomId) => {
+    socket.emit('joinRoom', chatRoomId);
+  };
+
+  useEffect(() => {
+    socket.on('sendMsg', async (msg, senderId) => {
+      await axios
+        .get('http://localhost:5000/user/checkLogin', {
+          withCredentials: true,
+        })
+        .then((res) => {
+          const loggedInUser = res.data.userId;
+
+          if (loggedInUser !== senderId) {
+            setMsgArray((msgArray) => [
+              ...msgArray,
+              { text: msg, senderId: senderId },
+            ]);
+          }
+        });
+    });
+    // 일단 msg에 보내는 사람 데이터도 추가해주고
+    // 보낸 사람 = 나 자신(받은 사람) 이면 set 안해주고
+    // 보낸 사람 != 나 자신 이면 set 해주는 걸로! 하면 될 듯!!!
+  }, [socket]);
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -59,6 +89,8 @@ const ChatRoom = () => {
               navigate(-1);
               return;
             }
+
+            setLoggedInUser(res.data.userId);
           });
       } catch (error) {
         console.log(error);
@@ -75,25 +107,28 @@ const ChatRoom = () => {
       await axios
         .get(`http://localhost:5000/product/${id}/chat/${inquirerId}`)
         .then(async (res) => {
-          console.log('res', res.data);
           if (res.data.length === 0) {
             // 새로운 채팅창 만들기
             await axios
               .post(`http://localhost:5000/product/${id}/chat/${inquirerId}`)
               .then((res) => {
-                console.log(res);
+                setChatRoomId(res.data[0]);
+                joinChatRoom(res.data[0].chatroomID);
               });
             return;
           }
 
+          setChatRoomId(res.data[0].chatroomID);
+          joinChatRoom(res.data[0].chatroomID);
           // 기존 채팅창에서 예전 메시지 가져오기
+          // res.data = [{cateID: 4, chatroomID: 10, inquirerID: "testID", prodID: 2userID: "lucky777"}]
         });
     };
 
     checkLoggedIn();
     getProductInfo();
     getChatRoom();
-  }, [id, inquirerId, navigate]);
+  }, [id, inquirerId, navigate, chatRoomId]);
 
   return (
     <div className='Chatroom'>

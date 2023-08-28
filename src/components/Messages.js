@@ -5,7 +5,11 @@ const Messages = ({ msgArray }) => {
     <div className='Messages'>
       <ul>
         {msgArray.map((msg, i) => {
-          return <li key={i}>{msg}</li>;
+          return (
+            <li key={i}>
+              {msg.senderId}: {msg.text}
+            </li>
+          );
         })}
       </ul>
     </div>
