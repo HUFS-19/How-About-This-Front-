@@ -68,10 +68,7 @@ const ChatRoom = () => {
           }
         });
     });
-    // 일단 msg에 보내는 사람 데이터도 추가해주고
-    // 보낸 사람 = 나 자신(받은 사람) 이면 set 안해주고
-    // 보낸 사람 != 나 자신 이면 set 해주는 걸로! 하면 될 듯!!!
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
     const checkLoggedIn = async () => {
