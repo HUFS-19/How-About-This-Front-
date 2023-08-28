@@ -43,7 +43,22 @@ const ChatRoom = () => {
     ]);
 
     socket.emit('sendMsg', chatRoomId, input, loggedInUser);
+    pushNewMsgInDB(input);
     setInput('');
+  };
+
+  const pushNewMsgInDB = (message) => {
+    axios
+      .post('http://localhost:5000/message', {
+        chatRoomId,
+        product,
+        inquirerId,
+        senderId: loggedInUser,
+        message,
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   const joinChatRoom = (chatRoomId) => {
