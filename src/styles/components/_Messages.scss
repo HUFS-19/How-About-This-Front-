@@ -1,0 +1,66 @@
+@import '../variables';
+
+.Messages {
+  width: 100%;
+  ul {
+    li.msg-wrapper {
+      font-family: $noto;
+      font-size: 17px;
+      margin: 10px;
+      color: white;
+    }
+  }
+}
+
+li.msg-wrapper {
+  &.opponent {
+    display: flex;
+    justify-content: flex-start;
+  }
+  &.self {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+li.opponent {
+  div {
+    p.opponent-username {
+      color: black;
+    }
+    p.msg-text {
+      background-color: $text-bg-grey;
+      padding: 17px;
+      border-radius: 20px;
+      border-top-left-radius: 0px;
+    }
+  }
+}
+
+li.self {
+  div.msg-text {
+    background-color: $text-bg-blue;
+    padding: 17px;
+    border-radius: 20px;
+    border-top-right-radius: 0px;
+  }
+}
+
+li.msg-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  img {
+    margin-right: 8px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    p.opponent-username {
+      cursor: pointer;
+      margin-bottom: 7px;
+    }
+  }
+}
