@@ -43,6 +43,7 @@
 .Chatroom-chatplace {
   height: 440px;
   overflow-y: scroll;
+  // overflow-y: auto;
   &::-webkit-scrollbar {
     display: none;
   }

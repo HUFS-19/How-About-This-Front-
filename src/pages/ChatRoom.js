@@ -37,7 +37,6 @@ const ChatRoom = () => {
       return;
     }
 
-    // 보내는 사람도 emit 같이 보내기
     setMsgArray((msgArray) => [
       ...msgArray,
       { text: input, senderId: loggedInUser },
@@ -145,7 +144,11 @@ const ChatRoom = () => {
             <div></div>
           </div>
           <div className='Chatroom-chatplace'>
-            <Messages msgArray={msgArray} />
+            <Messages
+              msgArray={msgArray}
+              chatRoomId={chatRoomId}
+              loggedInUser={loggedInUser}
+            />
           </div>
           <div className='Chatroom-bottombar'>
             <input
