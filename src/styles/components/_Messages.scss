@@ -46,6 +46,14 @@ li.self {
   }
 }
 
+p.time {
+  font-size: 14px;
+  padding: 5px;
+  color: $grey;
+  display: flex;
+  align-items: flex-end;
+}
+
 li.msg-wrapper {
   display: flex;
   justify-content: flex-start;

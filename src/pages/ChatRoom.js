@@ -39,7 +39,11 @@ const ChatRoom = () => {
 
     setMsgArray((msgArray) => [
       ...msgArray,
-      { text: input, senderId: loggedInUser },
+      {
+        text: input,
+        senderId: loggedInUser,
+        time: new Date().toLocaleTimeString(),
+      },
     ]);
 
     socket.emit('sendMsg', chatRoomId, input, loggedInUser);
@@ -77,7 +81,11 @@ const ChatRoom = () => {
           if (loggedInUser !== senderId) {
             setMsgArray((msgArray) => [
               ...msgArray,
-              { text: msg, senderId: senderId },
+              {
+                text: msg,
+                senderId: senderId,
+                time: new Date().toLocaleTimeString(),
+              },
             ]);
           }
         });
@@ -154,7 +162,7 @@ const ChatRoom = () => {
               className='user-name'
               onClick={() => navigate(`/profile/${product.userID}`)}
             >
-              {product.userID}
+              {product.userID === loggedInUser ? inquirerId : product.userID}
             </p>
             <div></div>
           </div>
