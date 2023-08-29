@@ -17,6 +17,7 @@ const Messages = ({ msgArray, chatRoomId, loggedInUser }) => {
         {msgArray.map((msg, i) =>
           loggedInUser === msg.senderId ? (
             <li key={i} className='msg-wrapper self'>
+              <p className='time'>{msg.time.slice(0, -3)}</p>
               <div className='msg-text'>{msg.text}</div>
             </li>
           ) : (
@@ -35,6 +36,7 @@ const Messages = ({ msgArray, chatRoomId, loggedInUser }) => {
                 </p>
                 <p className='msg-text'>{msg.text}</p>
               </div>
+              <p className='time'>{msg.time.slice(0, -3)}</p>
             </li>
           ),
         )}
