@@ -30,7 +30,7 @@ const CategoryWrapper = () => {
   useEffect(() => {
     const getCategories = async () => {
       await axios
-        .get('http://localhost:5000/category/all')
+        .get('http://localhost:5000/categoryAPI/all')
         .then((res) => setCategories(res.data));
     };
 

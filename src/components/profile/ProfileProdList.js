@@ -8,7 +8,7 @@ const ProfileProdList = ({ userId }) => {
   const [productList, setProductList] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/product/user/${userId}`).then((res) => {
+    axios.get(`http://localhost:5000/productAPI/user/${userId}`).then((res) => {
       setProductList(res.data);
     });
   }, [userId]);

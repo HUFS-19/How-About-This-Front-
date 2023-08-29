@@ -21,7 +21,9 @@ const ProductList = () => {
     const getProductList = async () => {
       if (parseInt(category) === -1) {
         await axios
-          .get('http://localhost:5000/product/like', { withCredentials: true })
+          .get('http://localhost:5000/productAPI/like', {
+            withCredentials: true,
+          })
           .then((res) => {
             console.log(res.data);
             if (res.data.alert) {
@@ -38,7 +40,7 @@ const ProductList = () => {
       } else if (parseInt(category) === -2) {
         console.log(search);
         await axios
-          .post('http://localhost:5000/product/search', {
+          .post('http://localhost:5000/productAPI/search', {
             category: search.category,
             type: search.type,
             search: search.search,
@@ -48,7 +50,7 @@ const ProductList = () => {
           });
       } else {
         await axios
-          .post(`http://localhost:5000/product/list`, {
+          .post(`http://localhost:5000/productAPI/list`, {
             category: parseInt(category),
             sort: sort,
           })
@@ -65,7 +67,7 @@ const ProductList = () => {
         setCategoryName('검색 결과');
       } else {
         await axios
-          .get(`http://localhost:5000/category/${parseInt(category)}`)
+          .get(`http://localhost:5000/categoryAPI/${parseInt(category)}`)
           .then((res) => {
             setCategoryName(res.data[0].cateNAME);
           });

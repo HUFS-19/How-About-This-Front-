@@ -13,7 +13,9 @@ const CommentWrapper = () => {
   useEffect(() => {
     const getComment = async () => {
       await axios
-        .get(`http://localhost:5000/comment/${id}`, { withCredentials: true })
+        .get(`http://localhost:5000/commentAPI/${id}`, {
+          withCredentials: true,
+        })
         .then((res) => {
           setCommentData(res.data.comments);
           if (res.data.user) {
@@ -29,7 +31,7 @@ const CommentWrapper = () => {
   };
 
   const onClickAdd = () => {
-    axios.post(`http://localhost:5000/comment/${id}`, {
+    axios.post(`http://localhost:5000/commentAPI/${id}`, {
       userID: userCheck,
       content: content,
     });
@@ -37,7 +39,7 @@ const CommentWrapper = () => {
   };
 
   const onClickDelete = (e) => {
-    axios.delete(`http://localhost:5000/comment/${e.target.value}`);
+    axios.delete(`http://localhost:5000/commentAPI/${e.target.value}`);
     setUserCheck('');
   };
 
