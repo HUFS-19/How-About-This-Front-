@@ -154,7 +154,7 @@ const ChatRoom = () => {
               className='user-name'
               onClick={() => navigate(`/profile/${product.userID}`)}
             >
-              {product.userID}
+              {product.userID === loggedInUser ? inquirerId : product.userID}
             </p>
             <div></div>
           </div>
