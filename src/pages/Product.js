@@ -43,12 +43,12 @@ const Product = () => {
   if (heartIcon.current) {
     if (clicked && !heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.add('clicked');
-      axios.get(`http://localhost:5000/product/${id}/like`, {
+      axios.get(`http://localhost:5000/productAPI/${id}/like`, {
         withCredentials: true,
       });
     } else if (!clicked && heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.remove('clicked');
-      axios.delete(`http://localhost:5000/product/${id}/like`, {
+      axios.delete(`http://localhost:5000/productAPI/${id}/like`, {
         withCredentials: true,
       });
     }
@@ -56,7 +56,9 @@ const Product = () => {
 
   const deleteProduct = async () => {
     await axios
-      .delete(`http://localhost:5000/product/${id}`, { withCredentials: true })
+      .delete(`http://localhost:5000/productAPI/${id}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(res.data);
         navigate('/');
@@ -66,19 +68,21 @@ const Product = () => {
   useEffect(() => {
     const getProduct = async () => {
       await axios
-        .get(`http://localhost:5000/product/${id}`, { withCredentials: true })
+        .get(`http://localhost:5000/productAPI/${id}`, {
+          withCredentials: true,
+        })
         .then(async (res) => {
           let productInfo = res.data[0];
           setIsUploader(res.data[1].isUploader);
 
           await axios
-            .get(`http://localhost:5000/profile/${res.data[0].userID}`)
+            .get(`http://localhost:5000/profileAPI/${res.data[0].userID}`)
             .then((res) => {
               setUserProfile(res.data.profileData);
             });
 
           await axios
-            .get(`http://localhost:5000/category/${res.data[0].cateID}`)
+            .get(`http://localhost:5000/categoryAPI/${res.data[0].cateID}`)
             .then(async (res) => {
               if (res.data === undefined) {
                 return;
@@ -86,7 +90,7 @@ const Product = () => {
 
               let productCate = res.data[0].cateNAME;
               await axios
-                .get(`http://localhost:5000/product/${id}/tags`)
+                .get(`http://localhost:5000/productAPI/${id}/tags`)
                 .then((res) => {
                   setProduct({
                     ...productInfo,
@@ -100,7 +104,7 @@ const Product = () => {
 
     const getImgs = async () => {
       await axios
-        .get(`http://localhost:5000/product/${id}/imgs`)
+        .get(`http://localhost:5000/productAPI/${id}/imgs`)
         .then((res) => {
           setImgArray(res.data);
         });
@@ -108,7 +112,7 @@ const Product = () => {
 
     const getLikeState = async () => {
       await axios
-        .get(`http://localhost:5000/product/${id}/likeCheck`, {
+        .get(`http://localhost:5000/productAPI/${id}/likeCheck`, {
           withCredentials: true,
         })
         .then((res) => {
@@ -125,7 +129,7 @@ const Product = () => {
 
   const onClickLike = () => {
     axios
-      .get(`http://localhost:5000/user/checkLogin`, {
+      .get(`http://localhost:5000/userAPI/checkLogin`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -143,7 +147,7 @@ const Product = () => {
   const onClickDm = async () => {
     try {
       await axios
-        .get('http://localhost:5000/user/checkLogin', {
+        .get('http://localhost:5000/userAPI/checkLogin', {
           withCredentials: true,
         })
         .then((res) => {
@@ -155,7 +159,7 @@ const Product = () => {
             return;
           }
 
-          navigate(`/product/${id}/chat?inquirer=${res.data.userId}`);
+          navigate(`/productAPI/${id}/chat?inquirer=${res.data.userId}`);
         });
     } catch (error) {
       console.log(error);

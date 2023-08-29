@@ -49,7 +49,7 @@ const ChatRoom = () => {
 
   const pushNewMsgInDB = (message) => {
     axios
-      .post('http://localhost:5000/message', {
+      .post('http://localhost:5000/messageAPI', {
         chatRoomId,
         product,
         inquirerId,
@@ -68,7 +68,7 @@ const ChatRoom = () => {
   useEffect(() => {
     socket.on('sendMsg', async (msg, senderId) => {
       await axios
-        .get('http://localhost:5000/user/checkLogin', {
+        .get('http://localhost:5000/userAPI/checkLogin', {
           withCredentials: true,
         })
         .then((res) => {
@@ -88,7 +88,7 @@ const ChatRoom = () => {
     const checkLoggedIn = async () => {
       try {
         await axios
-          .get('http://localhost:5000/user/checkLogin', {
+          .get('http://localhost:5000/userAPI/checkLogin', {
             withCredentials: true,
           })
           .then((res) => {
@@ -109,18 +109,18 @@ const ChatRoom = () => {
     };
 
     const getProductInfo = async () => {
-      await axios.get(`http://localhost:5000/product/${id}`).then((res) => {
+      await axios.get(`http://localhost:5000/productAPI/${id}`).then((res) => {
         setProduct(res.data[0]);
       });
     };
 
     const getChatRoom = async () => {
       await axios
-        .get(`http://localhost:5000/product/${id}/chat/${inquirerId}`)
+        .get(`http://localhost:5000/productAPI/${id}/chat/${inquirerId}`)
         .then(async (res) => {
           if (res.data.length === 0) {
             await axios
-              .post(`http://localhost:5000/product/${id}/chat/${inquirerId}`)
+              .post(`http://localhost:5000/productAPI/${id}/chat/${inquirerId}`)
               .then((res) => {
                 setChatRoomId(res.data[0]);
                 joinChatRoom(res.data[0].chatroomID);

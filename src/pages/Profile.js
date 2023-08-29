@@ -19,7 +19,9 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/profile/${userId}`, { withCredentials: true })
+      .get(`http://localhost:5000/profileAPI/${userId}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         setProfileData(res.data.profileData);
         setSnsData(res.data.snsList);

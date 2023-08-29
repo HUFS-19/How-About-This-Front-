@@ -14,7 +14,9 @@ const Login = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/user/checkLogin', { withCredentials: true })
+      .get('http://localhost:5000/userAPI/checkLogin', {
+        withCredentials: true,
+      })
       .then((res) => {
         if (res.data.login === true) {
           Swal.fire({
@@ -43,7 +45,7 @@ const Login = () => {
   const tryLogin = () => {
     axios
       .post(
-        'http://localhost:5000/user/login',
+        'http://localhost:5000/userAPI/login',
         {
           id: id,
           password: password,

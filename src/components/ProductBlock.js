@@ -20,12 +20,12 @@ const ProductBlock = ({ data }) => {
   if (heartIcon.current) {
     if (clicked && !heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.add('clicked');
-      axios.get(`http://localhost:5000/product/${data.prodID}/like`, {
+      axios.get(`http://localhost:5000/productAPI/${data.prodID}/like`, {
         withCredentials: true,
       });
     } else if (!clicked && heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.remove('clicked');
-      axios.delete(`http://localhost:5000/product/${data.prodID}/like`, {
+      axios.delete(`http://localhost:5000/productAPI/${data.prodID}/like`, {
         withCredentials: true,
       });
     }
@@ -34,7 +34,7 @@ const ProductBlock = ({ data }) => {
   useEffect(() => {
     const getMainImg = async () => {
       await axios
-        .get(`http://localhost:5000/product/${data.prodID}/imgs`)
+        .get(`http://localhost:5000/productAPI/${data.prodID}/imgs`)
         .then((res) => {
           let mainImg = res.data.filter((img) => img.imgOrder === 1);
           setMainImg(mainImg[0]);
@@ -43,7 +43,7 @@ const ProductBlock = ({ data }) => {
 
     const getLikeState = async () => {
       await axios
-        .get(`http://localhost:5000/product/${data.prodID}/likeCheck`, {
+        .get(`http://localhost:5000/productAPI/${data.prodID}/likeCheck`, {
           withCredentials: true,
         })
         .then((res) => {
@@ -59,7 +59,7 @@ const ProductBlock = ({ data }) => {
 
   const onClickLike = () => {
     axios
-      .get(`http://localhost:5000/user/checkLogin`, {
+      .get(`http://localhost:5000/userAPI/checkLogin`, {
         withCredentials: true,
       })
       .then((res) => {

@@ -18,7 +18,7 @@ const ChangePassword = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/changePassword/checkUser/${userId}`, {
+      .get(`http://localhost:5000/changePasswordAPI/checkUser/${userId}`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -58,7 +58,7 @@ const ChangePassword = () => {
   const tryChangePassword = (e) => {
     console.log(inputs);
     axios
-      .put(`http://localhost:5000/changePassword/${userId}`, { inputs })
+      .put(`http://localhost:5000/changePasswordAPI/${userId}`, { inputs })
       .then((res) => {
         if (res.data.success) {
           Swal.fire({

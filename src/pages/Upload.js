@@ -153,7 +153,7 @@ const Upload = ({ isEdit, product, productId }) => {
     if (isEdit) {
       await axios
         .put(
-          `http://localhost:5000/product/${productId}`,
+          `http://localhost:5000/productAPI/${productId}`,
           {
             cateID: category,
             prodNAME: title,
@@ -176,7 +176,7 @@ const Upload = ({ isEdit, product, productId }) => {
 
       await axios
         .put(
-          `http://localhost:5000/product/${productId}/imgs`,
+          `http://localhost:5000/productAPI/${productId}/imgs`,
           formData,
           { withCredentials: true },
           {
@@ -187,7 +187,7 @@ const Upload = ({ isEdit, product, productId }) => {
 
       await axios
         .put(
-          `http://localhost:5000/product/${productId}/tags`,
+          `http://localhost:5000/productAPI/${productId}/tags`,
           { tags: tags },
           { withCredentials: true },
         )
@@ -203,7 +203,7 @@ const Upload = ({ isEdit, product, productId }) => {
 
     await axios
       .post(
-        'http://localhost:5000/product/new',
+        'http://localhost:5000/productAPI/new',
         {
           cateID: category,
           prodNAME: title,
@@ -226,7 +226,7 @@ const Upload = ({ isEdit, product, productId }) => {
 
         await axios
           .post(
-            `http://localhost:5000/product/${newProductId}/imgs`,
+            `http://localhost:5000/productAPI/${newProductId}/imgs`,
             formData,
             { withCredentials: true },
             {
@@ -238,7 +238,7 @@ const Upload = ({ isEdit, product, productId }) => {
               console.log(res.data);
               await axios
                 .post(
-                  `http://localhost:5000/product/${newProductId}/tags`,
+                  `http://localhost:5000/productAPI/${newProductId}/tags`,
                   { tags: tags },
                   { withCredentials: true },
                 )
@@ -322,7 +322,7 @@ const Upload = ({ isEdit, product, productId }) => {
   useEffect(() => {
     const getCategories = async () => {
       await axios
-        .get('http://localhost:5000/category/all')
+        .get('http://localhost:5000/categoryAPI/all')
         .then((res) => setCategories(res.data));
     };
 

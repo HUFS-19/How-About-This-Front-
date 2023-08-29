@@ -15,7 +15,7 @@ const UserWrapper = () => {
   useEffect(() => {
     const getUser = async () => {
       await axios
-        .get('http://localhost:5000/user/nav', { withCredentials: true })
+        .get('http://localhost:5000/userAPI/nav', { withCredentials: true })
         .then((res) => {
           if (res.data.login) {
             setId(res.data.id);
@@ -31,7 +31,9 @@ const UserWrapper = () => {
     setId('');
     setNickname('');
     setIcon('');
-    axios.get('http://localhost:5000/user/logout', { withCredentials: true });
+    axios.get('http://localhost:5000/userAPI/logout', {
+      withCredentials: true,
+    });
     window.location.reload();
   };
 

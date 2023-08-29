@@ -23,7 +23,9 @@ const Join = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/user/checkLogin', { withCredentials: true })
+      .get('http://localhost:5000/userAPI/checkLogin', {
+        withCredentials: true,
+      })
       .then((res) => {
         if (res.data.login === true) {
           Swal.fire({
@@ -82,7 +84,7 @@ const Join = () => {
   const usableIdCheck = () => {
     axios
       .post(
-        'http://localhost:5000/user/join/idCheck',
+        'http://localhost:5000/userAPI/join/idCheck',
         {
           id: id,
         },
@@ -102,7 +104,7 @@ const Join = () => {
   const tryJoin = () => {
     axios
       .post(
-        'http://localhost:5000/user/join',
+        'http://localhost:5000/userAPI/join',
         {
           id: id,
           password: password,

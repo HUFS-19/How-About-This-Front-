@@ -22,7 +22,9 @@ const ProfileEdit = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/profile/${userId}`, { withCredentials: true })
+      .get(`http://localhost:5000/profileAPI/${userId}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         if (res.data.loginState.id !== userId) {
           alert('잘못된 경로');
@@ -59,7 +61,7 @@ const ProfileEdit = () => {
 
       axios
         .put(
-          `http://localhost:5000/profile/update/userIcon/${userId}`,
+          `http://localhost:5000/profileAPI/update/userIcon/${userId}`,
           formData,
         )
         .then((res) => {});
@@ -74,7 +76,7 @@ const ProfileEdit = () => {
     });
     if (deletedSns.length !== 0) {
       axios
-        .delete(`http://localhost:5000/profile/deleteSns/${userId}`, {
+        .delete(`http://localhost:5000/profileAPI/deleteSns/${userId}`, {
           data: deletedSns,
         })
         .then((res) => {});
@@ -82,7 +84,7 @@ const ProfileEdit = () => {
 
     // sns 삽입 및 업데이트
     axios
-      .put(`http://localhost:5000/profile/update/${userId}`, {
+      .put(`http://localhost:5000/profileAPI/update/${userId}`, {
         snsList,
         inputs,
       })
