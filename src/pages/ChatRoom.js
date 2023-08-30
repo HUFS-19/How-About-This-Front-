@@ -42,7 +42,12 @@ const ChatRoom = () => {
       {
         text: input,
         senderId: loggedInUser,
-        time: new Date().toLocaleTimeString(),
+        time: new Date().toLocaleTimeString().slice(0, -3),
+        date: new Date()
+          .toLocaleDateString()
+          .split('. ')
+          .join('-')
+          .slice(0, -1),
       },
     ]);
 
@@ -84,7 +89,12 @@ const ChatRoom = () => {
               {
                 text: msg,
                 senderId: senderId,
-                time: new Date().toLocaleTimeString(),
+                time: new Date().toLocaleTimeString().slice(0, -3),
+                date: new Date()
+                  .toLocaleDateString()
+                  .split('. ')
+                  .join('-')
+                  .slice(0, -1),
               },
             ]);
           }
@@ -139,8 +149,32 @@ const ChatRoom = () => {
           setChatRoomId(res.data[0].chatroomID);
           joinChatRoom(res.data[0].chatroomID);
 
-          // 기존 채팅창에서 예전 메시지 가져오기 (구현 예정)
-          // res.data = [{cateID: 4, chatroomID: 10, inquirerID: "testID", prodID: 2userID: "lucky777"}]
+          // 기존 채팅창에서 예전 메시지 가져오기
+          await axios
+            .get(
+              `http://localhost:5000/messageAPI/chatroom/${res.data[0].chatroomID}`,
+            )
+            .then((res) => {
+              const RECEIVED_MSG_ARRAY = JSON.parse(JSON.stringify(res.data));
+
+              RECEIVED_MSG_ARRAY.forEach((msg) => {
+                const KR_TIME = String(new Date(msg.time));
+                const TIME = KR_TIME.slice(16, 21);
+                const HOUR = parseInt(TIME.slice(0, 2));
+                const AM_OR_PM = HOUR >= 12 ? '오후 ' : '오전 ';
+
+                const HOUR_EXPRESSION = HOUR <= 12 ? HOUR : HOUR - 12;
+                setMsgArray((msgArray) => [
+                  ...msgArray,
+                  {
+                    text: msg.content,
+                    senderId: msg.senderID,
+                    time: AM_OR_PM + String(HOUR_EXPRESSION) + TIME.slice(2),
+                    date: msg.time.slice(0, 10),
+                  },
+                ]);
+              });
+            });
         });
     };
 

@@ -7,6 +7,8 @@ const Messages = ({ msgArray, chatRoomId, loggedInUser }) => {
   const navigate = useNavigate();
   const msgEndRef = useRef();
 
+  console.log(msgArray);
+
   useEffect(() => {
     msgEndRef.current.scrollIntoView({ behavior: 'smooth' });
   }, [msgArray]);
@@ -17,7 +19,7 @@ const Messages = ({ msgArray, chatRoomId, loggedInUser }) => {
         {msgArray.map((msg, i) =>
           loggedInUser === msg.senderId ? (
             <li key={i} className='msg-wrapper self'>
-              <p className='time'>{msg.time.slice(0, -3)}</p>
+              <p className='time'>{msg.time}</p>
               <div className='msg-text'>{msg.text}</div>
             </li>
           ) : (
@@ -36,7 +38,7 @@ const Messages = ({ msgArray, chatRoomId, loggedInUser }) => {
                 </p>
                 <p className='msg-text'>{msg.text}</p>
               </div>
-              <p className='time'>{msg.time.slice(0, -3)}</p>
+              <p className='time'>{msg.time}</p>
             </li>
           ),
         )}
