@@ -61,6 +61,10 @@ const CommentWrapper = () => {
           </div>
         )}
 
+        {commentData.length === 0 && (
+          <p className='noComment'>첫 댓글을 등록해주세요!</p>
+        )}
+
         {commentData.map((comment) => {
           return (
             <div className='comment'>

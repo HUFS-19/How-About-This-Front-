@@ -95,6 +95,9 @@ const ProductList = () => {
             </select>
           )}
         </div>
+        {productList.length === 0 && (
+          <p className='noProduct'>추천된 물품이 없어요ㅠㅠ</p>
+        )}
         <section className='ProductList_content'>
           {productList.map((data) => (
             <ProductBlock key={data.prodID} data={data} />
