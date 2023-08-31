@@ -35,6 +35,7 @@ const Product = () => {
   const [openImgModal, setOpenImgModal] = useState(false);
   const [startId, setStartId] = useState(0);
   const [openShareModal, setOpenShareModal] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
   const imgDiv = useRef();
   const heartIcon = useRef();
@@ -118,6 +119,7 @@ const Product = () => {
         .then((res) => {
           if (res.data) {
             setClicked(true);
+            setLikeCount(res.data[0].likecount);
           }
         });
     };
@@ -326,12 +328,15 @@ const Product = () => {
                           btnFunc1={setOpenShareModal}
                         />
                       )}
-                      <FontAwesomeIcon
-                        ref={heartIcon}
-                        onClick={onClickLike}
-                        className={`heart-icon ${clicked ? 'clicked' : ''}`}
-                        icon={faHeart}
-                      />
+                      <div className='likeBtn'>
+                        <FontAwesomeIcon
+                          ref={heartIcon}
+                          onClick={onClickLike}
+                          className={`heart-icon ${clicked ? 'clicked' : ''}`}
+                          icon={faHeart}
+                        />
+                        <p className='likeCount'>{likeCount}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
