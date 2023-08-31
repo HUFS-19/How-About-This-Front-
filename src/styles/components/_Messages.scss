@@ -21,6 +21,10 @@ li.msg-wrapper {
     display: flex;
     justify-content: flex-end;
   }
+  &.date {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 li.opponent {
@@ -43,6 +47,17 @@ li.self {
     padding: 17px;
     border-radius: 20px;
     border-top-right-radius: 0px;
+  }
+}
+
+li.date {
+  padding: 12px;
+  p.date {
+    padding: 9px 16px;
+    background-color: $light-grey;
+    border-radius: 20px;
+    color: rgba(1, 1, 1, 0.7);
+    font-size: 15px;
   }
 }
 
