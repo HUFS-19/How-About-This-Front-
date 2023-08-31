@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { io } from 'socket.io-client';
@@ -84,17 +84,19 @@ const ChatRoom = () => {
           const loggedInUser = res.data.userId;
 
           if (loggedInUser !== senderId) {
+            const YEAR = new Date().getFullYear();
+            const MONTH = new Date().getMonth() + 1;
+            const MONTH_EXPRESSION =
+              MONTH < 10 ? '0' + String(MONTH) : String(MONTH);
+            const DATE = new Date().getDate();
+
             setMsgArray((msgArray) => [
               ...msgArray,
               {
                 text: msg,
                 senderId: senderId,
                 time: new Date().toLocaleTimeString().slice(0, -3),
-                date: new Date()
-                  .toLocaleDateString()
-                  .split('. ')
-                  .join('-')
-                  .slice(0, -1),
+                date: `${YEAR}-${MONTH_EXPRESSION}-${DATE}`,
               },
             ]);
           }
@@ -181,7 +183,7 @@ const ChatRoom = () => {
     checkLoggedIn();
     getProductInfo();
     getChatRoom();
-  }, [id, inquirerId, navigate, chatRoomId]);
+  }, []);
 
   return (
     <div className='Chatroom'>
@@ -201,11 +203,7 @@ const ChatRoom = () => {
             <div></div>
           </div>
           <div className='Chatroom-chatplace'>
-            <Messages
-              msgArray={msgArray}
-              chatRoomId={chatRoomId}
-              loggedInUser={loggedInUser}
-            />
+            <Messages msgArray={msgArray} loggedInUser={loggedInUser} />
           </div>
           <div className='Chatroom-bottombar'>
             <input
