@@ -15,6 +15,7 @@ import ChatRoomList from './pages/ChatRoomList';
 import Login from './pages/Login';
 import Join from './pages/Join';
 import ChangePassword from './pages/ChangePassword';
+import NotFound from './pages/NotFound';
 
 export const CategoryStateContext = React.createContext();
 export const CategorySetStateContext = React.createContext();
@@ -52,6 +53,7 @@ function App() {
                   <Route path='/edit/:id' element={<Edit />} />
                   <Route path='/login' element={<Login />} />
                   <Route path='/join' element={<Join />} />
+                  <Route path='/*' element={<NotFound />} />
                 </Routes>
               </div>
             </BrowserRouter>
