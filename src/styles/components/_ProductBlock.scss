@@ -36,9 +36,13 @@
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     text-align: center;
-    padding: 18px 0px;
+    padding: 18px 15px;
     background-color: white;
     font-size: 18px;
     z-index: 1;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    overflow: hidden;
+    white-space: nowrap;
   }
 }
