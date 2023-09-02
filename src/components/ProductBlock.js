@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 import axios from 'axios';
+import { ProdInfoApi } from '../api/API';
+import { prodEditApi } from '../api/API';
+import { userApi } from '../api/API';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
@@ -20,37 +23,28 @@ const ProductBlock = ({ data }) => {
   if (heartIcon.current) {
     if (clicked && !heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.add('clicked');
-      axios.get(`http://localhost:5000/productAPI/${data.prodID}/like`, {
-        withCredentials: true,
-      });
+
+      prodEditApi.addLike(data.prodID);
     } else if (!clicked && heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.remove('clicked');
-      axios.delete(`http://localhost:5000/productAPI/${data.prodID}/like`, {
-        withCredentials: true,
-      });
+      prodEditApi.deleteLike(data.prodID);
     }
   }
 
   useEffect(() => {
     const getMainImg = async () => {
-      await axios
-        .get(`http://localhost:5000/productAPI/${data.prodID}/imgs`)
-        .then((res) => {
-          let mainImg = res.data.filter((img) => img.imgOrder === 1);
-          setMainImg(mainImg[0]);
-        });
+      ProdInfoApi.getProdImgs(data.prodID).then((res) => {
+        let mainImg = res.data.filter((img) => img.imgOrder === 1);
+        setMainImg(mainImg[0]);
+      });
     };
 
     const getLikeState = async () => {
-      await axios
-        .get(`http://localhost:5000/productAPI/${data.prodID}/likeCheck`, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          if (res.data) {
-            setClicked(true);
-          }
-        });
+      ProdInfoApi.likeCheck(data.prodID).then((res) => {
+        if (res.data) {
+          setClicked(true);
+        }
+      });
     };
 
     getMainImg();
@@ -58,20 +52,16 @@ const ProductBlock = ({ data }) => {
   }, [data]);
 
   const onClickLike = () => {
-    axios
-      .get(`http://localhost:5000/userAPI/checkLogin`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (!res.data.login) {
-          Swal.fire({
-            title: '로그인이 필요한 서비스입니다.',
-            confirmButtonColor: '#000000',
-          });
-        } else {
-          setClicked(!clicked);
-        }
-      });
+    userApi.checkLogin().then((res) => {
+      if (!res.data.login) {
+        Swal.fire({
+          title: '로그인이 필요한 서비스입니다.',
+          confirmButtonColor: '#000000',
+        });
+      } else {
+        setClicked(!clicked);
+      }
+    });
   };
 
   if (mainImg) {
@@ -79,7 +69,7 @@ const ProductBlock = ({ data }) => {
       <div className='ProductBlock'>
         <img
           className='product-img'
-          src={`http://localhost:5000/${mainImg.img}`}
+          src={mainImg.img}
           alt=''
           onClick={() => navigate(`/product/${data.prodID}`)}
         />

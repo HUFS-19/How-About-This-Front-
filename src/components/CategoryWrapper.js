@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
+import { categoryApi } from '../api/API';
 import { CategorySetStateContext } from '../App';
 
 import '../styles/components/_CategoryWrapper.scss';
@@ -29,9 +30,7 @@ const CategoryWrapper = () => {
 
   useEffect(() => {
     const getCategories = async () => {
-      await axios
-        .get('http://localhost:5000/categoryAPI/all')
-        .then((res) => setCategories(res.data));
+      await categoryApi.getAllCateName().then((res) => setCategories(res.data));
     };
 
     getCategories();

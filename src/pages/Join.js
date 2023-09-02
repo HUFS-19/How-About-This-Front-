@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { userApi } from '../api/API';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
@@ -22,19 +23,17 @@ const Join = () => {
   const [passwordConfirmMsg, setPasswordConfirmMsg] = useState('');
 
   useEffect(() => {
-    axios
-      .get('http://localhost:5000/userAPI/checkLogin', {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.data.login === true) {
-          Swal.fire({
-            title: '로그아웃 후 이용해 주세요.',
-            confirmButtonColor: '#000000',
-          });
-          navigate('/');
-        }
-      });
+    const loginCheckCall = async () => {
+      const response = await userApi.checkLogin();
+      if (response.data.login === true) {
+        Swal.fire({
+          title: '로그아웃 후 이용해 주세요.',
+          confirmButtonColor: '#000000',
+        });
+        navigate('/');
+      }
+    };
+    loginCheckCall();
   });
   const onChangeId = (e) => {
     const idReg = /^[a-zA-Z0-9]*$/;
@@ -82,51 +81,34 @@ const Join = () => {
   };
 
   const usableIdCheck = () => {
-    axios
-      .post(
-        'http://localhost:5000/userAPI/join/idCheck',
-        {
-          id: id,
-        },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        if (!res.data.success) {
-          setUsableId(false);
-          setIdMsg(res.data.msg);
-        } else {
-          setUsableId(true);
-          setIdMsg('');
-        }
-      });
+    userApi.idCheck(id).then((res) => {
+      if (!res.data.success) {
+        setUsableId(false);
+        setIdMsg(res.data.msg);
+      } else {
+        setUsableId(true);
+        setIdMsg('');
+      }
+    });
   };
 
   const tryJoin = () => {
-    axios
-      .post(
-        'http://localhost:5000/userAPI/join',
-        {
-          id: id,
-          password: password,
-        },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        if (!res.data.success) {
-          console.log(res.data.msg);
-          Swal.fire({
-            title: 'ERROR',
-            confirmButtonColor: '#000000',
-          });
-        } else {
-          console.log('SUCCESS');
-          Swal.fire({
-            title: `환영합니다! '${id}'님!`,
-            confirmButtonColor: '#000000',
-          });
-          navigate('/login');
-        }
-      });
+    userApi.join(id, password).then((res) => {
+      if (!res.data.success) {
+        console.log(res.data.msg);
+        Swal.fire({
+          title: 'ERROR',
+          confirmButtonColor: '#000000',
+        });
+      } else {
+        console.log('SUCCESS');
+        Swal.fire({
+          title: `환영합니다! '${id}'님!`,
+          confirmButtonColor: '#000000',
+        });
+        navigate('/login');
+      }
+    });
   };
 
   return (

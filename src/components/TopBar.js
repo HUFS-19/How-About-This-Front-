@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { categoryApi } from '../api/API';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { CategorySetStateContext, SearchSetStateContext } from '../App';
@@ -19,9 +20,7 @@ const TopBar = () => {
 
   useEffect(() => {
     const getCategories = async () => {
-      await axios
-        .get('http://localhost:5000/categoryAPI/all')
-        .then((res) => setCategory(res.data));
+      categoryApi.getAllCateName().then((res) => setCategory(res.data));
     };
     getCategories();
   }, []);

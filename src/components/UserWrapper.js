@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { userApi } from '../api/API';
 import BlackBtn from './button/BlackBtn';
 import WhiteBtn from './button/WhiteBtn';
 
@@ -14,15 +15,13 @@ const UserWrapper = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      await axios
-        .get('http://localhost:5000/userAPI/nav', { withCredentials: true })
-        .then((res) => {
-          if (res.data.login) {
-            setId(res.data.id);
-            setNickname(res.data.nickname);
-            setIcon(res.data.icon);
-          }
-        });
+      userApi.getUser().then((res) => {
+        if (res.data.login) {
+          setId(res.data.id);
+          setNickname(res.data.nickname);
+          setIcon(res.data.icon);
+        }
+      });
     };
     getUser();
   });
@@ -31,9 +30,7 @@ const UserWrapper = () => {
     setId('');
     setNickname('');
     setIcon('');
-    axios.get('http://localhost:5000/userAPI/logout', {
-      withCredentials: true,
-    });
+    userApi.logout();
     window.location.reload();
   };
 

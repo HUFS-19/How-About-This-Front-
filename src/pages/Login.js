@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { userApi } from '../api/API';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import '../styles/pages/_Login.scss';
 
@@ -13,19 +14,15 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:5000/userAPI/checkLogin', {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.data.login === true) {
-          Swal.fire({
-            title: '이미 로그인된 상태입니다.',
-            confirmButtonColor: '#000000',
-          });
-          navigate('/');
-        }
-      });
+    userApi.checkLogin().then((res) => {
+      if (res.data.login === true) {
+        Swal.fire({
+          title: '이미 로그인된 상태입니다.',
+          confirmButtonColor: '#000000',
+        });
+        navigate('/');
+      }
+    });
   }, []);
 
   const onIdHandler = (e) => {
@@ -43,27 +40,18 @@ const Login = () => {
   };
 
   const tryLogin = () => {
-    axios
-      .post(
-        'http://localhost:5000/userAPI/login',
-        {
-          id: id,
-          password: password,
-        },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        if (!res.data.success) {
-          console.log(res.data.msg);
-          Swal.fire({
-            title: '다시 시도해주세요',
-            confirmButtonColor: '#000000',
-          });
-        } else {
-          navigate('/');
-          window.location.reload();
-        }
-      });
+    userApi.login(id, password).then((res) => {
+      if (!res.data.success) {
+        console.log(res.data.msg);
+        Swal.fire({
+          title: '다시 시도해주세요',
+          confirmButtonColor: '#000000',
+        });
+      } else {
+        navigate('/');
+        window.location.reload();
+      }
+    });
   };
 
   return (

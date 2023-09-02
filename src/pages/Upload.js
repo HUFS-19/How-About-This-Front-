@@ -61,7 +61,7 @@ const Upload = ({ isEdit, product, productId }) => {
       setLink(link);
       setCategory(category);
       setTags(tags);
-      setShownImages(images.map((img) => `http://localhost:5000/${img}`));
+      setShownImages(images);
 
       let imgArray = [];
       images.forEach((img) => {

@@ -58,7 +58,7 @@ const ImgSlideModal = ({ imgs, startId, setOpenImgModal }) => {
       <AnimatePresence custom={direction}>
         <motion.img
           key={page}
-          src={`http://localhost:5000/${imgs[page].img}`}
+          src={imgs[page].img}
           custom={direction}
           variants={variants}
           initial='enter'
