@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { prodEditApi } from '../api/API';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-solid-svg-icons';
@@ -44,14 +45,10 @@ const Product = () => {
   if (heartIcon.current) {
     if (clicked && !heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.add('clicked');
-      axios.get(`http://localhost:5000/productAPI/${id}/like`, {
-        withCredentials: true,
-      });
+      prodEditApi.addLike(id);
     } else if (!clicked && heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.remove('clicked');
-      axios.delete(`http://localhost:5000/productAPI/${id}/like`, {
-        withCredentials: true,
-      });
+      prodEditApi.deleteLike(id);
     }
   }
 
@@ -161,7 +158,7 @@ const Product = () => {
             return;
           }
 
-          navigate(`/productAPI/${id}/chat?inquirer=${res.data.userId}`);
+          navigate(`/product/${id}/chat?inquirer=${res.data.userId}`);
         });
     } catch (error) {
       console.log(error);
@@ -194,7 +191,7 @@ const Product = () => {
                           className='Product-img'
                           id={img.imgOrder}
                           key={img.imgOrder}
-                          src={`http://localhost:5000/${img.img}`}
+                          src={img.img}
                           alt=''
                         />
                       );
