@@ -6,6 +6,7 @@ import ChatRoomBlock from '../components/ChatRoomBlock';
 import '../styles/pages/_ChatRoomList.scss';
 
 const ChatRoomList = () => {
+  const [loggedInUser, setLoggedInUser] = useState('');
   const [chatRoomList, setChatRoomList] = useState([]);
 
   useEffect(() => {
@@ -14,6 +15,7 @@ const ChatRoomList = () => {
         withCredentials: true,
       })
       .then((res) => {
+        setLoggedInUser(res.data.userId);
         axios
           .get(`http://localhost:5000/userAPI/${res.data.userId}/chatRoomList`)
           .then((res) => {
@@ -42,7 +44,7 @@ const ChatRoomList = () => {
           <section>
             <ul>
               {chatRoomList.map((room) => (
-                <ChatRoomBlock room={room} />
+                <ChatRoomBlock room={room} loggedInUser={loggedInUser} />
               ))}
             </ul>
           </section>

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import '../styles/components/_ChatRoomBlock.scss';
 
-const ChatRoomBlock = ({ room }) => {
+const ChatRoomBlock = ({ room, loggedInUser }) => {
   const navigate = useNavigate();
 
   const [productName, setProductName] = useState('');
@@ -47,7 +47,9 @@ const ChatRoomBlock = ({ room }) => {
         />
         <div className='chatroom-info'>
           <div>
-            <p className='chatroom-inquirerId'>{room.inquirerID}</p>
+            <p className='chatroom-inquirerId'>
+              {loggedInUser === room.inquirerID ? room.userID : room.inquirerID}
+            </p>
             <p className='chatroom-productName'>{productName}</p>
           </div>
           <p className='chatroom-lastMsg'>{lastMsg}</p>
