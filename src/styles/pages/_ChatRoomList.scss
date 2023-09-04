@@ -19,3 +19,17 @@
     }
   }
 }
+
+.ChatroomList-topbar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid $grey;
+  padding-bottom: 25px;
+  font-weight: 600;
+  font-family: $gowun;
+  .topbar-title {
+    font-size: 23px;
+  }
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { io } from 'socket.io-client';
@@ -10,6 +10,16 @@ import Swal from 'sweetalert2';
 import Messages from '../components/Messages';
 
 import '../styles/pages/_ChatRoom.scss';
+
+const alterDateExpression = () => {
+  const YEAR = new Date().getFullYear();
+  const MONTH = new Date().getMonth() + 1;
+  const MONTH_EXPRESSION = MONTH < 10 ? '0' + String(MONTH) : String(MONTH);
+  const DATE = new Date().getDate();
+  const DATE_EXPRESSION = DATE < 10 ? '0' + String(DATE) : String(DATE);
+
+  return `${YEAR}-${MONTH_EXPRESSION}-${DATE_EXPRESSION}`;
+};
 
 const ChatRoom = () => {
   const navigate = useNavigate();
@@ -43,11 +53,7 @@ const ChatRoom = () => {
         text: input,
         senderId: loggedInUser,
         time: new Date().toLocaleTimeString().slice(0, -3),
-        date: new Date()
-          .toLocaleDateString()
-          .split('. ')
-          .join('-')
-          .slice(0, -1),
+        date: alterDateExpression(),
       },
     ]);
 
@@ -84,19 +90,13 @@ const ChatRoom = () => {
           const loggedInUser = res.data.userId;
 
           if (loggedInUser !== senderId) {
-            const YEAR = new Date().getFullYear();
-            const MONTH = new Date().getMonth() + 1;
-            const MONTH_EXPRESSION =
-              MONTH < 10 ? '0' + String(MONTH) : String(MONTH);
-            const DATE = new Date().getDate();
-
             setMsgArray((msgArray) => [
               ...msgArray,
               {
                 text: msg,
                 senderId: senderId,
                 time: new Date().toLocaleTimeString().slice(0, -3),
-                date: `${YEAR}-${MONTH_EXPRESSION}-${DATE}`,
+                date: alterDateExpression(),
               },
             ]);
           }
@@ -196,7 +196,11 @@ const ChatRoom = () => {
             />
             <p
               className='user-name'
-              onClick={() => navigate(`/profile/${product.userID}`)}
+              onClick={() => {
+                product.userID === loggedInUser
+                  ? navigate(`/profile/${inquirerId}`)
+                  : navigate(`/profile/${product.userID}`);
+              }}
             >
               {product.userID === loggedInUser ? inquirerId : product.userID}
             </p>

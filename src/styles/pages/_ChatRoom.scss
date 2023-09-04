@@ -38,12 +38,14 @@
     font-size: 23px;
     cursor: pointer;
   }
+  div {
+    width: 38px;
+  }
 }
 
 .Chatroom-chatplace {
   height: 440px;
   overflow-y: scroll;
-  // overflow-y: auto;
   &::-webkit-scrollbar {
     display: none;
   }

@@ -6,6 +6,7 @@ import ChatRoomBlock from '../components/ChatRoomBlock';
 import '../styles/pages/_ChatRoomList.scss';
 
 const ChatRoomList = () => {
+  const [loggedInUser, setLoggedInUser] = useState('');
   const [chatRoomList, setChatRoomList] = useState([]);
 
   useEffect(() => {
@@ -13,11 +14,22 @@ const ChatRoomList = () => {
       .get('http://localhost:5000/userAPI/checkLogin', {
         withCredentials: true,
       })
-      .then(async (res) => {
-        await axios
+      .then((res) => {
+        setLoggedInUser(res.data.userId);
+        axios
           .get(`http://localhost:5000/userAPI/${res.data.userId}/chatRoomList`)
           .then((res) => {
-            setChatRoomList(res.data);
+            res.data.forEach((room) => {
+              axios
+                .get(
+                  `http://localhost:5000/messageAPI/chatroom/${room.chatroomID}/lastMessage`,
+                )
+                .then((res) => {
+                  if (res.data.length > 0) {
+                    setChatRoomList((chatRoomList) => [...chatRoomList, room]);
+                  }
+                });
+            });
           });
       });
   }, []);
@@ -26,13 +38,13 @@ const ChatRoomList = () => {
     <div className='ChatRoomList'>
       <div className='ChatRoomList-wrapper'>
         <div className='ChatRoomList-background'>
-          <div className='Chatroom-topbar'>
+          <div className='ChatroomList-topbar'>
             <p className='topbar-title'>채팅</p>
           </div>
           <section>
             <ul>
               {chatRoomList.map((room) => (
-                <ChatRoomBlock room={room} />
+                <ChatRoomBlock room={room} loggedInUser={loggedInUser} />
               ))}
             </ul>
           </section>
