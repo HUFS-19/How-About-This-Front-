@@ -13,11 +13,21 @@ const ChatRoomList = () => {
       .get('http://localhost:5000/userAPI/checkLogin', {
         withCredentials: true,
       })
-      .then(async (res) => {
-        await axios
+      .then((res) => {
+        axios
           .get(`http://localhost:5000/userAPI/${res.data.userId}/chatRoomList`)
           .then((res) => {
-            setChatRoomList(res.data);
+            res.data.forEach((room) => {
+              axios
+                .get(
+                  `http://localhost:5000/messageAPI/chatroom/${room.chatroomID}/lastMessage`,
+                )
+                .then((res) => {
+                  if (res.data.length > 0) {
+                    setChatRoomList((chatRoomList) => [...chatRoomList, room]);
+                  }
+                });
+            });
           });
       });
   }, []);

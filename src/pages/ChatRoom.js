@@ -11,6 +11,16 @@ import Messages from '../components/Messages';
 
 import '../styles/pages/_ChatRoom.scss';
 
+const alterDateExpression = () => {
+  const YEAR = new Date().getFullYear();
+  const MONTH = new Date().getMonth() + 1;
+  const MONTH_EXPRESSION = MONTH < 10 ? '0' + String(MONTH) : String(MONTH);
+  const DATE = new Date().getDate();
+  const DATE_EXPRESSION = DATE < 10 ? '0' + String(DATE) : String(DATE);
+
+  return `${YEAR}-${MONTH_EXPRESSION}-${DATE_EXPRESSION}`;
+};
+
 const ChatRoom = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -43,11 +53,7 @@ const ChatRoom = () => {
         text: input,
         senderId: loggedInUser,
         time: new Date().toLocaleTimeString().slice(0, -3),
-        date: new Date()
-          .toLocaleDateString()
-          .split('. ')
-          .join('-')
-          .slice(0, -1),
+        date: alterDateExpression(),
       },
     ]);
 
@@ -84,19 +90,13 @@ const ChatRoom = () => {
           const loggedInUser = res.data.userId;
 
           if (loggedInUser !== senderId) {
-            const YEAR = new Date().getFullYear();
-            const MONTH = new Date().getMonth() + 1;
-            const MONTH_EXPRESSION =
-              MONTH < 10 ? '0' + String(MONTH) : String(MONTH);
-            const DATE = new Date().getDate();
-
             setMsgArray((msgArray) => [
               ...msgArray,
               {
                 text: msg,
                 senderId: senderId,
                 time: new Date().toLocaleTimeString().slice(0, -3),
-                date: `${YEAR}-${MONTH_EXPRESSION}-${DATE}`,
+                date: alterDateExpression(),
               },
             ]);
           }
