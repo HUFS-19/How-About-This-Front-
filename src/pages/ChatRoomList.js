@@ -26,7 +26,7 @@ const ChatRoomList = () => {
     <div className='ChatRoomList'>
       <div className='ChatRoomList-wrapper'>
         <div className='ChatRoomList-background'>
-          <div className='Chatroom-topbar'>
+          <div className='ChatroomList-topbar'>
             <p className='topbar-title'>채팅</p>
           </div>
           <section>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { io } from 'socket.io-client';
@@ -196,7 +196,11 @@ const ChatRoom = () => {
             />
             <p
               className='user-name'
-              onClick={() => navigate(`/profile/${product.userID}`)}
+              onClick={() => {
+                product.userID === loggedInUser
+                  ? navigate(`/profile/${inquirerId}`)
+                  : navigate(`/profile/${product.userID}`);
+              }}
             >
               {product.userID === loggedInUser ? inquirerId : product.userID}
             </p>
