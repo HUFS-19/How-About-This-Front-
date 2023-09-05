@@ -67,39 +67,49 @@ const Product = () => {
   };
 
   useEffect(() => {
+    if (isNaN(id)) {
+      navigate('/*');
+    }
+
     const getProduct = async () => {
+      console.log('test');
       await axios
         .get(`http://localhost:5000/productAPI/${id}`, {
           withCredentials: true,
         })
         .then(async (res) => {
-          let productInfo = res.data[0];
-          setIsUploader(res.data[1].isUploader);
+          console.log(res.data);
+          if (res.data.length > 1) {
+            let productInfo = res.data[0];
+            setIsUploader(res.data[1].isUploader);
 
-          await axios
-            .get(`http://localhost:5000/profileAPI/${res.data[0].userID}`)
-            .then((res) => {
-              setUserProfile(res.data.profileData);
-            });
+            await axios
+              .get(`http://localhost:5000/profileAPI/${res.data[0].userID}`)
+              .then((res) => {
+                setUserProfile(res.data.profileData);
+              });
 
-          await axios
-            .get(`http://localhost:5000/categoryAPI/${res.data[0].cateID}`)
-            .then(async (res) => {
-              if (res.data === undefined) {
-                return;
-              }
+            await axios
+              .get(`http://localhost:5000/categoryAPI/${res.data[0].cateID}`)
+              .then(async (res) => {
+                if (res.data === undefined) {
+                  return;
+                }
 
-              let productCate = res.data[0].cateNAME;
-              await axios
-                .get(`http://localhost:5000/productAPI/${id}/tags`)
-                .then((res) => {
-                  setProduct({
-                    ...productInfo,
-                    cateNAME: productCate,
-                    tags: res.data,
+                let productCate = res.data[0].cateNAME;
+                await axios
+                  .get(`http://localhost:5000/productAPI/${id}/tags`)
+                  .then((res) => {
+                    setProduct({
+                      ...productInfo,
+                      cateNAME: productCate,
+                      tags: res.data,
+                    });
                   });
-                });
-            });
+              });
+          } else {
+            navigate('/*');
+          }
         });
     };
 

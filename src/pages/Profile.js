@@ -23,10 +23,14 @@ const Profile = () => {
         withCredentials: true,
       })
       .then((res) => {
-        setProfileData(res.data.profileData);
-        setSnsData(res.data.snsList);
-        if (res.data.loginState.id === userId) {
-          setLogin(true);
+        if (res.data.profileData) {
+          setProfileData(res.data.profileData);
+          setSnsData(res.data.snsList);
+          if (res.data.loginState.id === userId) {
+            setLogin(true);
+          }
+        } else {
+          navigate('/*');
         }
       });
   }, [userId]);
