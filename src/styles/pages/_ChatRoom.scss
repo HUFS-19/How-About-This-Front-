@@ -43,6 +43,28 @@
   }
 }
 
+.Chatroom-productInfo {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(1, 1, 1, 0.05);
+  .product-img {
+    img {
+      width: 60px;
+      border-radius: 7px;
+    }
+    margin-right: 8px;
+    cursor: pointer;
+  }
+  .product-name {
+    font-size: 20px;
+    font-weight: 500;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+}
+
 .Chatroom-chatplace {
   height: 440px;
   overflow-y: scroll;
