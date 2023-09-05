@@ -53,7 +53,7 @@ export const ProdInfoApi = {
     return API.get(`productAPI/${prodID}/imgs`);
   },
   likeCheck: (prodID) => {
-    return API.get(`${prodID}/likeCheck`);
+    return API.get(`productAPI/${prodID}/likeCheck`);
   },
 };
 

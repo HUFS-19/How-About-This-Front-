@@ -117,17 +117,17 @@ const Product = () => {
           withCredentials: true,
         })
         .then((res) => {
-          if (res.data) {
+          if (res.data.state) {
             setClicked(true);
-            setLikeCount(res.data[0].likecount);
           }
+          setLikeCount(res.data.likecount);
         });
     };
 
     getProduct();
     getImgs();
     getLikeState();
-  }, [id]);
+  }, [id, clicked]);
 
   const onClickLike = () => {
     axios
