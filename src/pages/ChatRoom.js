@@ -29,6 +29,7 @@ const ChatRoom = () => {
 
   const [loggedInUser, setLoggedInUser] = useState('');
   const [product, setProduct] = useState({});
+  const [productImg, setProductImg] = useState('');
   const [input, setInput] = useState('');
   const [msgArray, setMsgArray] = useState([]);
   const [chatRoomId, setChatRoomId] = useState('');
@@ -128,9 +129,15 @@ const ChatRoom = () => {
       }
     };
 
-    const getProductInfo = async () => {
-      await axios.get(`http://localhost:5000/productAPI/${id}`).then((res) => {
+    const getProductInfo = () => {
+      axios.get(`http://localhost:5000/productAPI/${id}`).then((res) => {
         setProduct(res.data[0]);
+      });
+
+      axios.get(`http://localhost:5000/productAPI/${id}/imgs`).then((res) => {
+        const MAIN_IMG = res.data.filter((img) => img.imgOrder === 1);
+
+        setProductImg(MAIN_IMG[0].img);
       });
     };
 
@@ -205,6 +212,21 @@ const ChatRoom = () => {
               {product.userID === loggedInUser ? inquirerId : product.userID}
             </p>
             <div></div>
+          </div>
+          <div className='Chatroom-productInfo'>
+            <div
+              className='product-img'
+              onClick={() => navigate(`/product/${product.prodID}`)}
+            >
+              <img src={`http://localhost:5000/${productImg}`} alt='' />
+            </div>
+            <div
+              className='product-name'
+              onClick={() => navigate(`/product/${product.prodID}`)}
+            >
+              {product.prodNAME}
+            </div>
+            <div className='product'></div>
           </div>
           <div className='Chatroom-chatplace'>
             <Messages msgArray={msgArray} loggedInUser={loggedInUser} />
