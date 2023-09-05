@@ -61,7 +61,6 @@ const Product = () => {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res.data);
         navigate('/');
       });
   };
@@ -72,13 +71,11 @@ const Product = () => {
     }
 
     const getProduct = async () => {
-      console.log('test');
       await axios
         .get(`http://localhost:5000/productAPI/${id}`, {
           withCredentials: true,
         })
         .then(async (res) => {
-          console.log(res.data);
           if (res.data.length > 1) {
             let productInfo = res.data[0];
             setIsUploader(res.data[1].isUploader);

@@ -22,7 +22,6 @@ const ProductList = () => {
     const getProductList = async () => {
       if (parseInt(category) === -1) {
         ProdInfoApi.getLike().then((res) => {
-          console.log(res.data);
           if (res.data.alert) {
             setProductList([]);
             Swal.fire({
@@ -35,7 +34,6 @@ const ProductList = () => {
           }
         });
       } else if (parseInt(category) === -2) {
-        console.log(search);
         ProdInfoApi.search(search.category, search.type, search.search).then(
           (res) => {
             setProductList(res.data);
@@ -43,7 +41,6 @@ const ProductList = () => {
         );
       } else {
         ProdInfoApi.getCateProds(parseInt(category), sort).then((res) => {
-          console.log(res.data);
           setProductList(res.data);
         });
       }

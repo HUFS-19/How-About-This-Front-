@@ -39,12 +39,8 @@ const ChangePassword = () => {
       ...inputs,
       [name]: value,
     });
-    console.log(pwMsg);
-    console.log(name, typeof name);
 
     if (name === 'newPw') {
-      console.log(pwMsg);
-
       if (value.length < 10) {
         setPwMsg('10글자 이상 입력해주세요.');
       } else if (!passwordReg.test(value)) {
@@ -56,7 +52,6 @@ const ChangePassword = () => {
   };
 
   const tryChangePassword = (e) => {
-    console.log(inputs);
     axios
       .put(`http://localhost:5000/changePasswordAPI/${userId}`, { inputs })
       .then((res) => {

@@ -41,7 +41,6 @@ const ProductBlock = ({ data }) => {
 
     const getLikeState = async () => {
       ProdInfoApi.likeCheck(data.prodID).then((res) => {
-        console.log(res.data.state);
         if (res.data.state) {
           setClicked(true);
         }
