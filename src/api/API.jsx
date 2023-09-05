@@ -36,8 +36,11 @@ export const userApi = {
 };
 
 export const ProdInfoApi = {
-  getLike: () => {
-    return API.get('productAPI/like');
+  getProd: (prodId) => {
+    return API.get(`productAPI/${prodId}`);
+  },
+  getUserProd: (userId) => {
+    return API.get(`productAPI/user/${userId}`);
   },
   search: (cate, type, search) => {
     return API.post('productAPI/search', {
@@ -52,8 +55,14 @@ export const ProdInfoApi = {
   getProdImgs: (prodID) => {
     return API.get(`productAPI/${prodID}/imgs`);
   },
+  getLike: () => {
+    return API.get('productAPI/like');
+  },
   likeCheck: (prodID) => {
     return API.get(`productAPI/${prodID}/likeCheck`);
+  },
+  getChatRoom: (prodId, inquirerId) => {
+    return API.get(`productAPI/${prodId}/chat/${inquirerId}`);
   },
 };
 
@@ -64,6 +73,9 @@ export const prodEditApi = {
   deleteLike: (prodId) => {
     return API.delete(`productAPI/${prodId}/like`);
   },
+  createChatRoom: (prodId, inquirerId) => {
+    return API.post(`productAPI/${prodId}/chat/${inquirerId}`);
+  },
 };
 
 export const categoryApi = {
@@ -73,5 +85,38 @@ export const categoryApi = {
 
   getAllCateName: () => {
     return API.get(`categoryAPI/all`);
+  },
+};
+
+export const commentApi = {
+  getComments: (prodId) => {
+    return API.get(`commentAPI/${prodId}`);
+  },
+  postComment: (prodId, userId, content) => {
+    return API.post(`commentAPI/${prodId}`, {
+      userID: userId,
+      content: content,
+    });
+  },
+  deleteComments: (commentId) => {
+    return API.delete(`commentAPI/${commentId}`);
+  },
+};
+
+export const messageApi = {
+  getLastMsg: (roomId) => {
+    return API.get(`messageAPI/chatroom/${roomId}/lastMessage`);
+  },
+  getMsgAll: (chatroomId) => {
+    return API.get(`messageAPI/chatroom/${chatroomId}`);
+  },
+  pushMsg: (msgData) => {
+    return API.post('messageAPI', msgData);
+  },
+};
+
+export const changePwApi = {
+  changePw: (userId, inputs) => {
+    return API.put(`changePasswordAPI/${userId}`, { inputs });
   },
 };

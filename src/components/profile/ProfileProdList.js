@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { ProdInfoApi } from '../../api/API';
 import ProductBlock from '../ProductBlock';
 import '../../styles/components/profile/_ProfileProdList.scss';
 
@@ -8,7 +8,8 @@ const ProfileProdList = ({ userId }) => {
   const [productList, setProductList] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/productAPI/user/${userId}`).then((res) => {
+    // axios.get(`http://localhost:5000/productAPI/user/${userId}`)
+    ProdInfoApi.getUserProd(userId).then((res) => {
       setProductList(res.data);
     });
   }, [userId]);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { commentApi } from '../api/API';
 
 import '../styles/components/_CommentWrapper.scss';
 
@@ -12,16 +13,16 @@ const CommentWrapper = () => {
 
   useEffect(() => {
     const getComment = async () => {
-      await axios
-        .get(`http://localhost:5000/commentAPI/${id}`, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          setCommentData(res.data.comments);
-          if (res.data.user) {
-            setUserCheck(res.data.user.id);
-          }
-        });
+      // await axios
+      //   .get(`http://localhost:5000/commentAPI/${id}`, {
+      //     withCredentials: true,
+      //   })
+      await commentApi.getComments(id).then((res) => {
+        setCommentData(res.data.comments);
+        if (res.data.user) {
+          setUserCheck(res.data.user.id);
+        }
+      });
     };
     getComment();
   }, [id, userCheck]);
@@ -31,15 +32,13 @@ const CommentWrapper = () => {
   };
 
   const onClickAdd = () => {
-    axios.post(`http://localhost:5000/commentAPI/${id}`, {
-      userID: userCheck,
-      content: content,
-    });
+    commentApi.postComment(id, userCheck, content);
     setUserCheck('');
   };
 
   const onClickDelete = (e) => {
-    axios.delete(`http://localhost:5000/commentAPI/${e.target.value}`);
+    let commentID = e.target.value;
+    commentApi.deleteComments(commentID);
     setUserCheck('');
   };
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import { ProdInfoApi, messageApi, prodEditApi, userApi } from '../api/API';
 import { io } from 'socket.io-client';
 
 import { GoChevronLeft } from 'react-icons/go';
@@ -64,8 +65,8 @@ const ChatRoom = () => {
   };
 
   const pushNewMsgInDB = (message) => {
-    axios
-      .post('http://localhost:5000/messageAPI', {
+    messageApi
+      .pushMsg({
         chatRoomId,
         product,
         inquirerId,
@@ -83,54 +84,46 @@ const ChatRoom = () => {
 
   useEffect(() => {
     socket.on('sendMsg', async (msg, senderId) => {
-      await axios
-        .get('http://localhost:5000/userAPI/checkLogin', {
-          withCredentials: true,
-        })
-        .then((res) => {
-          const loggedInUser = res.data.userId;
+      await userApi.checkLogin().then((res) => {
+        const loggedInUser = res.data.userId;
 
-          if (loggedInUser !== senderId) {
-            setMsgArray((msgArray) => [
-              ...msgArray,
-              {
-                text: msg,
-                senderId: senderId,
-                time: new Date().toLocaleTimeString().slice(0, -3),
-                date: alterDateExpression(),
-              },
-            ]);
-          }
-        });
+        if (loggedInUser !== senderId) {
+          setMsgArray((msgArray) => [
+            ...msgArray,
+            {
+              text: msg,
+              senderId: senderId,
+              time: new Date().toLocaleTimeString().slice(0, -3),
+              date: alterDateExpression(),
+            },
+          ]);
+        }
+      });
     });
   }, []);
 
   useEffect(() => {
     const checkLoggedIn = async () => {
       try {
-        await axios
-          .get('http://localhost:5000/userAPI/checkLogin', {
-            withCredentials: true,
-          })
-          .then((res) => {
-            if (!res.data.login) {
-              Swal.fire({
-                title: '로그인이 필요한 서비스입니다.',
-                confirmButtonColor: '#000000',
-              });
-              navigate(-1);
-              return;
-            }
+        await userApi.checkLogin().then((res) => {
+          if (!res.data.login) {
+            Swal.fire({
+              title: '로그인이 필요한 서비스입니다.',
+              confirmButtonColor: '#000000',
+            });
+            navigate(-1);
+            return;
+          }
 
-            setLoggedInUser(res.data.userId);
-          });
+          setLoggedInUser(res.data.userId);
+        });
       } catch (error) {
         console.log(error);
       }
     };
 
     const getProductInfo = () => {
-      axios.get(`http://localhost:5000/productAPI/${id}`).then((res) => {
+      ProdInfoApi.getProd(id).then((res) => {
         setProduct(res.data[0]);
       });
 
@@ -142,49 +135,49 @@ const ChatRoom = () => {
     };
 
     const getChatRoom = async () => {
-      await axios
-        .get(`http://localhost:5000/productAPI/${id}/chat/${inquirerId}`)
-        .then(async (res) => {
-          if (res.data.length === 0) {
-            await axios
-              .post(`http://localhost:5000/productAPI/${id}/chat/${inquirerId}`)
-              .then((res) => {
-                setChatRoomId(res.data[0]);
-                joinChatRoom(res.data[0].chatroomID);
-              });
-            return;
-          }
+      // await axios
+      //   .get(`http://localhost:5000/productAPI/${id}/chat/${inquirerId}`)
+      await ProdInfoApi.getChatRoom(id, inquirerId).then(async (res) => {
+        if (res.data.length === 0) {
+          // await axios
+          //   .post(`http://localhost:5000/productAPI/${id}/chat/${inquirerId}`)
+          await prodEditApi.createChatRoom(id, inquirerId).then((res) => {
+            setChatRoomId(res.data[0]);
+            joinChatRoom(res.data[0].chatroomID);
+          });
+          return;
+        }
 
-          setChatRoomId(res.data[0].chatroomID);
-          joinChatRoom(res.data[0].chatroomID);
+        setChatRoomId(res.data[0].chatroomID);
+        joinChatRoom(res.data[0].chatroomID);
 
-          // 기존 채팅창에서 예전 메시지 가져오기
-          await axios
-            .get(
-              `http://localhost:5000/messageAPI/chatroom/${res.data[0].chatroomID}`,
-            )
-            .then((res) => {
-              const RECEIVED_MSG_ARRAY = JSON.parse(JSON.stringify(res.data));
+        // 기존 채팅창에서 예전 메시지 가져오기
+        // await axios
+        //   .get(
+        //     `http://localhost:5000/messageAPI/chatroom/${res.data[0].chatroomID}`,
+        //   )
+        messageApi.getMsgAll(res.data[0].chatroomID).then((res) => {
+          const RECEIVED_MSG_ARRAY = JSON.parse(JSON.stringify(res.data));
 
-              RECEIVED_MSG_ARRAY.forEach((msg) => {
-                const KR_TIME = String(new Date(msg.time));
-                const TIME = KR_TIME.slice(16, 21);
-                const HOUR = parseInt(TIME.slice(0, 2));
-                const AM_OR_PM = HOUR >= 12 ? '오후 ' : '오전 ';
+          RECEIVED_MSG_ARRAY.forEach((msg) => {
+            const KR_TIME = String(new Date(msg.time));
+            const TIME = KR_TIME.slice(16, 21);
+            const HOUR = parseInt(TIME.slice(0, 2));
+            const AM_OR_PM = HOUR >= 12 ? '오후 ' : '오전 ';
 
-                const HOUR_EXPRESSION = HOUR <= 12 ? HOUR : HOUR - 12;
-                setMsgArray((msgArray) => [
-                  ...msgArray,
-                  {
-                    text: msg.content,
-                    senderId: msg.senderID,
-                    time: AM_OR_PM + String(HOUR_EXPRESSION) + TIME.slice(2),
-                    date: msg.time.slice(0, 10),
-                  },
-                ]);
-              });
-            });
+            const HOUR_EXPRESSION = HOUR <= 12 ? HOUR : HOUR - 12;
+            setMsgArray((msgArray) => [
+              ...msgArray,
+              {
+                text: msg.content,
+                senderId: msg.senderID,
+                time: AM_OR_PM + String(HOUR_EXPRESSION) + TIME.slice(2),
+                date: msg.time.slice(0, 10),
+              },
+            ]);
+          });
         });
+      });
     };
 
     checkLoggedIn();
@@ -218,7 +211,7 @@ const ChatRoom = () => {
               className='product-img'
               onClick={() => navigate(`/product/${product.prodID}`)}
             >
-              <img src={`http://localhost:5000/${productImg}`} alt='' />
+              <img src={productImg} alt='' />
             </div>
             <div
               className='product-name'

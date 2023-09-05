@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { userApi, changePwApi } from '../api/API';
 import Swal from 'sweetalert2';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -17,18 +18,15 @@ const ChangePassword = () => {
   });
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/changePasswordAPI/checkUser/${userId}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (!res.data.isLogin) {
-          alert('잘못된 경로');
-          navigate(-1);
-        } else {
-          setLogin(true);
-        }
-      });
+    userApi.checkLogin().then((res) => {
+      if (!res.data.login || res.data.userId !== userId) {
+        //alert 디자인 변경 필요
+        alert('잘못된 경로');
+        navigate(-1);
+      } else {
+        setLogin(true);
+      }
+    });
   }, [userId]);
 
   const onChangePw = (e) => {
@@ -52,22 +50,23 @@ const ChangePassword = () => {
   };
 
   const tryChangePassword = (e) => {
-    axios
-      .put(`http://localhost:5000/changePasswordAPI/${userId}`, { inputs })
-      .then((res) => {
-        if (res.data.success) {
-          Swal.fire({
-            title: '비밀번호 변경이 완료되었습니다.',
-            confirmButtonColor: '#000000',
-          });
-          window.location.replace(`/profile/${userId}`);
-        } else {
-          Swal.fire({
-            title: res.data.msg,
-            confirmButtonColor: '#000000',
-          });
-        }
-      });
+    console.log(inputs);
+    // axios;
+    // .put(`http://localhost:5000/changePasswordAPI/${userId}`, { inputs })
+    changePwApi.changePw(userId, inputs).then((res) => {
+      if (res.data.success) {
+        Swal.fire({
+          title: '비밀번호 변경이 완료되었습니다.',
+          confirmButtonColor: '#000000',
+        });
+        window.location.replace(`/profile/${userId}`);
+      } else {
+        Swal.fire({
+          title: res.data.msg,
+          confirmButtonColor: '#000000',
+        });
+      }
+    });
   };
 
   if (isLogin) {

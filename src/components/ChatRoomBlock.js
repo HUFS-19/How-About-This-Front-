@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ProdInfoApi, messageApi } from '../api/API';
 
 import '../styles/components/_ChatRoomBlock.scss';
 
@@ -12,24 +13,20 @@ const ChatRoomBlock = ({ room, loggedInUser }) => {
   const [lastMsgDate, setLastMsgDate] = useState('');
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/productAPI/${room.prodID}`).then((res) => {
+    ProdInfoApi.getProd(room.prodID).then((res) => {
       setProductName(res.data[0].prodNAME);
     });
 
-    axios
-      .get(
-        `http://localhost:5000/messageAPI/chatroom/${room.chatroomID}/lastMessage`,
-      )
-      .then((res) => {
-        setLastMsg(res.data[0].content);
+    messageApi.getLastMsg(room.chatroomID).then((res) => {
+      setLastMsg(res.data[0].content);
 
-        const DATE = res.data[0].time.slice(0, 10).split('-');
-        DATE.splice(1, 0, '년 ');
-        DATE.splice(3, 0, '월 ');
-        DATE.splice(5, 0, '일 ');
+      const DATE = res.data[0].time.slice(0, 10).split('-');
+      DATE.splice(1, 0, '년 ');
+      DATE.splice(3, 0, '월 ');
+      DATE.splice(5, 0, '일 ');
 
-        setLastMsgDate(DATE.join(''));
-      });
+      setLastMsgDate(DATE.join(''));
+    });
   }, []);
 
   return (
