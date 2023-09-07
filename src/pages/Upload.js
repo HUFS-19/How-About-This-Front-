@@ -11,6 +11,16 @@ import WhiteBtn from '../components/button/WhiteBtn';
 
 import '../styles/pages/_Upload.scss';
 
+const convertUrlToFile = async (img) => {
+  const url = img;
+  const response = await fetch(url);
+  const data = await response.blob();
+  const filename = url.split('/').pop();
+  const file = new File([data], filename, { type: data.type });
+
+  return file;
+};
+
 const Upload = ({ isEdit, product, productId }) => {
   const navigate = useNavigate();
 
@@ -42,16 +52,6 @@ const Upload = ({ isEdit, product, productId }) => {
   const [isValidImg, setValidImg] = useState(true);
 
   const [showTagMethod, setTagMethod] = useState(false);
-
-  const convertUrlToFile = async (img) => {
-    const url = `http://localhost:5000/${img}`;
-    const response = await fetch(url);
-    const data = await response.blob();
-    const filename = url.split('/').pop();
-    const file = new File([data], filename, { type: data.type });
-
-    return file;
-  };
 
   useEffect(() => {
     if (isEdit) {
@@ -151,7 +151,7 @@ const Upload = ({ isEdit, product, productId }) => {
     }
 
     if (isEdit) {
-      await axios
+      axios
         .put(
           `http://localhost:5000/productAPI/${productId}`,
           {
@@ -165,7 +165,6 @@ const Upload = ({ isEdit, product, productId }) => {
         .then((res) => console.log(res.data));
 
       const formData = new FormData();
-
       images.forEach((image, i) => {
         formData.append(
           'image',
@@ -174,7 +173,7 @@ const Upload = ({ isEdit, product, productId }) => {
         );
       });
 
-      await axios
+      axios
         .put(
           `http://localhost:5000/productAPI/${productId}/imgs`,
           formData,
@@ -185,7 +184,7 @@ const Upload = ({ isEdit, product, productId }) => {
         )
         .then((res) => console.log(res.data));
 
-      await axios
+      axios
         .put(
           `http://localhost:5000/productAPI/${productId}/tags`,
           { tags: tags },
@@ -201,55 +200,43 @@ const Upload = ({ isEdit, product, productId }) => {
       return;
     }
 
-    await axios
+    const response = await axios.post(
+      'http://localhost:5000/productAPI/new',
+      { cateID: category, prodNAME: title, detail: description, link: link },
+      { withCredentials: true },
+    );
+
+    const newProductId = response.data[0];
+
+    const formData = new FormData();
+    images.forEach((image, i) => {
+      formData.append(
+        'image',
+        image,
+        `${newProductId}_${image.name.slice(0, 1)}_${i}.jpg`,
+      );
+    });
+
+    axios.post(
+      `http://localhost:5000/productAPI/${newProductId}/imgs`,
+      formData,
+      { withCredentials: true },
+      {
+        header: { 'content-type': 'multipart/form-data' },
+      },
+    );
+
+    axios
       .post(
-        'http://localhost:5000/productAPI/new',
-        {
-          cateID: category,
-          prodNAME: title,
-          detail: description,
-          link: link,
-        },
+        `http://localhost:5000/productAPI/${newProductId}/tags`,
+        { tags: tags },
         { withCredentials: true },
       )
-      .then(async (res) => {
-        const newProductId = res.data[0];
-        const formData = new FormData();
-
-        images.forEach((image, i) => {
-          formData.append(
-            'image',
-            image,
-            `${newProductId}_${image.name.slice(0, 1)}_${i}.jpg`,
-          );
-        });
-
-        await axios
-          .post(
-            `http://localhost:5000/productAPI/${newProductId}/imgs`,
-            formData,
-            { withCredentials: true },
-            {
-              header: { 'content-type': 'multipart/form-data' },
-            },
-          )
-          .then(async (res) => {
-            if (res.data) {
-              console.log(res.data);
-              await axios
-                .post(
-                  `http://localhost:5000/productAPI/${newProductId}/tags`,
-                  { tags: tags },
-                  { withCredentials: true },
-                )
-                .then((res) => {
-                  console.log(res.data);
-                  if (res.data) {
-                    navigate(`/product/${newProductId}`);
-                  }
-                });
-            }
-          });
+      .then((res) => {
+        console.log(res.data);
+        if (res.data) {
+          navigate(`/product/${newProductId}`);
+        }
       });
   };
 
