@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { profileApi } from '../api/API';
+import { useParams, useNavigate } from 'react-router-dom';
 import AddSnsInfo from '../components/profileEdit/AddSnsInfo';
 import BlackBtn from '../components/button/BlackBtn';
 import WhiteBtn from '../components/button/WhiteBtn';
@@ -21,28 +22,28 @@ const ProfileEdit = () => {
   const imageInput = useRef();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/profileAPI/${userId}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.data.loginState.id !== userId) {
-          alert('잘못된 경로');
-          navigate(-1);
-        } else {
-          setLogin(true);
-        }
-        setSnsList(res.data.snsList);
-        setSnsListOrigin(res.data.snsList);
+    // axios
+    //   .get(`http://localhost:5000/profileAPI/${userId}`, {
+    //     withCredentials: true,
+    //   })
+    profileApi.getProfile(userId).then((res) => {
+      if (res.data.loginState.id !== userId) {
+        alert('잘못된 경로');
+        navigate(-1);
+      } else {
+        setLogin(true);
+      }
+      setSnsList(res.data.snsList);
+      setSnsListOrigin(res.data.snsList);
 
-        setInputs({
-          nickname: res.data.profileData.nickname,
-          introduce: res.data.profileData.introduce,
-        });
-        setPreviewImage(res.data.profileData.userIcon);
-
-        setLoad(true);
+      setInputs({
+        nickname: res.data.profileData.nickname,
+        introduce: res.data.profileData.introduce,
       });
+      setPreviewImage(res.data.profileData.userIcon);
+
+      setLoad(true);
+    });
   }, [userId]);
 
   const onChange = (e) => {
@@ -58,13 +59,11 @@ const ProfileEdit = () => {
     if (imgData) {
       const formData = new FormData();
       formData.append('userIcon', imgData, `${userId}.jpg`);
+      for (let key of formData.keys()) {
+        console.log(key, ':', formData.get(key));
+      }
 
-      axios
-        .put(
-          `http://localhost:5000/profileAPI/update/userIcon/${userId}`,
-          formData,
-        )
-        .then((res) => {});
+      profileApi.changeUserIcon(userId, formData);
     }
 
     //sns 삭제
@@ -75,24 +74,16 @@ const ProfileEdit = () => {
       }
     });
     if (deletedSns.length !== 0) {
-      axios
-        .delete(`http://localhost:5000/profileAPI/deleteSns/${userId}`, {
-          data: deletedSns,
-        })
-        .then((res) => {});
+      profileApi.deleteSns(userId, deletedSns);
     }
 
     // sns 삽입 및 업데이트
-    axios
-      .put(`http://localhost:5000/profileAPI/update/${userId}`, {
-        snsList,
-        inputs,
-      })
-      .then((res) => {
-        if (res.data.success) {
-          window.location.replace(`/profile/${userId}`);
-        }
-      });
+    console.log(snsList, inputs);
+    profileApi.updateProfile(userId, snsList, inputs).then((res) => {
+      if (res.data.success) {
+        window.location.replace(`/profile/${userId}`);
+      }
+    });
   };
 
   const clickEditCancleBtn = (e) => {

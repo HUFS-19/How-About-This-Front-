@@ -2,9 +2,10 @@ import axios from 'axios';
 
 const API = axios.create({
   baseURL: 'http://localhost:5000',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  //헤더 설정하면 formData 전송 안됨
+  // headers: {
+  //   'Content-Type': 'application/json',
+  // },
   withCredentials: true,
 });
 
@@ -33,9 +34,27 @@ export const userApi = {
   getUser: () => {
     return API.get('userAPI/nav');
   },
+  getChatRoom: (userId) => {
+    return API.get(`userAPI/${userId}/chatRoomList`);
+  },
 };
 
-export const ProdInfoApi = {
+export const profileApi = {
+  getProfile: (userId) => {
+    return API.get(`profileAPI/${userId}`);
+  },
+  changeUserIcon: (userId, formData) => {
+    return API.put(`profileAPI/update/userIcon/${userId}`, formData);
+  },
+  deleteSns: (userId, deletedSns) => {
+    return API.delete(`profileAPI/deleteSns/${userId}`, { data: deletedSns });
+  },
+  updateProfile: (userId, snsList, profileData) => {
+    return API.put(`profileAPI/update/${userId}`, { snsList, profileData });
+  },
+};
+
+export const prodInfoApi = {
   getProd: (prodId) => {
     return API.get(`productAPI/${prodId}`);
   },
@@ -58,6 +77,9 @@ export const ProdInfoApi = {
   getLike: () => {
     return API.get('productAPI/like');
   },
+  getTag: (prodId) => {
+    return API.get(`productAPI/${prodId}/tags`);
+  },
   likeCheck: (prodID) => {
     return API.get(`productAPI/${prodID}/likeCheck`);
   },
@@ -67,6 +89,9 @@ export const ProdInfoApi = {
 };
 
 export const prodEditApi = {
+  deleteProd: (prodId) => {
+    return API.delete(`productAPI/${prodId}`);
+  },
   addLike: (prodId) => {
     return API.get(`productAPI/${prodId}/like`);
   },
@@ -76,6 +101,27 @@ export const prodEditApi = {
   createChatRoom: (prodId, inquirerId) => {
     return API.post(`productAPI/${prodId}/chat/${inquirerId}`);
   },
+  editProd: (prodId, cate, title, desc, link) => {
+    return API.put(`productApi/${prodId}`, {
+      cateID: cate,
+      prodNAME: title,
+      detail: desc,
+      link: link,
+    });
+  },
+  editProdImg: (prodId, formData) => {
+    return API.put(
+      `productAPI/${prodId}/imgs`,
+      formData,
+      // {
+      //   header: { 'content-type': 'multipart/form-data' },
+      // }
+    );
+  },
+  editProdTag: (prodId, tags) => {
+    return API.put(`productAPI/${prodId}/imgs`, { tags: tags });
+  },
+  postProd: () => {},
 };
 
 export const categoryApi = {

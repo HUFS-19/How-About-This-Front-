@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { prodInfoApi } from '../api/API';
 
 import Upload from './Upload';
 
@@ -16,18 +17,18 @@ const Edit = () => {
 
   useEffect(() => {
     const getProduct = () => {
-      axios.get(`http://localhost:5000/productAPI/${id}`).then((res) => {
+      prodInfoApi.getProd(id).then((res) => {
         setTitle(res.data[0].prodNAME);
         setDescription(res.data[0].detail);
         setLink(res.data[0].link);
         setCategory(res.data[0].cateID);
       });
 
-      axios.get(`http://localhost:5000/productAPI/${id}/tags`).then((res) => {
+      prodInfoApi.getTag(id).then((res) => {
         setTags(res.data.map((tag) => tag.tagNAME));
       });
 
-      axios.get(`http://localhost:5000/productAPI/${id}/imgs`).then((res) => {
+      prodInfoApi.getProdImgs(id).then((res) => {
         setImages(res.data.map((img) => img.img));
       });
     };

@@ -2,6 +2,13 @@ import { useState, useRef, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import {
+  prodInfoApi,
+  prodEditApi,
+  profileApi,
+  userApi,
+  categoryApi,
+} from '../api/API';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-solid-svg-icons';
@@ -44,25 +51,27 @@ const Product = () => {
   if (heartIcon.current) {
     if (clicked && !heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.add('clicked');
-      axios.get(`http://localhost:5000/productAPI/${id}/like`, {
-        withCredentials: true,
-      });
+      // axios.get(`http://localhost:5000/productAPI/${id}/like`, {
+      //   withCredentials: true,
+      // });
+      prodEditApi.addLike(id);
     } else if (!clicked && heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.remove('clicked');
-      axios.delete(`http://localhost:5000/productAPI/${id}/like`, {
-        withCredentials: true,
-      });
+      // axios.delete(`http://localhost:5000/productAPI/${id}/like`, {
+      //   withCredentials: true,
+      // });
+      prodEditApi.deleteLike(id);
     }
   }
 
   const deleteProduct = async () => {
-    await axios
-      .delete(`http://localhost:5000/productAPI/${id}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        navigate('/');
-      });
+    // await axios
+    //   .delete(`http://localhost:5000/productAPI/${id}`, {
+    //     withCredentials: true,
+    //   })
+    await prodEditApi.deleteProd(id).then((res) => {
+      navigate('/');
+    });
   };
 
   useEffect(() => {
@@ -71,64 +80,52 @@ const Product = () => {
     }
 
     const getProduct = async () => {
-      await axios
-        .get(`http://localhost:5000/productAPI/${id}`, {
-          withCredentials: true,
-        })
-        .then(async (res) => {
-          if (res.data.length > 1) {
-            let productInfo = res.data[0];
-            setIsUploader(res.data[1].isUploader);
+      await prodInfoApi.getProd(id).then(async (res) => {
+        if (res.data.length > 1) {
+          let productInfo = res.data[0];
+          setIsUploader(res.data[1].isUploader);
+          console.log(res.data[0].userID);
 
-            await axios
-              .get(`http://localhost:5000/profileAPI/${res.data[0].userID}`)
-              .then((res) => {
-                setUserProfile(res.data.profileData);
+          await profileApi.getProfile(res.data[0].userID).then((res) => {
+            setUserProfile(res.data.profileData);
+            console.log(res.data);
+          });
+
+          await categoryApi
+            .getCateName(res.data[0].cateID)
+            .then(async (res) => {
+              if (res.data === undefined) {
+                return;
+              }
+
+              let productCate = res.data[0].cateNAME;
+              await prodInfoApi.getTag(id).then((res) => {
+                setProduct({
+                  ...productInfo,
+                  cateNAME: productCate,
+                  tags: res.data,
+                });
               });
-
-            await axios
-              .get(`http://localhost:5000/categoryAPI/${res.data[0].cateID}`)
-              .then(async (res) => {
-                if (res.data === undefined) {
-                  return;
-                }
-
-                let productCate = res.data[0].cateNAME;
-                await axios
-                  .get(`http://localhost:5000/productAPI/${id}/tags`)
-                  .then((res) => {
-                    setProduct({
-                      ...productInfo,
-                      cateNAME: productCate,
-                      tags: res.data,
-                    });
-                  });
-              });
-          } else {
-            navigate('/*');
-          }
-        });
+            });
+        } else {
+          navigate('/*');
+        }
+      });
     };
 
     const getImgs = async () => {
-      await axios
-        .get(`http://localhost:5000/productAPI/${id}/imgs`)
-        .then((res) => {
-          setImgArray(res.data);
-        });
+      await prodInfoApi.getProdImgs(id).then((res) => {
+        setImgArray(res.data);
+      });
     };
 
     const getLikeState = async () => {
-      await axios
-        .get(`http://localhost:5000/productAPI/${id}/likeCheck`, {
-          withCredentials: true,
-        })
-        .then((res) => {
-          if (res.data.state) {
-            setClicked(true);
-          }
-          setLikeCount(res.data.likecount);
-        });
+      await prodInfoApi.likeCheck(id).then((res) => {
+        if (res.data.state) {
+          setClicked(true);
+        }
+        setLikeCount(res.data.likecount);
+      });
     };
 
     getProduct();
@@ -137,39 +134,31 @@ const Product = () => {
   }, [id, clicked]);
 
   const onClickLike = () => {
-    axios
-      .get(`http://localhost:5000/userAPI/checkLogin`, {
-        withCredentials: true,
-      })
-      .then((res) => {
+    userApi.checkLogin().then((res) => {
+      if (!res.data.login) {
+        Swal.fire({
+          title: '로그인이 필요한 서비스입니다.',
+          confirmButtonColor: '#000000',
+        });
+      } else {
+        setClicked(!clicked);
+      }
+    });
+  };
+
+  const onClickDm = async () => {
+    try {
+      userApi.checkLogin().then((res) => {
         if (!res.data.login) {
           Swal.fire({
             title: '로그인이 필요한 서비스입니다.',
             confirmButtonColor: '#000000',
           });
-        } else {
-          setClicked(!clicked);
+          return;
         }
+
+        navigate(`/product/${id}/chat?inquirer=${res.data.userId}`);
       });
-  };
-
-  const onClickDm = async () => {
-    try {
-      await axios
-        .get('http://localhost:5000/userAPI/checkLogin', {
-          withCredentials: true,
-        })
-        .then((res) => {
-          if (!res.data.login) {
-            Swal.fire({
-              title: '로그인이 필요한 서비스입니다.',
-              confirmButtonColor: '#000000',
-            });
-            return;
-          }
-
-          navigate(`/product/${id}/chat?inquirer=${res.data.userId}`);
-        });
     } catch (error) {
       console.log(error);
     }

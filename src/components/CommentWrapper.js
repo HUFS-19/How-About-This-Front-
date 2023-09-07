@@ -67,11 +67,7 @@ const CommentWrapper = () => {
         {commentData.map((comment) => {
           return (
             <div className='comment'>
-              <img
-                className='commentIcon'
-                src={`http://localhost:5000/${comment.userIcon}`}
-                alt=''
-              ></img>
+              <img className='commentIcon' src={comment.userIcon} alt=''></img>
               <div className='commentContent'>
                 <div className='commentHeader'>
                   <p className='commentNickname'>{comment.nickname}</p>

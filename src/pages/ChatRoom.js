@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import { ProdInfoApi, messageApi, prodEditApi, userApi } from '../api/API';
+import { prodInfoApi, messageApi, prodEditApi, userApi } from '../api/API';
 import { io } from 'socket.io-client';
 
 import { GoChevronLeft } from 'react-icons/go';
@@ -123,11 +123,12 @@ const ChatRoom = () => {
     };
 
     const getProductInfo = () => {
-      ProdInfoApi.getProd(id).then((res) => {
+      prodInfoApi.getProd(id).then((res) => {
         setProduct(res.data[0]);
       });
 
-      axios.get(`http://localhost:5000/productAPI/${id}/imgs`).then((res) => {
+      // axios.get(`http://localhost:5000/productAPI/${id}/imgs`)
+      prodInfoApi.getProdImgs(id).then((res) => {
         const MAIN_IMG = res.data.filter((img) => img.imgOrder === 1);
 
         setProductImg(MAIN_IMG[0].img);
@@ -135,12 +136,8 @@ const ChatRoom = () => {
     };
 
     const getChatRoom = async () => {
-      // await axios
-      //   .get(`http://localhost:5000/productAPI/${id}/chat/${inquirerId}`)
-      await ProdInfoApi.getChatRoom(id, inquirerId).then(async (res) => {
+      await prodInfoApi.getChatRoom(id, inquirerId).then(async (res) => {
         if (res.data.length === 0) {
-          // await axios
-          //   .post(`http://localhost:5000/productAPI/${id}/chat/${inquirerId}`)
           await prodEditApi.createChatRoom(id, inquirerId).then((res) => {
             setChatRoomId(res.data[0]);
             joinChatRoom(res.data[0].chatroomID);
@@ -152,10 +149,6 @@ const ChatRoom = () => {
         joinChatRoom(res.data[0].chatroomID);
 
         // 기존 채팅창에서 예전 메시지 가져오기
-        // await axios
-        //   .get(
-        //     `http://localhost:5000/messageAPI/chatroom/${res.data[0].chatroomID}`,
-        //   )
         messageApi.getMsgAll(res.data[0].chatroomID).then((res) => {
           const RECEIVED_MSG_ARRAY = JSON.parse(JSON.stringify(res.data));
 

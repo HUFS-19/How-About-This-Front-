@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 import axios from 'axios';
-import { ProdInfoApi } from '../api/API';
+import { prodInfoApi } from '../api/API';
 import { prodEditApi } from '../api/API';
 import { userApi } from '../api/API';
 
@@ -33,14 +33,14 @@ const ProductBlock = ({ data }) => {
 
   useEffect(() => {
     const getMainImg = async () => {
-      ProdInfoApi.getProdImgs(data.prodID).then((res) => {
+      prodInfoApi.getProdImgs(data.prodID).then((res) => {
         let mainImg = res.data.filter((img) => img.imgOrder === 1);
         setMainImg(mainImg[0]);
       });
     };
 
     const getLikeState = async () => {
-      ProdInfoApi.likeCheck(data.prodID).then((res) => {
+      prodInfoApi.likeCheck(data.prodID).then((res) => {
         if (res.data.state) {
           setClicked(true);
         }
