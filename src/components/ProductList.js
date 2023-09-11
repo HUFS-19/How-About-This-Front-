@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { ProdInfoApi, categoryApi } from '../api/API';
+import { prodInfoApi, categoryApi } from '../api/API';
 import axios from 'axios';
 import { CategoryStateContext, SearchStateContext } from '../App';
 
@@ -21,7 +21,7 @@ const ProductList = () => {
   useEffect(() => {
     const getProductList = async () => {
       if (parseInt(category) === -1) {
-        ProdInfoApi.getLike().then((res) => {
+        prodInfoApi.getLike().then((res) => {
           if (res.data.alert) {
             setProductList([]);
             Swal.fire({
@@ -34,13 +34,13 @@ const ProductList = () => {
           }
         });
       } else if (parseInt(category) === -2) {
-        ProdInfoApi.search(search.category, search.type, search.search).then(
-          (res) => {
+        prodInfoApi
+          .search(search.category, search.type, search.search)
+          .then((res) => {
             setProductList(res.data);
-          },
-        );
+          });
       } else {
-        ProdInfoApi.getCateProds(parseInt(category), sort).then((res) => {
+        prodInfoApi.getCateProds(parseInt(category), sort).then((res) => {
           setProductList(res.data);
         });
       }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+
+import { prodEditApi, categoryApi } from '../api/API';
 import { motion } from 'framer-motion';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -151,17 +152,8 @@ const Upload = ({ isEdit, product, productId }) => {
     }
 
     if (isEdit) {
-      axios
-        .put(
-          `http://localhost:5000/productAPI/${productId}`,
-          {
-            cateID: category,
-            prodNAME: title,
-            detail: description,
-            link: link,
-          },
-          { withCredentials: true },
-        )
+      prodEditApi
+        .editProd(productId, category, title, description, link)
         .then((res) => console.log(res.data));
 
       const formData = new FormData();
@@ -173,37 +165,27 @@ const Upload = ({ isEdit, product, productId }) => {
         );
       });
 
-      axios
-        .put(
-          `http://localhost:5000/productAPI/${productId}/imgs`,
-          formData,
-          { withCredentials: true },
-          {
-            header: { 'content-type': 'multipart/form-data' },
-          },
-        )
-        .then((res) => console.log(res.data));
+      prodEditApi
+        .editProdImg(productId, formData)
+        .then((res) => console.log(res.data))
+        .catch((error) => console.log('error: ', error));
 
-      axios
-        .put(
-          `http://localhost:5000/productAPI/${productId}/tags`,
-          { tags: tags },
-          { withCredentials: true },
-        )
+      prodEditApi
+        .editProdTag(productId, tags)
         .then((res) => {
           console.log(res.data);
-          if (res.data) {
-            navigate(`/product/${productId}`);
-          }
-        });
+        })
+        .catch((error) => console.log(error));
 
+      navigate(`/product/${productId}`);
       return;
     }
 
-    const response = await axios.post(
-      'http://localhost:5000/productAPI/new',
-      { cateID: category, prodNAME: title, detail: description, link: link },
-      { withCredentials: true },
+    const response = await prodEditApi.postProd(
+      category,
+      title,
+      description,
+      link,
     );
 
     const newProductId = response.data[0];
@@ -217,27 +199,10 @@ const Upload = ({ isEdit, product, productId }) => {
       );
     });
 
-    axios.post(
-      `http://localhost:5000/productAPI/${newProductId}/imgs`,
-      formData,
-      { withCredentials: true },
-      {
-        header: { 'content-type': 'multipart/form-data' },
-      },
-    );
+    prodEditApi.postProdImg(newProductId, formData);
+    prodEditApi.postProdTag(newProductId, tags);
 
-    axios
-      .post(
-        `http://localhost:5000/productAPI/${newProductId}/tags`,
-        { tags: tags },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        console.log(res.data);
-        if (res.data) {
-          navigate(`/product/${newProductId}`);
-        }
-      });
+    navigate(`/product/${newProductId}`);
   };
 
   const onPushTag = (e) => {
@@ -307,13 +272,7 @@ const Upload = ({ isEdit, product, productId }) => {
   };
 
   useEffect(() => {
-    const getCategories = async () => {
-      await axios
-        .get('http://localhost:5000/categoryAPI/all')
-        .then((res) => setCategories(res.data));
-    };
-
-    getCategories();
+    categoryApi.getAllCateName().then((res) => setCategories(res.data));
   }, []);
 
   return (

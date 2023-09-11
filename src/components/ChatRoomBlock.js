@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ProdInfoApi, messageApi } from '../api/API';
+import { prodInfoApi, messageApi } from '../api/API';
 
 import '../styles/components/_ChatRoomBlock.scss';
 
@@ -13,7 +13,7 @@ const ChatRoomBlock = ({ room, loggedInUser }) => {
   const [lastMsgDate, setLastMsgDate] = useState('');
 
   useEffect(() => {
-    ProdInfoApi.getProd(room.prodID).then((res) => {
+    prodInfoApi.getProd(room.prodID).then((res) => {
       setProductName(res.data[0].prodNAME);
     });
 

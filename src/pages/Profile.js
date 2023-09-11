@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { profileApi } from '../api/API';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import '../styles/components/profile/_ProfileArea.scss';
@@ -18,21 +19,17 @@ const Profile = () => {
   const [isLogin, setLogin] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/profileAPI/${userId}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.data.profileData) {
-          setProfileData(res.data.profileData);
-          setSnsData(res.data.snsList);
-          if (res.data.loginState.id === userId) {
-            setLogin(true);
-          }
-        } else {
-          navigate('/*');
+    profileApi.getProfile(userId).then((res) => {
+      if (res.data.profileData) {
+        setProfileData(res.data.profileData);
+        setSnsData(res.data.snsList);
+        if (res.data.loginState.id === userId) {
+          setLogin(true);
         }
-      });
+      } else {
+        navigate('/*');
+      }
+    });
   }, [userId]);
 
   if (profileData && snsData) {

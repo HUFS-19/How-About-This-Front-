@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 
+import { userApi, messageApi } from '../api/API';
 import ChatRoomBlock from '../components/ChatRoomBlock';
 
 import '../styles/pages/_ChatRoomList.scss';
@@ -10,28 +10,18 @@ const ChatRoomList = () => {
   const [chatRoomList, setChatRoomList] = useState([]);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:5000/userAPI/checkLogin', {
-        withCredentials: true,
-      })
-      .then((res) => {
-        setLoggedInUser(res.data.userId);
-        axios
-          .get(`http://localhost:5000/userAPI/${res.data.userId}/chatRoomList`)
-          .then((res) => {
-            res.data.forEach((room) => {
-              axios
-                .get(
-                  `http://localhost:5000/messageAPI/chatroom/${room.chatroomID}/lastMessage`,
-                )
-                .then((res) => {
-                  if (res.data.length > 0) {
-                    setChatRoomList((chatRoomList) => [...chatRoomList, room]);
-                  }
-                });
-            });
+    userApi.checkLogin().then((res) => {
+      setLoggedInUser(res.data.userId);
+      userApi.getChatRoom(res.data.userId).then((res) => {
+        res.data.forEach((room) => {
+          messageApi.getLastMsg(room.chatroomID).then((res) => {
+            if (res.data.length > 0) {
+              setChatRoomList((chatRoomList) => [...chatRoomList, room]);
+            }
           });
+        });
       });
+    });
   }, []);
 
   return (
