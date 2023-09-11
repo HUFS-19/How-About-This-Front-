@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { prodInfoApi, messageApi, prodEditApi, userApi } from '../api/API';
+import { catchError } from '../utils/catchError';
 import { io } from 'socket.io-client';
 
 import { GoChevronLeft } from 'react-icons/go';
@@ -73,9 +74,8 @@ const ChatRoom = () => {
         senderId: loggedInUser,
         message,
       })
-      .then((res) => {
-        console.log(res);
-      });
+      .then((res) => console.log(res.statusText))
+      .catch((error) => catchError(error));
   };
 
   const joinChatRoom = (chatRoomId) => {
@@ -84,92 +84,116 @@ const ChatRoom = () => {
 
   useEffect(() => {
     socket.on('sendMsg', async (msg, senderId) => {
-      await userApi.checkLogin().then((res) => {
-        const loggedInUser = res.data.userId;
+      const loggedInUser = await userApi
+        .checkLogin()
+        .catch((error) => catchError(error));
 
-        if (loggedInUser !== senderId) {
-          setMsgArray((msgArray) => [
-            ...msgArray,
-            {
-              text: msg,
-              senderId: senderId,
-              time: new Date().toLocaleTimeString().slice(0, -3),
-              date: alterDateExpression(),
-            },
-          ]);
-        }
-      });
+      const loggedInUserId = loggedInUser.data.userId;
+
+      if (loggedInUserId !== senderId) {
+        setMsgArray((msgArray) => [
+          ...msgArray,
+          {
+            text: msg,
+            senderId: senderId,
+            time: new Date().toLocaleTimeString().slice(0, -3),
+            date: alterDateExpression(),
+          },
+        ]);
+      }
     });
   }, []);
 
   useEffect(() => {
     const checkLoggedIn = async () => {
-      try {
-        await userApi.checkLogin().then((res) => {
-          if (!res.data.login) {
-            Swal.fire({
-              title: '로그인이 필요한 서비스입니다.',
-              confirmButtonColor: '#000000',
-            });
-            navigate(-1);
-            return;
-          }
+      const loggedInUser = await userApi
+        .checkLogin()
+        .catch((error) => catchError(error));
 
-          setLoggedInUser(res.data.userId);
+      const loggedIn = loggedInUser.data.login;
+
+      if (!loggedIn) {
+        Swal.fire({
+          title: '로그인이 필요한 서비스입니다.',
+          confirmButtonColor: '#000000',
         });
-      } catch (error) {
-        console.log(error);
+
+        navigate(-1);
+        return;
       }
+
+      setLoggedInUser(loggedInUser.data.userId);
     };
 
-    const getProductInfo = () => {
-      prodInfoApi.getProd(id).then((res) => {
-        setProduct(res.data[0]);
-      });
+    const getProductInfo = async () => {
+      const product = await prodInfoApi
+        .getProd(id)
+        .catch((error) => catchError(error));
 
-      prodInfoApi.getProdImgs(id).then((res) => {
-        const MAIN_IMG = res.data.filter((img) => img.imgOrder === 1);
+      const productId = product.data[0];
+      setProduct(productId);
 
-        setProductImg(MAIN_IMG[0].img);
+      const productImgs = await prodInfoApi
+        .getProdImgs(id)
+        .catch((error) => catchError(error));
+
+      const MAIN_IMG = productImgs.data.filter((img) => img.imgOrder === 1);
+      const MAIN_IMG_URL = MAIN_IMG[0].img;
+      setProductImg(MAIN_IMG_URL);
+    };
+
+    const setPreviousMsg = async (chatRoomId) => {
+      const messages = await messageApi
+        .getMsgAll(chatRoomId)
+        .catch((error) => catchError(error));
+
+      const RECEIVED_MSG_ARRAY = JSON.parse(JSON.stringify(messages.data));
+
+      RECEIVED_MSG_ARRAY.forEach((msg) => {
+        const KR_TIME = String(new Date(msg.time));
+        const TIME = KR_TIME.slice(16, 21);
+        const HOUR = parseInt(TIME.slice(0, 2));
+        const AM_OR_PM = HOUR >= 12 ? '오후 ' : '오전 ';
+
+        const HOUR_EXPRESSION = HOUR <= 12 ? HOUR : HOUR - 12;
+        setMsgArray((msgArray) => [
+          ...msgArray,
+          {
+            text: msg.content,
+            senderId: msg.senderID,
+            time: AM_OR_PM + String(HOUR_EXPRESSION) + TIME.slice(2),
+            date: msg.time.slice(0, 10),
+          },
+        ]);
       });
+    };
+
+    const setNewChatRoom = async () => {
+      const newChatRoom = await prodEditApi
+        .createChatRoom(id, inquirerId)
+        .catch((error) => catchError(error));
+
+      const newChatRoomId = newChatRoom.data[0];
+
+      setChatRoomId(newChatRoomId);
+      joinChatRoom(newChatRoomId);
     };
 
     const getChatRoom = async () => {
-      await prodInfoApi.getChatRoom(id, inquirerId).then(async (res) => {
-        if (res.data.length === 0) {
-          await prodEditApi.createChatRoom(id, inquirerId).then((res) => {
-            setChatRoomId(res.data[0]);
-            joinChatRoom(res.data[0].chatroomID);
-          });
-          return;
-        }
+      const chatRoomInfo = await prodInfoApi
+        .getChatRoom(id, inquirerId)
+        .catch((error) => catchError(error));
 
-        setChatRoomId(res.data[0].chatroomID);
-        joinChatRoom(res.data[0].chatroomID);
+      if (chatRoomInfo.data.length === 0) {
+        setNewChatRoom();
+        return;
+      }
 
-        // 기존 채팅창에서 예전 메시지 가져오기
-        messageApi.getMsgAll(res.data[0].chatroomID).then((res) => {
-          const RECEIVED_MSG_ARRAY = JSON.parse(JSON.stringify(res.data));
+      const chatRoomId = chatRoomInfo.data[0].chatroomID;
+      setChatRoomId(chatRoomId);
+      joinChatRoom(chatRoomId);
 
-          RECEIVED_MSG_ARRAY.forEach((msg) => {
-            const KR_TIME = String(new Date(msg.time));
-            const TIME = KR_TIME.slice(16, 21);
-            const HOUR = parseInt(TIME.slice(0, 2));
-            const AM_OR_PM = HOUR >= 12 ? '오후 ' : '오전 ';
-
-            const HOUR_EXPRESSION = HOUR <= 12 ? HOUR : HOUR - 12;
-            setMsgArray((msgArray) => [
-              ...msgArray,
-              {
-                text: msg.content,
-                senderId: msg.senderID,
-                time: AM_OR_PM + String(HOUR_EXPRESSION) + TIME.slice(2),
-                date: msg.time.slice(0, 10),
-              },
-            ]);
-          });
-        });
-      });
+      setPreviousMsg(chatRoomId);
     };
 
     checkLoggedIn();
