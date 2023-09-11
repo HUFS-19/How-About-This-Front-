@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+
 import { prodInfoApi, messageApi } from '../api/API';
+import { catchError } from '../utils/catchError';
 
 import '../styles/components/_ChatRoomBlock.scss';
 
@@ -13,20 +14,37 @@ const ChatRoomBlock = ({ room, loggedInUser }) => {
   const [lastMsgDate, setLastMsgDate] = useState('');
 
   useEffect(() => {
-    prodInfoApi.getProd(room.prodID).then((res) => {
-      setProductName(res.data[0].prodNAME);
-    });
+    const getProductName = async () => {
+      const product = await prodInfoApi
+        .getProd(room.prodID)
+        .catch((error) => catchError(error));
 
-    messageApi.getLastMsg(room.chatroomID).then((res) => {
-      setLastMsg(res.data[0].content);
+      const productName = product.data[0].prodNAME;
+      setProductName(productName);
+    };
 
-      const DATE = res.data[0].time.slice(0, 10).split('-');
+    const getLastMsgDate = (lastMsg) => {
+      const DATE = lastMsg.data[0].time.slice(0, 10).split('-');
       DATE.splice(1, 0, '년 ');
       DATE.splice(3, 0, '월 ');
       DATE.splice(5, 0, '일 ');
 
       setLastMsgDate(DATE.join(''));
-    });
+    };
+
+    const getLastMsg = async () => {
+      const lastMsg = await messageApi
+        .getLastMsg(room.chatroomID)
+        .catch((error) => catchError(error));
+
+      const lastMsgContent = lastMsg.data[0].content;
+      setLastMsg(lastMsgContent);
+
+      getLastMsgDate(lastMsg);
+    };
+
+    getProductName();
+    getLastMsg();
   }, []);
 
   return (

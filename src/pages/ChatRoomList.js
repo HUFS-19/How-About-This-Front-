@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { userApi, messageApi } from '../api/API';
+import { catchError } from '../utils/catchError';
+
 import ChatRoomBlock from '../components/ChatRoomBlock';
 
 import '../styles/pages/_ChatRoomList.scss';
@@ -10,18 +12,28 @@ const ChatRoomList = () => {
   const [chatRoomList, setChatRoomList] = useState([]);
 
   useEffect(() => {
-    userApi.checkLogin().then((res) => {
-      setLoggedInUser(res.data.userId);
-      userApi.getChatRoom(res.data.userId).then((res) => {
-        res.data.forEach((room) => {
-          messageApi.getLastMsg(room.chatroomID).then((res) => {
-            if (res.data.length > 0) {
-              setChatRoomList((chatRoomList) => [...chatRoomList, room]);
-            }
-          });
-        });
+    const getChatRoomList = async () => {
+      const loggedIn = await userApi
+        .checkLogin()
+        .catch((error) => catchError(error));
+
+      const loggedInUserId = loggedIn.data.userId;
+      setLoggedInUser(loggedInUserId);
+
+      const chatRoomList = await userApi
+        .getChatRoom(loggedInUserId)
+        .catch((error) => catchError(error));
+
+      chatRoomList.data.forEach(async (room) => {
+        const lastMsg = await messageApi.getLastMsg(room.chatroomID);
+
+        if (lastMsg.data.length > 0) {
+          setChatRoomList((chatRoomList) => [...chatRoomList, room]);
+        }
       });
-    });
+    };
+
+    getChatRoomList();
   }, []);
 
   return (
