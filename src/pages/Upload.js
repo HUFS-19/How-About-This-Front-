@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { prodEditApi, categoryApi } from '../api/API';
 import { motion } from 'framer-motion';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { FaInfoCircle } from 'react-icons/fa';
+
+import { prodEditApi, categoryApi } from '../api/API';
+import { catchError } from '../utils/catchError';
 
 import BlackBtn from '../components/button/BlackBtn';
 import WhiteBtn from '../components/button/WhiteBtn';
@@ -122,87 +124,104 @@ const Upload = ({ isEdit, product, productId }) => {
     setValidImg(images.length > 0 ? true : false);
   }, [images, isEdit]);
 
-  const onUploadProduct = async () => {
+  const hasBlankInput = () => {
     if (!category) {
       setValidCate(false);
-      return;
+      return true;
     }
 
     if (!title) {
       titleInput.current.focus();
       setValidTitle(false);
-      return;
+      return true;
     }
 
     if (!description) {
       descInput.current.focus();
       setValidDesc(false);
-      return;
+      return true;
     }
 
     if (!link) {
       linkInput.current.focus();
       setValidLink(false);
-      return;
+      return true;
     }
 
     if (images.length === 0) {
       setValidImg(false);
-      return;
+      return true;
     }
+  };
 
-    if (isEdit) {
-      prodEditApi
-        .editProd(productId, category, title, description, link)
-        .then((res) => console.log(res.data));
-
-      const formData = new FormData();
-      images.forEach((image, i) => {
-        formData.append(
-          'image',
-          image,
-          `${productId}_${image.name.slice(0, 1)}_${i}.jpg`,
-        );
-      });
-
-      prodEditApi
-        .editProdImg(productId, formData)
-        .then((res) => console.log(res.data))
-        .catch((error) => console.log('error: ', error));
-
-      prodEditApi
-        .editProdTag(productId, tags)
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((error) => console.log(error));
-
-      navigate(`/product/${productId}`);
-      return;
-    }
-
-    const response = await prodEditApi.postProd(
-      category,
-      title,
-      description,
-      link,
-    );
-
-    const newProductId = response.data[0];
+  const onEditProduct = async () => {
+    prodEditApi
+      .editProd(productId, category, title, description, link)
+      .then((res) => console.log(res.statusText))
+      .catch((error) => catchError(error));
 
     const formData = new FormData();
     images.forEach((image, i) => {
       formData.append(
         'image',
         image,
-        `${newProductId}_${image.name.slice(0, 1)}_${i}.jpg`,
+        `${productId}_${image.name.slice(0, 1)}_${i}.jpg`,
       );
     });
 
-    prodEditApi.postProdImg(newProductId, formData);
-    prodEditApi.postProdTag(newProductId, tags);
+    prodEditApi
+      .editProdImg(productId, formData)
+      .then((res) => console.log(res.statusText))
+      .catch((error) => catchError(error));
 
-    navigate(`/product/${newProductId}`);
+    prodEditApi
+      .editProdTag(productId, tags)
+      .then((res) => console.log(res.statusText))
+      .catch((error) => catchError(error));
+
+    navigate(`/product/${productId}`);
+    return;
+  };
+
+  const onUploadProduct = async () => {
+    if (hasBlankInput()) {
+      return;
+    }
+
+    if (isEdit) {
+      onEditProduct();
+      return;
+    }
+
+    const uploadedProduct = await prodEditApi.postProd(
+      category,
+      title,
+      description,
+      link,
+    );
+
+    const uploadedProductId = uploadedProduct.data[0];
+
+    const formData = new FormData();
+    images.forEach((image, i) => {
+      formData.append(
+        'image',
+        image,
+        `${uploadedProductId}_${image.name.slice(0, 1)}_${i}.jpg`,
+      );
+    });
+
+    prodEditApi
+      .postProdImg(uploadedProductId, formData)
+      .then((res) => console.log(res.statusText))
+      .catch((error) => catchError(error));
+
+    prodEditApi
+      .postProdTag(uploadedProductId, tags)
+      .then((res) => console.log(res.statusText))
+      .catch((error) => catchError(error));
+
+    navigate(`/product/${uploadedProductId}`);
   };
 
   const onPushTag = (e) => {
