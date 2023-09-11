@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+
 import { userApi, messageApi } from '../api/API';
 import ChatRoomBlock from '../components/ChatRoomBlock';
 
@@ -10,20 +10,10 @@ const ChatRoomList = () => {
   const [chatRoomList, setChatRoomList] = useState([]);
 
   useEffect(() => {
-    // axios
-    // .get('http://localhost:5000/userAPI/checkLogin', {
-    //   withCredentials: true,
-    // })
     userApi.checkLogin().then((res) => {
       setLoggedInUser(res.data.userId);
-      // axios
-      //   .get(`http://localhost:5000/userAPI/${res.data.userId}/chatRoomList`)
       userApi.getChatRoom(res.data.userId).then((res) => {
         res.data.forEach((room) => {
-          // axios
-          //   .get(
-          //     `http://localhost:5000/messageAPI/chatroom/${room.chatroomID}/lastMessage`,
-          //   )
           messageApi.getLastMsg(room.chatroomID).then((res) => {
             if (res.data.length > 0) {
               setChatRoomList((chatRoomList) => [...chatRoomList, room]);

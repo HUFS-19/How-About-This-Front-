@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+
 import { prodInfoApi, messageApi, prodEditApi, userApi } from '../api/API';
 import { io } from 'socket.io-client';
 
@@ -127,7 +127,6 @@ const ChatRoom = () => {
         setProduct(res.data[0]);
       });
 
-      // axios.get(`http://localhost:5000/productAPI/${id}/imgs`)
       prodInfoApi.getProdImgs(id).then((res) => {
         const MAIN_IMG = res.data.filter((img) => img.imgOrder === 1);
 

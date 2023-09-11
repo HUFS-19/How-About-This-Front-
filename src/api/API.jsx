@@ -13,6 +13,7 @@ export const userApi = {
   login: (id, pw) => {
     return API.post('userAPI/login', { id: id, password: pw });
   },
+
   logout: () => {
     return API.get('userAPI/logout');
   },
@@ -23,6 +24,7 @@ export const userApi = {
       password: pw,
     });
   },
+
   idCheck: (id) => {
     return API.post('userAPI/join/idCheck', { id: id });
   },
@@ -30,10 +32,12 @@ export const userApi = {
   checkLogin: () => {
     return API.get('userAPI/checkLogin');
   },
+
   //로그인여부, 닉네임, 아이콘, 아이디 return
   getUser: () => {
     return API.get('userAPI/nav');
   },
+
   getChatRoom: (userId) => {
     return API.get(`userAPI/${userId}/chatRoomList`);
   },
@@ -43,12 +47,15 @@ export const profileApi = {
   getProfile: (userId) => {
     return API.get(`profileAPI/${userId}`);
   },
+
   changeUserIcon: (userId, formData) => {
     return API.put(`profileAPI/update/userIcon/${userId}`, formData);
   },
+
   deleteSns: (userId, deletedSns) => {
     return API.delete(`profileAPI/deleteSns/${userId}`, { data: deletedSns });
   },
+
   updateProfile: (userId, snsList, profileData) => {
     return API.put(`profileAPI/update/${userId}`, { snsList, profileData });
   },
@@ -58,9 +65,11 @@ export const prodInfoApi = {
   getProd: (prodId) => {
     return API.get(`productAPI/${prodId}`);
   },
+
   getUserProd: (userId) => {
     return API.get(`productAPI/user/${userId}`);
   },
+
   search: (cate, type, search) => {
     return API.post('productAPI/search', {
       category: cate,
@@ -68,21 +77,27 @@ export const prodInfoApi = {
       search: search,
     });
   },
+
   getCateProds: (cateId, sortMethod) => {
     return API.post('productAPI/list', { category: cateId, sort: sortMethod });
   },
+
   getProdImgs: (prodID) => {
     return API.get(`productAPI/${prodID}/imgs`);
   },
+
   getLike: () => {
     return API.get('productAPI/like');
   },
+
   getTag: (prodId) => {
     return API.get(`productAPI/${prodId}/tags`);
   },
+
   likeCheck: (prodID) => {
     return API.get(`productAPI/${prodID}/likeCheck`);
   },
+
   getChatRoom: (prodId, inquirerId) => {
     return API.get(`productAPI/${prodId}/chat/${inquirerId}`);
   },
@@ -92,15 +107,19 @@ export const prodEditApi = {
   deleteProd: (prodId) => {
     return API.delete(`productAPI/${prodId}`);
   },
+
   addLike: (prodId) => {
     return API.get(`productAPI/${prodId}/like`);
   },
+
   deleteLike: (prodId) => {
     return API.delete(`productAPI/${prodId}/like`);
   },
+
   createChatRoom: (prodId, inquirerId) => {
     return API.post(`productAPI/${prodId}/chat/${inquirerId}`);
   },
+
   editProd: (prodId, cate, title, desc, link) => {
     return API.put(`productApi/${prodId}`, {
       cateID: cate,
@@ -109,19 +128,35 @@ export const prodEditApi = {
       link: link,
     });
   },
+
   editProdImg: (prodId, formData) => {
-    return API.put(
-      `productAPI/${prodId}/imgs`,
-      formData,
-      // {
-      //   header: { 'content-type': 'multipart/form-data' },
-      // }
-    );
+    return API.put(`productAPI/${prodId}/imgs`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
   },
+
   editProdTag: (prodId, tags) => {
-    return API.put(`productAPI/${prodId}/imgs`, { tags: tags });
+    return API.put(`productAPI/${prodId}/tags`, { tags: tags });
   },
-  postProd: () => {},
+
+  postProd: (cate, title, desc, link) => {
+    return API.post('productAPI/new', {
+      cateID: cate,
+      prodNAME: title,
+      detail: desc,
+      link,
+    });
+  },
+
+  postProdImg: (prodId, formData) => {
+    return API.post(`/productAPI/${prodId}/imgs`, formData, {
+      headers: { 'content-type': 'multipart/form-data' },
+    });
+  },
+
+  postProdTag: (prodId, tags) => {
+    return API.post(`/productAPI/${prodId}/tags`, { tags: tags });
+  },
 };
 
 export const categoryApi = {
