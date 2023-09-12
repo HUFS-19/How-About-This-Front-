@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import axios from 'axios';
+
 import {
   prodInfoApi,
   prodEditApi,
@@ -9,7 +8,9 @@ import {
   userApi,
   categoryApi,
 } from '../api/API';
+import { catchError } from '../utils/catchError';
 
+import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMessage } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -51,27 +52,17 @@ const Product = () => {
   if (heartIcon.current) {
     if (clicked && !heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.add('clicked');
-      // axios.get(`http://localhost:5000/productAPI/${id}/like`, {
-      //   withCredentials: true,
-      // });
-      prodEditApi.addLike(id);
+      prodEditApi.addLike(id).catch((error) => catchError(error));
     } else if (!clicked && heartIcon.current.classList.contains('clicked')) {
       heartIcon.current.classList.remove('clicked');
-      // axios.delete(`http://localhost:5000/productAPI/${id}/like`, {
-      //   withCredentials: true,
-      // });
-      prodEditApi.deleteLike(id);
+      prodEditApi.deleteLike(id).catch((error) => catchError(error));
     }
   }
 
-  const deleteProduct = async () => {
-    // await axios
-    //   .delete(`http://localhost:5000/productAPI/${id}`, {
-    //     withCredentials: true,
-    //   })
-    await prodEditApi.deleteProd(id).then((res) => {
-      navigate('/');
-    });
+  const deleteProduct = () => {
+    prodEditApi.deleteProd(id).catch((error) => catchError(error));
+
+    navigate('/');
   };
 
   useEffect(() => {
@@ -80,47 +71,48 @@ const Product = () => {
     }
 
     const getProduct = async () => {
-      await prodInfoApi.getProd(id).then(async (res) => {
-        if (res.data.length > 1) {
-          let productInfo = res.data[0];
-          setIsUploader(res.data[1].isUploader);
-          console.log(res.data[0].userID);
+      const productInfo = await prodInfoApi
+        .getProd(id)
+        .catch((error) => catchError(error));
 
-          await profileApi.getProfile(res.data[0].userID).then((res) => {
-            setUserProfile(res.data.profileData);
-            console.log(res.data);
-          });
+      if (productInfo.data.length === 1) {
+        navigate('/*');
+        return;
+      }
 
-          await categoryApi
-            .getCateName(res.data[0].cateID)
-            .then(async (res) => {
-              if (res.data === undefined) {
-                return;
-              }
+      const product = productInfo.data[0];
+      const isUploader = productInfo.data[1].isUploader;
+      setIsUploader(isUploader);
 
-              let productCate = res.data[0].cateNAME;
-              await prodInfoApi.getTag(id).then((res) => {
-                setProduct({
-                  ...productInfo,
-                  cateNAME: productCate,
-                  tags: res.data,
-                });
-              });
-            });
-        } else {
-          navigate('/*');
-        }
+      const profile = await profileApi
+        .getProfile(product.userID)
+        .catch((error) => catchError(error));
+      setUserProfile(profile.data.profileData);
+
+      const category = await categoryApi
+        .getCateName(product.cateID)
+        .catch((error) => catchError(error));
+      const categoryName = category.data[0].cateNAME;
+
+      const tags = await prodInfoApi
+        .getTag(id)
+        .catch((error) => catchError(error));
+
+      setProduct({
+        ...product,
+        cateNAME: categoryName,
+        tags: tags.data,
       });
     };
 
-    const getImgs = async () => {
-      await prodInfoApi.getProdImgs(id).then((res) => {
+    const getImgs = () => {
+      prodInfoApi.getProdImgs(id).then((res) => {
         setImgArray(res.data);
       });
     };
 
-    const getLikeState = async () => {
-      await prodInfoApi.likeCheck(id).then((res) => {
+    const getLikeState = () => {
+      prodInfoApi.likeCheck(id).then((res) => {
         if (res.data.state) {
           setClicked(true);
         }
@@ -146,7 +138,7 @@ const Product = () => {
     });
   };
 
-  const onClickDm = async () => {
+  const onClickDm = () => {
     try {
       userApi.checkLogin().then((res) => {
         if (!res.data.login) {
