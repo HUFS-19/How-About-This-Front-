@@ -36,7 +36,7 @@ const ChatRoom = () => {
   const [msgArray, setMsgArray] = useState([]);
   const [chatRoomId, setChatRoomId] = useState('');
 
-  let socket = io('http://localhost:5000', {
+  let socket = io(process.env.REACT_APP_HOST, {
     transports: ['websocket'],
   });
   socket.connect();

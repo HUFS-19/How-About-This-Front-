@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000',
-  //헤더 설정하면 formData 전송 안됨
-  // headers: {
-  //   'Content-Type': 'application/json',
-  // },
+  baseURL: process.env.REACT_APP_HOST,
   withCredentials: true,
 });
 
