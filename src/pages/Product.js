@@ -71,7 +71,9 @@ const Product = () => {
     }
 
     const getProduct = async () => {
-      const productInfo = await prodInfoApi.getProd(id);
+      const productInfo = await prodInfoApi
+        .getProd(id)
+        .catch((error) => catchError(error));
 
       if (productInfo.data.length === 1) {
         navigate('/*');
@@ -82,12 +84,19 @@ const Product = () => {
       const isUploader = productInfo.data[1].isUploader;
       setIsUploader(isUploader);
 
-      const profile = await profileApi.getProfile(product.userID);
+      const profile = await profileApi
+        .getProfile(product.userID)
+        .catch((error) => catchError(error));
       setUserProfile(profile.data.profileData);
 
-      const category = await categoryApi.getCateName(product.cateID);
+      const category = await categoryApi
+        .getCateName(product.cateID)
+        .catch((error) => catchError(error));
       const categoryName = category.data[0].cateNAME;
-      const tags = await prodInfoApi.getTag(id);
+
+      const tags = await prodInfoApi
+        .getTag(id)
+        .catch((error) => catchError(error));
 
       setProduct({
         ...product,
