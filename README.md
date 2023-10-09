@@ -23,9 +23,14 @@
 ## 프로젝트 목표
 모든 팀원이 풀스택으로 다양한 기능을 구현해보자!
 
-### 홈 화면/카테고리/정렬/좋아요
+### 홈 화면/카테고리/정렬
 
-### 물품 상세 페이지
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/c61636e6-3526-4c89-aef2-6bc41b87f53a" width="100%">
+
+
+### 물품 상세 페이지/댓글/좋아요
+
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/d3acbf6b-fa87-408a-969f-336d5697698a" width="100%">
 
 ### 물품 추천 게시글 업로드
 
