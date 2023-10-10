@@ -27,18 +27,41 @@
 
 <img src="https://github.com/sujinjwa/front-end/assets/91577550/c61636e6-3526-4c89-aef2-6bc41b87f53a" width="100%">
 
+### 물품 상세 페이지/슬라이드/모달
 
-### 물품 상세 페이지/댓글/좋아요
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/591d0f37-2ce5-4d44-890a-1c9bc3c7b8c6" width="100%">
 
-<img src="https://github.com/sujinjwa/front-end/assets/91577550/d3acbf6b-fa87-408a-969f-336d5697698a" width="100%">
+### 회원가입
 
-### 물품 추천 게시글 업로드
+<img src="" width="100%">
 
 ### 로그인/로그아웃
 
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/2f291f30-3132-4f45-9022-47cc195e5f43" width="100%">
+
+### 댓글/좋아요
+
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/c7d21c54-b785-493d-96dc-9af0d515c7fb" width="100%">
+
+### 물품 추천 게시글 업로드
+
+<img src="" width="100%">
+
 ### 마이페이지
 
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/260ab53e-3e3a-40ef-a0a3-8c422f36f9c2" width="100%">
+
+### 유저 플로필 정보 수정
+
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/1d8f0791-dfac-4086-9cbf-edfb7cf7a49c" width="100%">
+
+### 비밀번호 변경
+
+<img src="" width="100%">
+
 ### 실시간 채팅
+
+<img src="" width="100%">
 
 <br />
 
