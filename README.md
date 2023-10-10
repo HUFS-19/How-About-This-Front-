@@ -31,21 +31,28 @@
 
 <img src="https://github.com/sujinjwa/front-end/assets/91577550/591d0f37-2ce5-4d44-890a-1c9bc3c7b8c6" width="100%">
 
-### 회원가입
+### 회원가입/예외처리
 
-<img src="" width="100%">
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/70f634af-1bba-4159-8ac4-b99cc1e22f1c" width="100%">
+
 
 ### 로그인/로그아웃
 
-<img src="https://github.com/sujinjwa/front-end/assets/91577550/2f291f30-3132-4f45-9022-47cc195e5f43" width="100%">
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/9ac2ee0d-a828-4015-ba7a-f6e297cc09eb" width="100%">
 
 ### 댓글/좋아요
 
 <img src="https://github.com/sujinjwa/front-end/assets/91577550/c7d21c54-b785-493d-96dc-9af0d515c7fb" width="100%">
 
-### 물품 추천 게시글 업로드
+### 물품 추천 게시글 업로드/수정/삭제
+- 업로드
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/b496f7b4-ea8b-4a3b-8ccc-41898e0c77a2" width="100%">
 
-<img src="" width="100%">
+- 수정
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/b19f815c-c59e-4340-8d17-8743a1ddf2c0" width="100%">
+
+- 삭제
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/824f47f8-faeb-4f3e-a1c2-cee9ad9f5c11" width="100%">
 
 ### 마이페이지
 
@@ -57,11 +64,14 @@
 
 ### 비밀번호 변경
 
-<img src="" width="100%">
+<img src="https://github.com/sujinjwa/front-end/assets/91577550/fc594918-c284-4aa5-ade6-157bb90060e6" width="100%">
 
 ### 실시간 채팅
 
-<img src="" width="100%">
+<div style="display: flex; justify-content: space-between;" width="100%">
+  <img src="https://github.com/sujinjwa/front-end/assets/91577550/25c37cfc-9021-4256-a388-4e1875dc27d2" width="49%" height="330px">
+  <img src="https://github.com/sujinjwa/front-end/assets/91577550/422b797b-962c-4395-9a74-4735d27eeb30" width="49%" height="330px">
+</div>
 
 <br />
 
