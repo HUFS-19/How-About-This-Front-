@@ -69,8 +69,8 @@
 ### 실시간 채팅
 
 <div style="display: flex; justify-content: space-between;" width="100%">
-  <img src="https://github.com/sujinjwa/front-end/assets/91577550/25c37cfc-9021-4256-a388-4e1875dc27d2" width="49%" height="330px">
-  <img src="https://github.com/sujinjwa/front-end/assets/91577550/422b797b-962c-4395-9a74-4735d27eeb30" width="49%" height="330px">
+  <img src="https://github.com/sujinjwa/front-end/assets/91577550/25c37cfc-9021-4256-a388-4e1875dc27d2" width="49%" height="300px">
+  <img src="https://github.com/sujinjwa/front-end/assets/91577550/422b797b-962c-4395-9a74-4735d27eeb30" width="49%" height="300px">
 </div>
 
 <br />
