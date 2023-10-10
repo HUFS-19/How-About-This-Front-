@@ -69,22 +69,7 @@
 ### 실시간 채팅
 
 <div style="display: flex; justify-content: space-between;" width="100%">
-  <img src="https://github.com/sujinjwa/front-end/assets/91577550/25c37cfc-9021-4256-a388-4e1875dc27d2" width="49%" height="300px">
-  <img src="https://github.com/sujinjwa/front-end/assets/91577550/422b797b-962c-4395-9a74-4735d27eeb30" width="49%" height="300px">
-</div>
-
-<br />
-
-## DB 테이블
-
-![Copy of 방학플젝](https://github.com/sujinjwa/front-end/assets/91577550/b6c2668f-2dbc-4793-aa67-72c9f739873c)
-
-<br />
-
-## 프로젝트 관련 기록
-
-- [와이어프레임](https://docs.google.com/presentation/d/1QKAMNhwTK6-krUQpKwdxIz4Boi5mtQj1bjtq9OV9038/edit?pli=1#slide=id.g23193ca8702_4_0)
-- [사용자 프로세스](https://fortunate-bank-8e1.notion.site/445d5b56477e4e51a00bbddc55ceeeaa?pvs=4)
+  <img src="https://github.com/sujinjwa/front-e항](https://fortunate-bank-8e1.notion.site/445d5b56477e4e51a00bbddc55ceeeaa?pvs=4)
 - [API 명세서](https://fortunate-bank-8e1.notion.site/API-5e72aecef8394fdbb63d481b28b10a69?pvs=4)
 
 <br />
