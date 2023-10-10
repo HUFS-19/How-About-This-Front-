@@ -84,7 +84,7 @@
 ## 프로젝트 관련 기록
 
 - [와이어프레임](https://docs.google.com/presentation/d/1QKAMNhwTK6-krUQpKwdxIz4Boi5mtQj1bjtq9OV9038/edit?pli=1#slide=id.g23193ca8702_4_0)
-- [사용자 프로세스](https://fortunate-bank-8e1.notion.site/445d5b56477e4e51a00bbddc55ceeeaa?pvs=4)
+- [기능 요구 사항](https://fortunate-bank-8e1.notion.site/445d5b56477e4e51a00bbddc55ceeeaa?pvs=4)
 - [API 명세서](https://fortunate-bank-8e1.notion.site/API-5e72aecef8394fdbb63d481b28b10a69?pvs=4)
 
 <br />
