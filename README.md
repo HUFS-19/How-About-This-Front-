@@ -81,6 +81,12 @@
 
 <br />
 
+## 서비스 아키텍처
+
+![이거어때 서비스 아키텍쳐](https://github.com/HUFS-19/How-About-This-Front-/assets/74410135/175ed549-2edc-4132-8898-4a3f28b180df)
+
+<br />
+
 ## 프로젝트 관련 기록
 
 - [와이어프레임](https://docs.google.com/presentation/d/1QKAMNhwTK6-krUQpKwdxIz4Boi5mtQj1bjtq9OV9038/edit?pli=1#slide=id.g23193ca8702_4_0)
